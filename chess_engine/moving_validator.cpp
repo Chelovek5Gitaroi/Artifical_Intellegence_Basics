@@ -10,33 +10,83 @@ namespace chess_solver
 		
 		if (figure != nullptr)
 		{
-//			if (figure->getType() == FigureType::ROCK || figure->getType() == FigureType::BISHOP || figure->getType() == FigureType::QUEEN)
-//			{
-//				result = isLineEmpty(start, finish);
-//			}
-//			else if (figure->getType() == FigureType::KING)
-//			{
-//				result = isReachebleForKing(start, finish, firstPlayer, secondPlayer);
-//			}
-//			else if (figure->getType() == FigureType::KNIGHT)
-//			{
-//				result = isReachebleForKnight(start, finish);
-//			}
-//			else if (figure->getType() == FigureType::PAWN)
-//			{
-//				//result = isReac
-//			}
+			Figure* endFigure = firstPlayer.getFigureByCoordinates(finish);
 			
+			if (endFigure == nullptr)
+			{
+				endFigure = secondPlayer.getFigureByCoordinates(finish);
+				
+				if (endFigure == nullptr)
+				{
+					result = isMoveValid(*figure, finish, firstPlayer, secondPlayer);
+				}
+				else
+				{
+					result = isTakingValid(*figure, finish, firstPlayer, secondPlayer);
+				}
+				
+				
+				
+			}
 		}
 		
 		return result;
 	}
 	
-	bool MovingValidator::isTakingValid(Coordinates& start, Coordinates& finish, Player& firstPlayer, Player& secondPlayer)
+	bool MovingValidator::isTakingValid(Figure& figure, Coordinates& finish, Player& firstPlayer, Player& secondPlayer)
 	{
+		bool result = false;
 		
+		switch (figure.getType())
+		{
+		case FigureType::ROCK:  	//break wasn`t forgot
+		case FigureType::BISHOP:	//break wasn`t forgot
+		case FigureType::QUEEN:
+			result = isLineEmpty(figure.getCoordinates(), finish);
+			break;
+			
+		case FigureType::KNIGHT:
+			result = isReachebleForKnight(figure.getCoordinates(), finish);
+			break;
+			
+		case FigureType::PAWN:
+			result = isReachebleForPawnToTake(figure, finish);
+			break;
+			
+		case FigureType::KING:
+			result = isReachebleForKing(figure.getCoordinates(), finish);
+			break;
+			
+		default:
+			break;
+		}
+		
+		return result;
 	}
 	
+	bool MovingValidator::isMoveValid(Figure& figure, Coordinates& finish, Player& firstPlayer, Player& secondPlayer)
+	{
+		bool result = false;
+		
+		if (figure.getType() == FigureType::ROCK || figure.getType() == FigureType::BISHOP || figure.getType() == FigureType::QUEEN)
+		{
+			result = isLineEmpty(figure.getCoordinates(), finish);
+		}
+		else if (figure.getType() == FigureType::KNIGHT)
+		{
+			result = isReachebleForKnight(figure.getCoordinates(), finish);
+		}
+		else if (figure.getType() == FigureType::PAWN)
+		{
+			result = isReachebleForPawn(figure, finish);
+		}
+		else if (figure.getType() == FigureType::KING)
+		{
+			result = isReachebleForKing(figure.getCoordinates(), finish);
+		}
+		
+		return result;
+	}
 	
 	bool MovingValidator::isLineEmpty(const Coordinates& start, const Coordinates& finish)
 	{
@@ -160,8 +210,10 @@ namespace chess_solver
 			   		(finish.getColumn() == start.getColumn() - 2 || finish.getColumn() == start.getColumn() + 2));
 	}
 	
-	bool MovingValidator::isReachebleForPawn(const Coordinates& start, const Coordinates& finish, Figure* figure)
+	bool MovingValidator::isReachebleForPawn(Figure& pawn, const Coordinates& finish)
 	{
+		Coordinates start = pawn.getCoordinates();
+		
 		bool result = finish.getColumn() == start.getColumn();
 		
 		if (result)
@@ -170,7 +222,7 @@ namespace chess_solver
 			{
 				if (std::abs(finish.getRow() - start.getRow()) == 2)
 				{
-					if (!figure->wasMoved())
+					if (!pawn.wasMoved())
 					{
 						result = isVerticalEmpty(start, finish);
 					}
@@ -178,6 +230,10 @@ namespace chess_solver
 					{
 						result = false;
 					}
+				}
+				else
+				{
+					return true;
 				}
 			}
 			else
@@ -189,11 +245,13 @@ namespace chess_solver
 		return result;
 	}
 	
-	bool MovingValidator::isReachebleForPawnToTake(const Coordinates& start, const Coordinates& finish, FigureColor color)
+	bool MovingValidator::isReachebleForPawnToTake(Figure& pawn, const Coordinates& finish)
 	{
 		bool result = false;
 		
-		if (color == FigureColor::WHITE)
+		Coordinates start = pawn.getCoordinates();
+		
+		if (pawn.getColor() == FigureColor::WHITE)
 		{
 			result = (finish.getRow() == start.getRow() + 1 && (finish.getColumn() == start.getColumn() - 1 || finish.getColumn() == start.getColumn() + 1));
 		}
@@ -205,65 +263,13 @@ namespace chess_solver
 		return result;
 	}
 	
-	bool MovingValidator::isReachebleForKing(const Coordinates& start, const Coordinates& finish, Player& firstPlayer, Player& secondPlayer)
+	bool MovingValidator::isReachebleForKing(const Coordinates& start, const Coordinates& finish)
 	{
 		return (finish.getRow() == start.getRow() + 1 && (finish.getColumn() == start.getColumn() - 1 || finish.getColumn() == start.getColumn() || finish.getColumn() == start.getColumn() + 1)) ||
 			   (finish.getRow() == start.getRow() && (finish.getColumn() == start.getColumn() - 1 || finish.getColumn() == start.getColumn() + 1)) ||
 			   (finish.getRow() == start.getRow() - 1 && (finish.getColumn() == start.getColumn() - 1 || finish.getColumn() == start.getColumn() || finish.getColumn() == start.getColumn() + 1));
 	}
 	
-//	bool MovingValidator::isPawnMoveValid(Coordinates& startCoordinates, Coordinates& finishCoordinates, Player& otherPlayer)
-//	{
-//		
-//	}
-//	
-//	bool MovingValidator::isKnightMoveValid(Coordinates& startCoordinates, Coordinates& finishCoordinates, Player& otherPlayer)
-//	{
-//		
-//	}
-//	
-//	bool MovingValidator::isBishopMoveValid(Coordinates& startCoordinates, Coordinates& finishCoordinates, Player& otherPlayer)
-//	{
-//		
-//	}
-//	
-//	bool MovingValidator::isRockMoveValid(Coordinates& startCoordinates, Coordinates& finishCoordinates, Player& otherPlayer)
-//	{
-//		bool result = finishCoordinates.getRow() == startCoordinates.getRow() || finishCoordinates.getColumn() == startCoordinates.getColumn();
-//		
-//		if (result)
-//		{
-//			
-//		}
-//		
-//		return result;
-//	}
-//	
-//	bool MovingValidator::isQueenMoveValid(Coordinates& startCoordinates, Coordinates& finishCoordinates, Player& otherPlayer)
-//	{
-//		
-//	}
-//	
-//	bool MovingValidator::isKingMoveValid(Coordinates& startCoordinates, Coordinates& finishCoordinates, Player& otherPlayer)
-//	{
-//		
-//	}
-	
-//	char MovingValidator::calcFiguresNumberOnHorizontal(const Coordinates& start, const Coordinates& finish)
-//	{
-//		
-//	}
-//	
-//	char MovingValidator::calcFiguresNumberOnVertical(const Coordinates& start, const Coordinates& finish)
-//	{
-//		
-//	}
-//	
-//	char MovingValidator::calcFiguresNumberOnDiagonal(const Coordinates& start, const Coordinates& finish)
-//	{
-//		
-//	}
-
 	
 	bool MovingValidator::hasCheck(Coordinates& kingCoordinates, Player& firstPlayer, Player& secondPlayer)
 	{
@@ -271,56 +277,32 @@ namespace chess_solver
 		
 		for (auto iter = secondPlayer.getAllFigures().begin(); iter != secondPlayer.getAllFigures().end() && !result; iter++)
 		{
-			if ((*iter)->getType() == FigureType::ROCK || (*iter)->getType() == FigureType::QUEEN || (*iter)->getType() == FigureType::BISHOP)
+			switch ((*iter)->getType())
 			{
+			case FigureType::ROCK:		//break wasn't forgot
+			case FigureType::BISHOP:	//break wasn't forgot
+			case FigureType::QUEEN:
 				result = isLineEmpty((*iter)->getCoordinates(), kingCoordinates);
-			}
-			
-			if ((*iter)->getType() == FigureType::PAWN)
-			{
-				result = isReachebleForPawnToTake((*iter)->getCoordinates(), kingCoordinates, firstPlayer.getFigureByCoordinates(kingCoordinates)->getColor());
-			}
-			
-			if ((*iter)->getType() == FigureType::KNIGHT)
-			{
+				break;
+				
+			case FigureType::PAWN:
+				result = isReachebleForPawnToTake(*(*iter), kingCoordinates);
+				break;
+				
+			case FigureType::KNIGHT:
 				result = isReachebleForKnight((*iter)->getCoordinates(), kingCoordinates);
+				break;
+				
+			case FigureType::KING:
+				result = isReachebleForKing((*iter)->getCoordinates(), kingCoordinates);
+				break;
+				
+			default:
+				break;
 			}
-			
 		}
 		
 		return result;
 	}
 	
-	
-	
-	
-//	std::list<Coordinates>* MovingValidator::getPawnPotentialPossibleCoordinates(Coordinates& coordinates)
-//	{
-//		
-//	}
-//	
-//	std::list<Coordinates>* MovingValidator::getBishopPotentialPossibleCoordinates(Coordinates& coordinates)
-//	{
-//		
-//	}
-//	
-//	std::list<Coordinates>* MovingValidator::getKnightPotentialPossibleCoordinates(Coordinates& coordinates)
-//	{
-//		
-//	}
-//	
-//	std::list<Coordinates>* MovingValidator::getRockPotentialPossibleCoordinates(Coordinates& coordinates)
-//	{
-//		
-//	}
-//	
-//	std::list<Coordinates>* MovingValidator::getQueenPotentialPossibleCoordinates(Coordinates& coordinates)
-//	{
-//		
-//	}
-//	
-//	std::list<Coordinates>* MovingValidator::getKingPotentialPossibleCoordinates(Coordinates& coordinates)
-//	{
-//		
-//	}
 }
