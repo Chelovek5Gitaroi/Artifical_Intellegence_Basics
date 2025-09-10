@@ -25,8 +25,25 @@ namespace chess_solver
 					result = isTakingValid(*figure, finish, firstPlayer, secondPlayer);
 				}
 				
-				
-				
+				if (result)
+				{
+					this->board->getTileByCoordinates(start).free();
+					this->board->getTileByCoordinates(finish).occupy();
+					
+					if (figure->getType() == FigureType::KING)
+					{
+						result = hasCheck(finish, firstPlayer, secondPlayer);
+					}
+					else
+					{
+						Figure* king = firstPlayer.getKing();
+						
+						result = hasCheck(king->getCoordinates(), firstPlayer, secondPlayer);
+					}
+					
+					this->board->getTileByCoordinates(start).occupy();
+					this->board->getTileByCoordinates(finish).free();
+				}
 			}
 		}
 		
@@ -271,7 +288,7 @@ namespace chess_solver
 	}
 	
 	
-	bool MovingValidator::hasCheck(Coordinates& kingCoordinates, Player& firstPlayer, Player& secondPlayer)
+	bool MovingValidator::hasCheck(const Coordinates& kingCoordinates, Player& firstPlayer, Player& secondPlayer)
 	{
 		bool result = false;
 		
@@ -303,6 +320,18 @@ namespace chess_solver
 		}
 		
 		return result;
+	}
+	
+	void MovingValidator::climeTilesToCheck(const Coordinates& start, const Coordinates& finish)
+	{
+		this->board->getTileByCoordinates(start).free();
+		this->board->getTileByCoordinates(finish).occupy();
+	}
+	
+	void MovingValidator::unclimeTilesAfterCheck(const Coordinates& start, const Coordinates& finish)
+	{
+		this->board->getTileByCoordinates(start).occupy();
+		this->board->getTileByCoordinates(finish).free();
 	}
 	
 }

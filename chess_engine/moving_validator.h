@@ -40,7 +40,7 @@ namespace chess_solver
 		void climeTilesToCheck(const Coordinates& start, const Coordinates& finish);
 		void unclimeTilesAfterCheck(const Coordinates& start, const Coordinates& finish);
 				
-		bool hasCheck(Coordinates& kingCoordinates, Player& firstPlayer, Player& secondPlayer);
+		bool hasCheck(const Coordinates& kingCoordinates, Player& firstPlayer, Player& secondPlayer);
 		
 	};
 }

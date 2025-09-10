@@ -46,6 +46,19 @@ namespace chess_solver
 		return result;
 	}
 	
+	Figure* Player::getKing()
+	{
+		for (Figure* elFigure: this->figures)
+		{
+			if (elFigure->getType() == FigureType::KING)
+			{
+				return elFigure;
+			}
+		}
+		
+		return nullptr;
+	}
+	
 	void Player::removeFigureByCoordinates(const Coordinates& coordinates)
 	{
 		this->figures.remove(getFigureByCoordinates(coordinates));
