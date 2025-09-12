@@ -6,18 +6,20 @@
 
 namespace chess_solver
 {
-	const unsigned char MINIMAL_COLUMN_NAME = 'a';
-	
 	class Board
 	{
 	public:
+		static const unsigned char MINIMAL_COLUMN_NAME = 'a';	
+		
 		Board(unsigned char boardSize);
 		~Board();
 		
 		unsigned char getBoardSize() const { return this->boardSize; };
 		
-		Tile& getTileByCoordinates(Coordinates& coordinates) const;
-		Tile& getTileByCoordinates(unsigned char column, unsigned char row) const;
+		Tile& getTileByCoordinates(const Coordinates& coordinates);
+		Tile& getTileByCoordinates(unsigned char column, unsigned char row);
+		
+		Tile& getTileByArrayCoordinates(short row, short column);
 			
 	private:
 		unsigned char boardSize;
