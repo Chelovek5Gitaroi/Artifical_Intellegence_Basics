@@ -62,6 +62,11 @@ namespace chess_solver
 		return column - MINIMAL_COLUMN_NAME;
 	}
 	
+	Tile& Board::getTileByArrayCoordinates(short row, short column)
+	{
+		return *(tiles[row][column]);
+	}
+	
 	Tile& Board::getTileByCoordinates(const Coordinates& coordinates)
 	{
 		return *(tiles[getRowIndexFromCoordinate(coordinates.getRow())][getColumnIndexFromCoordinate(coordinates.getColumn())]);
