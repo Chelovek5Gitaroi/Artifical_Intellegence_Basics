@@ -2,12 +2,12 @@
 
 namespace chess_solver
 {
-	Board::Board(unsigned char boardSize)
+	Board::Board(char boardSize)
 	{
 		this->boardSize	= boardSize;
 		this->tiles = new Tile**[boardSize];
 		
-		for (unsigned char i = 0; i < this->boardSize; i++)
+		for (char i = 0; i < this->boardSize; i++)
 		{
 			this->tiles[i] = new Tile*[this->boardSize];
 		}
@@ -17,9 +17,9 @@ namespace chess_solver
 	
 	Board::~Board()
 	{
-		for (unsigned char i = 0; i < this->boardSize; i++)
+		for (char i = 0; i < this->boardSize; i++)
 		{
-			for (unsigned char j = 0; j < this->boardSize; j++)
+			for (char j = 0; j < this->boardSize; j++)
 			{
 				delete tiles[i][j];
 			}
@@ -32,9 +32,9 @@ namespace chess_solver
 	
 	void Board::createTiles()
 	{
-		for (unsigned char row = this->boardSize - 1; row >= 0; row--)
+		for (char row = this->boardSize - 1; row >= 0; row--)
 		{
-			for (unsigned char column = 0; column < this->boardSize; column++)
+			for (char column = 0; column < this->boardSize; column++)
 			{
 				TileColor color;
 				
@@ -52,27 +52,27 @@ namespace chess_solver
 		}
 	}
 	
-	unsigned char Board::getRowIndexFromCoordinate(const unsigned char row) const
+	unsigned char Board::getRowIndexFromCoordinate(const char row) const
 	{
 		return this->boardSize - row;
 	}
 	
-	unsigned char Board::getColumnIndexFromCoordinate(const unsigned char column) const
+	unsigned char Board::getColumnIndexFromCoordinate(const char column) const
 	{
 		return column - MINIMAL_COLUMN_NAME;
 	}
 	
-	Tile& Board::getTileByArrayCoordinates(short row, short column)
-	{
-		return *(tiles[row][column]);
-	}
+//	Tile& Board::getTileByArrayCoordinates(short rowIndex, short columnIndex)
+//	{
+//		return *(tiles[rowIndex][columnIndex]);
+//	}
 	
 	Tile& Board::getTileByCoordinates(const Coordinates& coordinates)
 	{
 		return *(tiles[getRowIndexFromCoordinate(coordinates.getRow())][getColumnIndexFromCoordinate(coordinates.getColumn())]);
 	}
 	
-	Tile& Board::getTileByCoordinates(unsigned char column, unsigned char row)
+	Tile& Board::getTileByCoordinates(char column, char row)
 	{
 		return *(tiles[getRowIndexFromCoordinate(row)][getRowIndexFromCoordinate(column)]);
 	}

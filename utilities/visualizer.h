@@ -17,9 +17,10 @@ namespace chess_solver
 		Visualizer(Board* board, Player* firstPlayer, Player* secondPlayer);
 		~Visualizer();
 		
+		static const std::string DEFAULT_FILE;// = "CONOUT$";
+//		void writeMove(std::string& moveDescription);
 		
-		void writeMove(std::string& moveDescription);
-		
+		void render();
 				
 	private:
 		HANDLE consoleFile;
@@ -30,10 +31,7 @@ namespace chess_solver
 		SMALL_RECT consoleScreenArea;
 
 		CHAR_INFO* buffer;
-		CHAR_INFO* clearBoardBuffer;
-		
-		
-		static constexpr char* DEFAULT_FILE = "CONOUT$\0";
+		CHAR_INFO* emptyBoardBuffer;
 		
 		static const short LEFT_BOARD_IDENT = 2;
 		static const short TOP_BOARD_IDENT = 5;
@@ -52,8 +50,8 @@ namespace chess_solver
 		static const unsigned short FIGURE_COLOR_BLACK = 0x0008;
 		static const unsigned short FIGURE_COLOR_WHITE = 0x0001 | 0x0002 | 0x0004 | 0x0008;
 	
-		static const unsigned short TILE_COLOR_BACKGROUND =  0x0010 | 0x0020 | 0x0040;
-		
+		static const unsigned short TILE_COLOR_WHITE =  0x0010 | 0x0020 | 0x0040 | 0x0080;
+		//static const unsigned short TILE_COLOR_BLACK = 0x0000;
 		
 		Board* board;
 		
@@ -62,7 +60,12 @@ namespace chess_solver
 		
 		void prepareClearBoardBuffer();
 		
-		short getBufferCellIndexFromCoordinates(short row, short column);
+		void copyBoardBufferToOutBuffer();
+		
+		
+		short getBufferCellIndexFromCoordinates(short rowIndex, short columnIndex);
+		Coordinates makeChessCoordinatesFromIndexes(short rowIndex, short columnIndex);
+		
 	};
 }
 
