@@ -4,17 +4,11 @@
 namespace chess_solver
 {
 	const std::string Visualizer::DEFAULT_FILE = "CONOUT$";
+	//const std::string Visualizer::TITLE = "Start position:";
 	
 	void Visualizer::render()
 	{
 		copyBoardBufferToOutBuffer();
-		
-		WriteConsoleOutput(this->consoleFile, this->buffer, this->bufferSize, this->topLeftBufferPoint, &this->consoleScreenArea);
-		
-		drawColumnMarks();
-		drawRowMarks();
-		
-		drawBoardFrame();
 		
 		if (firstPlayer)
 		{
@@ -25,6 +19,13 @@ namespace chess_solver
 		{
 			renderPlayerFigures(secondPlayer);
 		}
+		
+		drawColumnMarks();
+		drawRowMarks();
+		
+		drawBoardFrame();
+		
+		WriteConsoleOutput(this->consoleFile, this->buffer, this->bufferSize, this->topLeftBufferPoint, &this->consoleScreenArea);
 	}
 	
 	void Visualizer::renderPlayerFigures(Player* player)
@@ -35,7 +36,7 @@ namespace chess_solver
 			
 			this->buffer[bufferCellIndex].Char.AsciiChar = getFigureChar(*figure);
 			
-			this->buffer[bufferCellIndex].Attributes &= ~BACKGROUND_COLOR_INTENSIFIED;
+			this->buffer[bufferCellIndex].Attributes &= ~FIGURE_COLOR_WHITE;
 			
 			if (figure->getColor() == FigureColor::WHITE)
 			{
@@ -43,7 +44,7 @@ namespace chess_solver
 			}		
 			else
 			{
-				this->buffer[bufferCellIndex].Attributes &= ~FIGURE_COLOR_WHITE;
+				this->buffer[bufferCellIndex].Attributes |= FIGURE_COLOR_BLACK;
 			}
 		}
 	}
@@ -92,27 +93,27 @@ namespace chess_solver
 		switch (figure.getType())
 		{
 		case FigureType::PAWN:
-			figureChar = FIGURE_CHAR_PAWN;
+			figureChar = FileReader::FIGURE_CHAR_PAWN;
 			break;
 			
 		case FigureType::KNIGHT:
-			figureChar = FIGURE_CHAR_KNIGHT;
+			figureChar = FileReader::FIGURE_CHAR_KNIGHT;
 			break;
 				
 		case FigureType::BISHOP:
-			figureChar = FIGURE_CHAR_BISHOP;
+			figureChar = FileReader::FIGURE_CHAR_BISHOP;
 			break;
 				
 		case FigureType::ROCK:
-			figureChar = FIGURE_CHAR_ROCK;
+			figureChar = FileReader::FIGURE_CHAR_ROCK;
 			break;
 				
 		case FigureType::QUEEN:
-			figureChar = FIGURE_CHAR_QUEEN;
+			figureChar = FileReader::FIGURE_CHAR_QUEEN;
 			break;
 				
 		case FigureType::KING:
-			figureChar = FIGURE_CHAR_KING;
+			figureChar = FileReader::FIGURE_CHAR_KING;
 			break;
 		}
 			
@@ -163,7 +164,7 @@ namespace chess_solver
 	
 	short Visualizer::getBufferCellIndexFromChessCoordinates(const Coordinates& coordinates)
 	{
-		short rowIndex = static_cast<short>(coordinates.getRow() - this->board->getBoardSize());
+		short rowIndex = static_cast<short>(this->board->getBoardSize() - coordinates.getRow());
 		short columnIndex = static_cast<short>(coordinates.getColumn() - Board::MINIMAL_COLUMN_NAME);
 		
 		return getBufferCellIndexFromCoordinates(rowIndex, columnIndex);
