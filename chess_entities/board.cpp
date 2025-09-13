@@ -32,13 +32,13 @@ namespace chess_solver
 	
 	void Board::createTiles()
 	{
-		for (char row = this->boardSize - 1; row >= 0; row--)
+		for (char row = 0; row < this->boardSize; row++)
 		{
 			for (char column = 0; column < this->boardSize; column++)
 			{
 				TileColor color;
 				
-				if (row % 2 == 0 && column % 2 != 0)
+				if ((row % 2 == 0 && column % 2 == 0) || (row % 2 != 0 && column % 2 != 0))
 				{
 					color = TileColor::WHITE;
 				}
@@ -76,5 +76,19 @@ namespace chess_solver
 	{
 		return *(tiles[getRowIndexFromCoordinate(row)][getRowIndexFromCoordinate(column)]);
 	}
+	
+//	std::ostream& operator<<(std::ostream& os, Board& board)
+//	{
+//		for (short row = 0; row < board.getBoardSize(); row++)
+//		{
+//			for (short column = 0; column < board.getBoardSize(); column++)
+//			{
+//				os << board.getTileByArrayCoordinates(row, column);
+//			}
+//			os << '\n';
+//		}
+//		
+//		return os;
+//	}
 	
 }

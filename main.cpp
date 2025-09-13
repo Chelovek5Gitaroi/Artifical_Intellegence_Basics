@@ -5,13 +5,22 @@
 
 #include <list>
 
-#include "chess_entities\\figure.h"
+//#include "chess_entities\\figure.h"
 
+#include "chess_entities\\board.h"
 
+#include "utilities\\visualizer.h"
 
 int main(int argc, char** argv) {
 
-	system("chcp 65001");
+//	system("chcp 65001");
+
+	chess_solver::Board board(8);
+	
+	
+	chess_solver::Visualizer visualizer(&board, nullptr, nullptr);
+	
+	visualizer.render();
 	
 	//ch.Attributes = 10;
 	//char32_t ch = U'\u2654';
@@ -40,6 +49,8 @@ int main(int argc, char** argv) {
 //	coord3 = figure.getCoordinates();
 //	
 //	std::cout << coord3.toString() << "\n";
+	
+	system("pause");
 	
 	return 0;
 }

@@ -19,7 +19,7 @@ namespace chess_solver
 		Tile& getTileByCoordinates(const Coordinates& coordinates);
 		Tile& getTileByCoordinates(char column, char row);
 		
-	//	Tile& getTileByArrayCoordinates(short rowIndex, short columnIndex);
+		//Tile& getTileByArrayCoordinates(short rowIndex, short columnIndex);
 			
 	private:
 		char boardSize;
@@ -33,6 +33,8 @@ namespace chess_solver
 		
 	};
 	
+	
+	//std::ostream& operator<<(std::ostream& os, Board& board);
 }
 
 #endif

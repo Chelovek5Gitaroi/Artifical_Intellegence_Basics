@@ -1,6 +1,10 @@
 #ifndef TILE
 #define TILE
 
+#include <iostream>
+
+
+
 namespace chess_solver
 {
 	enum class TileColor
@@ -24,6 +28,9 @@ namespace chess_solver
 		TileColor color;
 		bool occupied;
 	};
+	
+//	std::ostream& operator<<(std::ostream& os, Tile& tile);
+	
 }
 
 #endif
