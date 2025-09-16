@@ -4,7 +4,6 @@
 namespace chess_solver
 {
 	const std::string Visualizer::DEFAULT_FILE = "CONOUT$";
-	//const std::string Visualizer::TITLE = "Start position:";
 	
 	void Visualizer::render()
 	{
@@ -93,27 +92,27 @@ namespace chess_solver
 		switch (figure.getType())
 		{
 		case FigureType::PAWN:
-			figureChar = FileReader::FIGURE_CHAR_PAWN;
+			figureChar = FigureCreator::FIGURE_CHAR_PAWN;
 			break;
 			
 		case FigureType::KNIGHT:
-			figureChar = FileReader::FIGURE_CHAR_KNIGHT;
+			figureChar = FigureCreator::FIGURE_CHAR_KNIGHT;
 			break;
 				
 		case FigureType::BISHOP:
-			figureChar = FileReader::FIGURE_CHAR_BISHOP;
+			figureChar = FigureCreator::FIGURE_CHAR_BISHOP;
 			break;
 				
 		case FigureType::ROCK:
-			figureChar = FileReader::FIGURE_CHAR_ROCK;
+			figureChar = FigureCreator::FIGURE_CHAR_ROCK;
 			break;
 				
 		case FigureType::QUEEN:
-			figureChar = FileReader::FIGURE_CHAR_QUEEN;
+			figureChar = FigureCreator::FIGURE_CHAR_QUEEN;
 			break;
 				
 		case FigureType::KING:
-			figureChar = FileReader::FIGURE_CHAR_KING;
+			figureChar = FigureCreator::FIGURE_CHAR_KING;
 			break;
 		}
 			

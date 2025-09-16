@@ -8,7 +8,7 @@
 
 #include "..\\chess_entities\\board.h"
 #include "..\\chess_entities\\player.h"
-#include "file_reader.h"
+#include "figure_creator.h"
 
 namespace chess_solver
 {
@@ -20,7 +20,6 @@ namespace chess_solver
 		~Visualizer();
 		
 		static const std::string DEFAULT_FILE;// = "CONOUT$";
-		//static const std::string TITLE;
 		
 //		void writeMove(std::string& moveDescription);
 		
