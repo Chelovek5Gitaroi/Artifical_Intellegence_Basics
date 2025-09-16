@@ -6,7 +6,23 @@ namespace chess_solver
 	
 	const std::string FileReader::COLOR_BLACK = "black";
 	const std::string FileReader::COLOR_WHITE = "white";
+	
+	FileReader::~FileReader()
+	{
+		for (std::string* str: this->blackFigures)
+		{
+			delete str;
+		}
 		
+		this->blackFigures.clear();
+		
+		for (std::string* str: this->whiteFigures)
+		{
+			delete str;
+		}
+		
+		this->whiteFigures.clear();
+	}
 	
 	void FileReader::readFigureFile(std::string& fileName)
 	{

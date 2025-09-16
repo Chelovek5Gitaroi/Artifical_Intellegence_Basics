@@ -14,13 +14,8 @@ namespace chess_solver
 	class FileReader
 	{
 	public:
-		static const char FIGURE_CHAR_KING = 'K';
-		static const char FIGURE_CHAR_QUEEN = 'Q';
-		static const char FIGURE_CHAR_KNIGHT = 'N';
-		static const char FIGURE_CHAR_BISHOP = 'B';
-		static const char FIGURE_CHAR_ROCK = 'R';
-		static const char FIGURE_CHAR_PAWN = 'p';
-
+		~FileReader();
+		
 		static const std::string COLOR_BLACK;
 		static const std::string COLOR_WHITE;
 		
