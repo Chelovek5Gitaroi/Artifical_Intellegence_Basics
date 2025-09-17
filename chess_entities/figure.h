@@ -24,7 +24,7 @@ namespace chess_solver
 	class Figure
 	{
 	public:
-		Figure(FigureType type, FigureColor color, unsigned char column, unsigned char row);
+		Figure(FigureType type, FigureColor color, char column, char row);
 		
 		FigureType getType() const { return type; }
 		FigureColor getColor() const { return color; }

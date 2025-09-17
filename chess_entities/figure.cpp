@@ -4,9 +4,8 @@
 
 namespace chess_solver
 {
-	Figure::Figure(FigureType type, FigureColor color, unsigned char column, unsigned char row) : coordinates(column, row)
+	Figure::Figure(FigureType type, FigureColor color, char column, char row) : coordinates(column, row)
 	{
-		//std::cout << "*Debug* figure c-tor\n";
 		this->color = color;
 		this->type = type;
 		
