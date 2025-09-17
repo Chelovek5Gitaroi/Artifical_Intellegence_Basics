@@ -10,19 +10,15 @@ namespace chess_solver
 		{
 			if (str->size() > 0)
 			{
-				result->push_back(createFigure(*str));	
+				try
+				{
+					result->push_back(createFigure(*str, figureColor));	
+				}
+				catch(exceptions::InvalidFigureDescriptionException& ex)
+				{
+					std::cerr << ex.what();
+				}
 			}
-//			else
-//			{
-//				for (Figure* figure: result)
-//				{
-//					delete figure;
-//				}
-//				
-//				delete result;
-//				
-//				throw exceptions::InvalidFigureDescriptionException(exceptions::InvalidFigureDescriptionException::ERROR_MESSAGE);				
-//			}
 		}
 		
 		return result;
@@ -68,10 +64,8 @@ namespace chess_solver
 		return figureType;
 	}
 	
-	Figure* FigureCreator::createFigure(std::string& figureDescription)
+	Figure* FigureCreator::createFigure(std::string& figureDescription, FigureColor color)
 	{
-		Figure* result = nullptr;
-		
 		FigureType type = getFigureTypeFromString(figureDescription);
 		
 		char column = getColumnFromString(figureDescription);
@@ -84,7 +78,7 @@ namespace chess_solver
 		if (column < Board::MINIMAL_COLUMN_NAME || Board::MINIMAL_COLUMN_NAME + this->boardSize)
 			throw exceptions::InvalidFigureDescriptionException(exceptions::InvalidFigureDescriptionException::ERROR_MESSAGE_INVALID_COLUMN_NAME);
 		
-		return result;
+		return new Figure(type, color, column, row);
 	}
 	
 	char FigureCreator::getColumnFromString(std::string& str)

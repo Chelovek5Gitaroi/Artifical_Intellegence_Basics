@@ -7,7 +7,6 @@
 #include "..\\chess_entities\\figure.h"
 #include "..\\chess_entities\\board.h"
 
-//#include "..\\exceptions\\invalid_figure_type_exception.h"
 #include "..\\exceptions\\invalid_figure_description_exception.h"
 
 namespace chess_solver
@@ -34,7 +33,7 @@ namespace chess_solver
 	private:
 		FigureType getFigureTypeFromString(std::string& str);
 		
-		Figure* createFigure(std::string& figureDescription);
+		Figure* createFigure(std::string& figureDescription, FigureColor color);
 		
 		char getColumnFromString(std::string& str);
 		char getRowFromString(std::string& str);
