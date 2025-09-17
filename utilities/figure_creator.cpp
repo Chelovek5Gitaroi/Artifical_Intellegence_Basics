@@ -101,17 +101,12 @@ namespace chess_solver
 		
 		while (FIRST_ENGLISH_LETTER <= std::tolower(str[index]) && std::tolower(str[index]) <= LAST_ENGLISH_LETTER && index < str.size())
 		{
-			//std::cout << str[index] << ' ';
-			
 			columnString += str[index];
 			index++;
 		}
 		
-		//std::cout << columnString << " size = " << columnString.size();
-		
 		if (columnString.size() != 1)
 		{
-			std::cout << "throw!";
 			throw exceptions::InvalidFigureDescriptionException(exceptions::InvalidFigureDescriptionException::ERROR_MESSAGE_INVALID_COLUMN_NAME);
 		}
 				

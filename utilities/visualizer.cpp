@@ -9,15 +9,15 @@ namespace chess_solver
 	{
 		copyBoardBufferToOutBuffer();
 		
-//		if (firstPlayer)
-//		{
-//			renderPlayerFigures(firstPlayer);
-//		}
-//		
-//		if (secondPlayer)
-//		{
-//			renderPlayerFigures(secondPlayer);
-//		}
+		if (firstPlayer)
+		{
+			renderPlayerFigures(firstPlayer);
+		}
+		
+		if (secondPlayer)
+		{
+			renderPlayerFigures(secondPlayer);
+		}
 		
 		drawColumnMarks();
 		drawRowMarks();
@@ -33,18 +33,21 @@ namespace chess_solver
 		{
 			short bufferCellIndex = getBufferCellIndexFromChessCoordinates(figure->getCoordinates());
 			
-			this->buffer[bufferCellIndex].Char.AsciiChar = getFigureChar(*figure);
+			short bufferCellIndexShifted = getBufferCellIndexFromCoordinates(bufferCellIndex, TILE_WIDTH / 2, TILE_WIDTH / 2);
 			
-			this->buffer[bufferCellIndex].Attributes &= ~FIGURE_COLOR_WHITE;
-			this->buffer[bufferCellIndex].Attributes &= ~FIGURE_COLOR_BLACK;
+			this->buffer[bufferCellIndexShifted].Char.AsciiChar = getFigureChar(*figure);
+			
+			this->buffer[bufferCellIndexShifted].Attributes &= ~TILE_COLOR_WHITE;
+			
+			this->buffer[bufferCellIndexShifted].Attributes |= FIGURE_COLOR_BACKGROUND;
 			
 			if (figure->getColor() == FigureColor::WHITE)
 			{
-				this->buffer[bufferCellIndex].Attributes |= FIGURE_COLOR_WHITE;
+				this->buffer[bufferCellIndexShifted].Attributes |= FIGURE_COLOR_WHITE;
 			}		
 			else
 			{
-				this->buffer[bufferCellIndex].Attributes |= FIGURE_COLOR_BLACK;
+				this->buffer[bufferCellIndexShifted].Attributes |= FIGURE_COLOR_BLACK;
 			}
 		}
 	}
@@ -150,36 +153,26 @@ namespace chess_solver
 				}
 			}
 		}
-		
-		
-//		for (short row = 0; row < this->bufferSize.Y; row++)
-//		{
-//			for (short column = 0; column < this->bufferSize.X; column++)
-//			{
-//				this->emptyBoardBuffer[getBufferCellIndexFromCoordinates(row, column)].Char.AsciiChar = TILE_CHAR;
-//
-//				Tile& tile = this->board->getTileByCoordinates(makeChessCoordinatesFromIndexes(row, column));
-//				
-//				if (tile.getColor() == TileColor::WHITE)
-//				{
-//					this->emptyBoardBuffer[getBufferCellIndexFromCoordinates(row, column)].Attributes |= Visualizer::TILE_COLOR_WHITE;
-//				}
-//				else
-//				{
-//					this->emptyBoardBuffer[getBufferCellIndexFromCoordinates(row, column)].Attributes &= ~Visualizer::TILE_COLOR_WHITE;
-//				}
-//			}
-//		}
 	}
 	
 	void Visualizer::copyBoardBufferToOutBuffer()
 	{
-		for (char row = 0; row < this->bufferSize.Y; row++)
+		for (char row = 0; row < this->board->getBoardSize(); row++)
 		{
-			for (char column = 0; column < this->bufferSize.X; column++)
+			for (char column = 0; column < this->board->getBoardSize(); column++)
 			{
-				this->buffer[getBufferCellIndexFromCoordinates(row, column)].Char.AsciiChar = this->emptyBoardBuffer[getBufferCellIndexFromCoordinates(row, column)].Char.AsciiChar;
-				this->buffer[getBufferCellIndexFromCoordinates(row, column)].Attributes = this->emptyBoardBuffer[getBufferCellIndexFromCoordinates(row, column)].Attributes;
+				short cellIndex = getBufferCellIndexFromCoordinates(row, column);
+				
+				for (short rowShift = 0; rowShift < TILE_WIDTH; rowShift++)
+				{
+					for (short columnShift = 0; columnShift < TILE_WIDTH; columnShift++)
+					{
+						short cellShiftIndex = getBufferCellIndexFromCoordinates(cellIndex, rowShift, columnShift);
+						
+						this->buffer[cellShiftIndex].Char.AsciiChar = this->emptyBoardBuffer[cellShiftIndex].Char.AsciiChar;
+						this->buffer[cellShiftIndex].Attributes = this->emptyBoardBuffer[cellShiftIndex].Attributes;
+					}
+				}
 			}
 		}
 	}
@@ -202,7 +195,7 @@ namespace chess_solver
 	
 	short Visualizer::getBufferCellIndexFromCoordinates(short rowIndex, short columnIndex)
 	{
-		return rowIndex * this->bufferSize.X + columnIndex;
+		return (rowIndex * this->bufferSize.X + columnIndex) * TILE_WIDTH;
 	}
 	
 	short Visualizer::getBufferCellIndexFromCoordinates(short bufferCellIndex, short rowShift, short columnShift)
@@ -212,50 +205,46 @@ namespace chess_solver
 	
 	void Visualizer::drawBoardFrame()
 	{
-		short column = static_cast<short>(this->consoleScreenArea.Left - 1);
-		short row = static_cast<short>(this->consoleScreenArea.Top - 1);
+		short cursorColumn = static_cast<short>(this->consoleScreenArea.Left - 1);
+		short cursorRow = static_cast<short>(this->consoleScreenArea.Top - 1);
 		
-		COORD cursorPosition{ column, row };
+		COORD cursorPosition{ cursorColumn, cursorRow };
+		
+		std::string frameRow = "";
+		
+		frameRow += BOARD_FRAME_ANGLE_CHAR;
+		frameRow.insert(frameRow.end(), this->board->getBoardSize() * TILE_WIDTH, BOARD_FRAME_HORIZONTAL);
+		frameRow += BOARD_FRAME_ANGLE_CHAR;
 		
 		SetConsoleCursorPosition(this->consoleFile, cursorPosition);
 		
-		std::cout << BOARD_FRAME_ANGLE_CHAR;
+		std::cout << frameRow;
 		
-		for (char i = 0; i < this->board->getBoardSize(); i++)
+		for (char row = 0; row < this->board->getBoardSize(); row++)
 		{
-			std::cout << BOARD_FRAME_HORIZONTAL;
+			for (char rowShift = 0; rowShift < TILE_WIDTH; rowShift++)
+			{
+				cursorPosition.X = cursorColumn;
+				cursorPosition.Y = cursorRow + row * TILE_WIDTH + rowShift + 1;
+				
+				SetConsoleCursorPosition(this->consoleFile, cursorPosition);
+				
+				std::cout << BOARD_FRAME_VERTICAL;
+				
+				cursorPosition.X += this->bufferSize.X + 1;
+				
+				SetConsoleCursorPosition(this->consoleFile, cursorPosition);
+				
+				std::cout << BOARD_FRAME_VERTICAL;
+			}
 		}
 		
-		std::cout << BOARD_FRAME_ANGLE_CHAR;
-		
-		for (char i = 1; i <= this->board->getBoardSize(); i++)
-		{
-			cursorPosition.X = column;
-			cursorPosition.Y = row + i;
-			
-			SetConsoleCursorPosition(this->consoleFile, cursorPosition);
-			
-			std::cout << BOARD_FRAME_VERTICAL;
-			
-			cursorPosition.X = column + this->board->getBoardSize() + 1;
-			SetConsoleCursorPosition(this->consoleFile, cursorPosition);
-			
-			std::cout << BOARD_FRAME_VERTICAL;
-		}
-		
-		cursorPosition.X = column;
+		cursorPosition.X = cursorColumn;
 		cursorPosition.Y += 1;
 		
 		SetConsoleCursorPosition(this->consoleFile, cursorPosition);
 		
-		std::cout << BOARD_FRAME_ANGLE_CHAR;
-		
-		for (char i = 0; i < this->board->getBoardSize(); i++)
-		{
-			std::cout << BOARD_FRAME_HORIZONTAL;
-		}
-		
-		std::cout << BOARD_FRAME_ANGLE_CHAR << '\n';
+		std::cout << frameRow;
 	}
 	
 	void Visualizer::drawColumnMarks()
@@ -279,19 +268,18 @@ namespace chess_solver
 	
 	void Visualizer::drawRowMarks()
 	{
-		short column = static_cast<short>(this->consoleScreenArea.Left - 2);
-		short row = static_cast<short>(this->consoleScreenArea.Top);
+		short cursorColumn = static_cast<short>(this->consoleScreenArea.Left - 2);
+		short cursorRow = static_cast<short>(this->consoleScreenArea.Top);
 		
-		COORD cursorPosition{ column, row };
+		COORD cursorPosition{ cursorColumn, cursorRow };
 		
-		for (short i = this->board->getBoardSize(); i >= 1; i--)
+		for (short row = 0; row < this->board->getBoardSize(); row++)
 		{
-			SetConsoleCursorPosition(consoleFile, cursorPosition);
-			std::cout << i;
+			cursorPosition.Y = cursorRow + row * TILE_WIDTH + TILE_WIDTH / 2;
 			
-			cursorPosition.Y += 1;
+			SetConsoleCursorPosition(consoleFile, cursorPosition);
+			std::cout << (this->board->getBoardSize() - row);
 		}
-		
 	}
 	
 }
