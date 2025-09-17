@@ -72,10 +72,10 @@ namespace chess_solver
 		
 		char row = getRowFromString(figureDescription);
 		
-		if (row == 0 || row >= this->boardSize)
+		if (row == 0 || row > this->boardSize)
 			throw exceptions::InvalidFigureDescriptionException(exceptions::InvalidFigureDescriptionException::ERROR_MESSAGE_INVALID_ROW_NUMBER);
 			
-		if (column < Board::MINIMAL_COLUMN_NAME || Board::MINIMAL_COLUMN_NAME + this->boardSize)
+		if (column < Board::MINIMAL_COLUMN_NAME || column >= Board::MINIMAL_COLUMN_NAME + this->boardSize)
 			throw exceptions::InvalidFigureDescriptionException(exceptions::InvalidFigureDescriptionException::ERROR_MESSAGE_INVALID_COLUMN_NAME);
 		
 		return new Figure(type, color, column, row);
@@ -101,16 +101,21 @@ namespace chess_solver
 		
 		while (FIRST_ENGLISH_LETTER <= std::tolower(str[index]) && std::tolower(str[index]) <= LAST_ENGLISH_LETTER && index < str.size())
 		{
+			//std::cout << str[index] << ' ';
+			
 			columnString += str[index];
 			index++;
 		}
 		
+		//std::cout << columnString << " size = " << columnString.size();
+		
 		if (columnString.size() != 1)
 		{
+			std::cout << "throw!";
 			throw exceptions::InvalidFigureDescriptionException(exceptions::InvalidFigureDescriptionException::ERROR_MESSAGE_INVALID_COLUMN_NAME);
 		}
 				
-		return static_cast<char>(std::stoi(columnString));
+		return static_cast<char>(columnString[0]);
 	}
 	
 	char FigureCreator::getRowFromString(std::string& str)
