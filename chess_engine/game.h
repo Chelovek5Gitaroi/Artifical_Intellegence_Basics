@@ -9,18 +9,21 @@ namespace chess_solver
 	class Game
 	{
 	public:
-		Game(unsigned char boardSize);
-
+		static const char BOARD_SIZE = 8;
+		
+		Game(char boardSize);
 		
 		Board* getBoard(){ return &board; }
-		Player* getFirstPlayer(){ return &firstBoard; }
+		Player* getFirstPlayer(){ return &firstPlayer; }
 		Player* getSecondPlayer() {	return &secondPlayer; }
 
 	private:
 		Board board;
 		
+		//FigureColor currentPlayer;
+		
 		Player firstPlayer;
-		Player secondPlayers;
+		Player secondPlayer;
 	};
 }
 
