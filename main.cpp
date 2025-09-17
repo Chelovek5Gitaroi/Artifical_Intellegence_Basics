@@ -5,50 +5,25 @@
 
 #include <list>
 
-//#include "chess_entities\\figure.h"
+#include "chess_engine/chess_controller.h"
 
-#include "chess_entities\\board.h"
+int main(int argc, char** argv)
+{
+//	std::string str;
+//	
+//	str.insert(str.begin(), 4, 'd');
+//	
+//	std::cout << str;
+//	
+	
+	chess_solver::ChessController controller(chess_solver::Game::BOARD_SIZE);
+	
+	std::string fileName(chess_solver::ChessController::DEFAULT_FIGURE_DESCRIPTION_NAME);
+	
+	controller.init(fileName);
+	
+	controller.show();
 
-#include "utilities\\visualizer.h"
-
-int main(int argc, char** argv) {
-
-//	system("chcp 65001");
-
-	chess_solver::Board board(8);
-	
-	
-	chess_solver::Visualizer visualizer(&board, nullptr, nullptr);
-	
-	visualizer.render();
-	
-	//ch.Attributes = 10;
-	//char32_t ch = U'\u2654';
-	
-//	std::wstring str = L"\x2654";
-	
-	//std::wcout << ch;
-	
-	
-//	chess_solver::Figure figure(chess_solver::FigureType::QUEEN, chess_solver::FigureColor::WHITE, 'a', 1);	
-//	
-//	chess_solver::Coordinates coord = figure.getCoordinates();
-//	
-//	chess_solver::Coordinates coord2('b', 5);
-//	
-//	coord = coord2;
-//	
-//	std::cout << coord.toString() << "\n";
-//	
-//	chess_solver::Coordinates coord3 = figure.getCoordinates();
-//	
-//	std::cout << coord3.toString() << "\n";
-//	
-//	figure.move(coord2);
-//	
-//	coord3 = figure.getCoordinates();
-//	
-//	std::cout << coord3.toString() << "\n";
 	
 	system("pause");
 	

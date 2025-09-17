@@ -29,7 +29,7 @@ IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
 CompilerSettings=0000000000000000000000000
-UnitCount=27
+UnitCount=31
 
 [VersionInfo]
 Major=1
@@ -311,9 +311,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit29]
-FileName=exceptions\invalid_figure_type_exception.cpp
+FileName=chess_engine\game.cpp
 CompileCpp=1
-Folder=exceptions
+Folder=chess_engine
 Compile=1
 Link=1
 Priority=1000
@@ -324,6 +324,36 @@ BuildCmd=
 FileName=chess_engine\chess_controller.h
 CompileCpp=1
 Folder=chess_engine
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit28]
+FileName=chess_engine\chess_controller.cpp
+CompileCpp=1
+Folder=chess_engine
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit30]
+FileName=exceptions\invalid_figure_set_exception.h
+CompileCpp=1
+Folder=exceptions
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit31]
+FileName=exceptions\invalid_figure_set_exception.cpp
+CompileCpp=1
+Folder=exceptions
 Compile=1
 Link=1
 Priority=1000

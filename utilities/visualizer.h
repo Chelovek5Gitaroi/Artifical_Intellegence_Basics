@@ -43,6 +43,8 @@ namespace chess_solver
 		
 		static const char TILE_CHAR = ' ';
 		
+		static const char TILE_WIDTH = 3;
+		
 		static const char BOARD_FRAME_ANGLE_CHAR = '+';
 		static const char BOARD_FRAME_HORIZONTAL = '-';
 		static const char BOARD_FRAME_VERTICAL = '|';
@@ -50,6 +52,8 @@ namespace chess_solver
 
 		static const unsigned short FIGURE_COLOR_WHITE = 0x0002 | 0x0004 | 0x0008;
 		static const unsigned short FIGURE_COLOR_BLACK = 0x0004;
+	
+		static const unsigned short FIGURE_COLOR_BACKGROUND = 0x0010 | 0x0020 | 0x0040;
 	
 		static const unsigned short TILE_COLOR_WHITE =  0x0010 | 0x0020 | 0x0040 | 0x0080;
 		
@@ -70,6 +74,9 @@ namespace chess_solver
 		char getFigureChar(Figure& figure);
 		
 		short getBufferCellIndexFromCoordinates(short rowIndex, short columnIndex);
+		
+		short getBufferCellIndexFromCoordinates(short bufferCellIndex, short rowShift, short columnShift);
+		
 		short getBufferCellIndexFromChessCoordinates(const Coordinates& coordinates);
 		Coordinates makeChessCoordinatesFromIndexes(short rowIndex, short columnIndex);
 		void drawBoardFrame();
