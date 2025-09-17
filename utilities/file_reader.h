@@ -36,7 +36,8 @@ namespace chess_solver
 		std::list<std::string*> blackFigures;
 		
 		bool isStringFirstPlayerColor(std::string& str);
-				
+		
+		void clearFigureList(std::list<std::string*>& figureList);
 	};
 }
 

@@ -9,19 +9,8 @@ namespace chess_solver
 	
 	FileReader::~FileReader()
 	{
-		for (std::string* str: this->blackFigures)
-		{
-			delete str;
-		}
-		
-		this->blackFigures.clear();
-		
-		for (std::string* str: this->whiteFigures)
-		{
-			delete str;
-		}
-		
-		this->whiteFigures.clear();
+		clearFigureList(whiteFigures);
+		clearFigureList(blackFigures);
 	}
 	
 	void FileReader::readFigureFile(std::string& fileName)
@@ -30,6 +19,9 @@ namespace chess_solver
 		
 		if (fin.is_open())
 		{
+			clearFigureList(whiteFigures);
+			clearFigureList(blackFigures);
+			
 			std::string* stBuf = nullptr;
 			
 			FigureColor playerColor = FigureColor::WHITE;
@@ -42,11 +34,13 @@ namespace chess_solver
 				
 				if (*stBuf == COLOR_BLACK)
 				{
-					playerColor = FigureColor::BLACK;
+					movingPlayerColor = FigureColor::BLACK;
+					delete stBuf;
 				}
 				else if (*stBuf == COLOR_WHITE)
 				{
-					playerColor = FigureColor::WHITE;
+					movingPlayerColor = FigureColor::WHITE;
+					delete stBuf;
 				}
 				else if (*stBuf != PLAYER_SEPARATOR)
 				{
@@ -59,11 +53,25 @@ namespace chess_solver
 						this->blackFigures.push_back(stBuf);
 					}
 				}
+				else 
+				{
+					playerColor = FigureColor::BLACK;	
+					delete stBuf;
+				}
 			}
 			
 			fin.close();
 		}
 	}
 	
+	void FileReader::clearFigureList(std::list<std::string*>& figureList)
+	{
+		for (std::string* str : figureList)
+		{
+			delete str;
+		}
+		
+		figureList.clear();
+	}
 	
 }
