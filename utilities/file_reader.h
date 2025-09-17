@@ -23,14 +23,14 @@ namespace chess_solver
 
 		void readFigureFile(std::string& fileName);
 
-		char getMovingPlayerColor() { return movingPlayerColor; }
+		FigureColor getMovingPlayerColor() { return movingPlayerColor; }
 		
 		std::list<std::string*>& getWhiteFigures() { return whiteFigures; }
 		std::list<std::string*>& getBlackFigures() { return blackFigures; }
 		
 		
 	private:
-		char movingPlayerColor;
+		FigureColor movingPlayerColor;
 		
 		std::list<std::string*> whiteFigures;
 		std::list<std::string*> blackFigures;
