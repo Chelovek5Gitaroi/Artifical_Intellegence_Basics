@@ -12,7 +12,9 @@ namespace chess_solver
 		Game(unsigned char boardSize);
 
 		
-		
+		Board* getBoard(){ return &board; }
+		Player* getFirstPlayer(){ return &firstBoard; }
+		Player* getSecondPlayer() {	return &secondPlayer; }
 
 	private:
 		Board board;
