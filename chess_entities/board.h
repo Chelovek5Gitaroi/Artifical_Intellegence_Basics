@@ -2,7 +2,6 @@
 #define BOARD
 
 #include "coordinates.h"
-#include "tile.h"
 
 
 namespace chess_solver
@@ -30,24 +29,31 @@ namespace chess_solver
 		// Геттер для поля boardSize
 		char getBoardSize() const { return this->boardSize; };
 		
-		// Метод возвращающий ссылку на клетку доски
-		// coordinates - координаты клетки в шахматной нотации
-		Tile& getTileByCoordinates(const Coordinates& coordinates);
+		//
+		bool getTileOccupancyByCoordinates(const Coordinates& coordinates);
 		
-		// Метод возвращающий ссылку на клетку доски
-		// column - вертикаль в шахматной нотации
-		// row - горизонталь в шахматной нотации
-		Tile& getTileByCoordinates(char column, char row);
+		bool getTileOccupancyByCoordinates(char column, char row);
+		
+		void setOccupancyByCoordinates(const Coordinates& coordinates, bool occupancy);
+		
+//		// Метод возвращающий ссылку на клетку доски
+//		// coordinates - координаты клетки в шахматной нотации
+//		Tile& getTileByCoordinates(const Coordinates& coordinates);
+//		
+//		// Метод возвращающий ссылку на клетку доски
+//		// column - вертикаль в шахматной нотации
+//		// row - горизонталь в шахматной нотации
+//		Tile& getTileByCoordinates(char column, char row);
 		
 	private:
 		// Длина стороны доски в клетках
 		char boardSize;
 		
 		// Двумерный массив указателей на клетки
-		Tile*** tiles;
+		bool** tilesOccupancy;
 		
 		// Метод, создающий клетки в массиве при инициализации
-		void createTiles();
+		void createEmptyTileBusynessArray();
 		
 		// Метод, возвращающий индекс горизонтали в массиве
 		// row - обозначение горизонтали в шахматной нотации
@@ -56,8 +62,6 @@ namespace chess_solver
 		// Метод, возвращающий индекс вертикали в массиве
 		// column - обозначение вертикали в шахматной нотации
 		char getColumnIndexFromCoordinate(const char column) const;
-		
-		void prepareEmptyTilesArray();
 	};
 }
 

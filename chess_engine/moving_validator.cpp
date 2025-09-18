@@ -2,112 +2,112 @@
 
 namespace chess_solver
 {
-	MovingValidator::MovingValidator(Board* board)
-	{
-	}
+//	MovingValidator::MovingValidator(Board* board)
+//	{
+//	}
 	
-	bool MovingValidator::isMoveValid(Coordinates& start, Coordinates& finish, Player& firstPlayer, Player& secondPlayer)
-	{
-		bool result = false;
-		
-		Figure* figure = firstPlayer.getFigureByCoordinates(start);
-		
-		if (figure != nullptr)
-		{
-			Figure* endFigure = firstPlayer.getFigureByCoordinates(finish);
-			
-			if (endFigure == nullptr)
-			{
-				endFigure = secondPlayer.getFigureByCoordinates(finish);
-				
-				if (endFigure == nullptr)
-				{
-					result = isMoveValid(*figure, finish, firstPlayer, secondPlayer);
-				}
-				else
-				{
-					result = isTakingValid(*figure, finish, firstPlayer, secondPlayer);
-				}
-				
-				if (result)
-				{
-					this->board->getTileByCoordinates(start).free();
-					this->board->getTileByCoordinates(finish).occupy();
-					
-					if (figure->getType() == FigureType::KING)
-					{
-						result = hasCheck(finish, firstPlayer, secondPlayer);
-					}
-					else
-					{
-						Figure* king = firstPlayer.getKing();
-						
-						result = hasCheck(king->getCoordinates(), firstPlayer, secondPlayer);
-					}
-					
-					this->board->getTileByCoordinates(start).occupy();
-					this->board->getTileByCoordinates(finish).free();
-				}
-			}
-		}
-		
-		return result;
-	}
+//	bool MovingValidator::isMoveValid(Coordinates& start, Coordinates& finish, std::map<Coordinates, FigureType>& firstPlayerFigures, std::map<Coordinates, FigureType>& secondPlayerFigures)
+//	{
+//		bool result = false;
+//		
+//		Figure* figure = firstPlayer.getFigureByCoordinates(start);
+//		
+//		if (figure != nullptr)
+//		{
+//			Figure* endFigure = firstPlayer.getFigureByCoordinates(finish);
+//			
+//			if (endFigure == nullptr)
+//			{
+//				endFigure = secondPlayer.getFigureByCoordinates(finish);
+//				
+//				if (endFigure == nullptr)
+//				{
+//					result = isMoveValid(*figure, finish, firstPlayer, secondPlayer);
+//				}
+//				else
+//				{
+//					result = isTakingValid(*figure, finish, firstPlayer, secondPlayer);
+//				}
+//				
+//				if (result)
+//				{
+//					this->board->getTileByCoordinates(start).free();
+//					this->board->getTileByCoordinates(finish).occupy();
+//					
+//					if (figure->getType() == FigureType::KING)
+//					{
+//						result = hasCheck(finish, firstPlayer, secondPlayer);
+//					}
+//					else
+//					{
+//						Figure* king = firstPlayer.getKing();
+//						
+//						result = hasCheck(king->getCoordinates(), firstPlayer, secondPlayer);
+//					}
+//					
+//					this->board->getTileByCoordinates(start).occupy();
+//					this->board->getTileByCoordinates(finish).free();
+//				}
+//			}
+//		}
+//		
+//		return result;
+//	}
 	
-	bool MovingValidator::isTakingValid(Figure& figure, Coordinates& finish, Player& firstPlayer, Player& secondPlayer)
-	{
-		bool result = false;
+//	bool MovingValidator::isTakingValid(Figure& figure, Coordinates& finish, std::map<Coordinates, FigureType>& firstPlayerFigures, std::map<Coordinates, FigureType>& secondPlayerFigures)
+//	{
+//		bool result = false;
 		
-		switch (figure.getType())
-		{
-		case FigureType::ROCK:  	//break wasn`t forgot
-		case FigureType::BISHOP:	//break wasn`t forgot
-		case FigureType::QUEEN:
-			result = isLineEmpty(figure.getCoordinates(), finish);
-			break;
-			
-		case FigureType::KNIGHT:
-			result = isReachebleForKnight(figure.getCoordinates(), finish);
-			break;
-			
-		case FigureType::PAWN:
-			result = isReachebleForPawnToTake(figure, finish);
-			break;
-			
-		case FigureType::KING:
-			result = isReachebleForKing(figure.getCoordinates(), finish);
-			break;
-			
-		default:
-			break;
-		}
+//		switch (figure.getType())
+//		{
+//		case FigureType::ROCK:  	//break wasn`t forgot
+//		case FigureType::BISHOP:	//break wasn`t forgot
+//		case FigureType::QUEEN:
+//			result = isLineEmpty(figure.getCoordinates(), finish);
+//			break;
+//			
+//		case FigureType::KNIGHT:
+//			result = isReachebleForKnight(figure.getCoordinates(), finish);
+//			break;
+//			
+//		case FigureType::PAWN:
+//			result = isReachebleForPawnToTake(figure, finish);
+//			break;
+//			
+//		case FigureType::KING:
+//			result = isReachebleForKing(figure.getCoordinates(), finish);
+//			break;
+//			
+//		default:
+//			break;
+//		}
 		
-		return result;
-	}
-	
-	bool MovingValidator::isMoveValid(Figure& figure, Coordinates& finish, Player& firstPlayer, Player& secondPlayer)
-	{
-		bool result = false;
+//		return result;
+//	}
+//	
+//	bool MovingValidator::isMoveValid(Figure& figure, Coordinates& finish, std::map<Coordinates, FigureType>& firstPlayerFigures, std::map<Coordinates, FigureType>& secondPlayerFigures)
+//	{
+//		bool result = false;
 		
-		if (figure.getType() == FigureType::ROCK || figure.getType() == FigureType::BISHOP || figure.getType() == FigureType::QUEEN)
-		{
-			result = isLineEmpty(figure.getCoordinates(), finish);
-		}
-		else if (figure.getType() == FigureType::KNIGHT)
-		{
-			result = isReachebleForKnight(figure.getCoordinates(), finish);
-		}
-		else if (figure.getType() == FigureType::PAWN)
-		{
-			result = isReachebleForPawn(figure, finish);
-		}
-		else if (figure.getType() == FigureType::KING)
-		{
-			result = isReachebleForKing(figure.getCoordinates(), finish);
-		}
-		
-		return result;
-	}
+//		if (figure.getType() == FigureType::ROCK || figure.getType() == FigureType::BISHOP || figure.getType() == FigureType::QUEEN)
+//		{
+//			result = isLineEmpty(figure.getCoordinates(), finish);
+//		}
+//		else if (figure.getType() == FigureType::KNIGHT)
+//		{
+//			result = isReachebleForKnight(figure.getCoordinates(), finish);
+//		}
+//		else if (figure.getType() == FigureType::PAWN)
+//		{
+//			result = isReachebleForPawn(figure, finish);
+//		}
+//		else if (figure.getType() == FigureType::KING)
+//		{
+//			result = isReachebleForKing(figure.getCoordinates(), finish);
+//		}
+//		
+//		return result;
+//	}
 	
 	bool MovingValidator::isLineEmpty(const Coordinates& start, const Coordinates& finish)
 	{
@@ -146,10 +146,10 @@ namespace chess_solver
 				
 		for (column; column != finish.getColumn(); column += step)
 		{
-			if (this->board->getTileByCoordinates(column, start.getRow()).isOccupied())
-			{
-				return false;
-			}
+//			if (this->board->getTileByCoordinates(column, start.getRow()).isOccupied())
+//			{
+//				return false;
+//			}
 		}
 		
 		return true;
@@ -172,10 +172,14 @@ namespace chess_solver
 		
 		for (row; row != finish.getRow(); row += step)
 		{
-			if (this->board->getTileByCoordinates(start.getColumn(), row).isOccupied())
+			//if ()
 			{
 				return false;
 			}
+//			if (this->board->getTileByCoordinates(start.getColumn(), row).isOccupied())
+//			{
+//				return false;
+//			}
 		}
 		
 		return true;
@@ -211,10 +215,12 @@ namespace chess_solver
 		
 		while (row != finish.getRow() && column != finish.getColumn())
 		{
-			if (this->board->getTileByCoordinates(column, row).isOccupied())
-			{
-				return false;
-			}
+			
+			
+//			if (this->board->getTileByCoordinates(column, row).isOccupied())
+//			{
+//				return false;
+//			}
 			
 			row += rowStep;
 			column += columnStep;
@@ -296,46 +302,46 @@ namespace chess_solver
 	{
 		bool result = false;
 		
-		for (auto iter = secondPlayer.getAllFigures().begin(); iter != secondPlayer.getAllFigures().end() && !result; iter++)
-		{
-			switch ((*iter)->getType())
-			{
-			case FigureType::ROCK:		//break wasn't forgot
-			case FigureType::BISHOP:	//break wasn't forgot
-			case FigureType::QUEEN:
-				result = isLineEmpty((*iter)->getCoordinates(), kingCoordinates);
-				break;
-				
-			case FigureType::PAWN:
-				result = isReachebleForPawnToTake(*(*iter), kingCoordinates);
-				break;
-				
-			case FigureType::KNIGHT:
-				result = isReachebleForKnight((*iter)->getCoordinates(), kingCoordinates);
-				break;
-				
-			case FigureType::KING:
-				result = isReachebleForKing((*iter)->getCoordinates(), kingCoordinates);
-				break;
-				
-			default:
-				break;
-			}
-		}
+//		for (auto iter = secondPlayer.getAllFigures().begin(); iter != secondPlayer.getAllFigures().end() && !result; iter++)
+//		{
+//			switch ((*iter)->getType())
+//			{
+//			case FigureType::ROCK:		//break wasn't forgot
+//			case FigureType::BISHOP:	//break wasn't forgot
+//			case FigureType::QUEEN:
+//				result = isLineEmpty((*iter)->getCoordinates(), kingCoordinates);
+//				break;
+//				
+//			case FigureType::PAWN:
+//				result = isReachebleForPawnToTake(*(*iter), kingCoordinates);
+//				break;
+//				
+//			case FigureType::KNIGHT:
+//				result = isReachebleForKnight((*iter)->getCoordinates(), kingCoordinates);
+//				break;
+//				
+//			case FigureType::KING:
+//				result = isReachebleForKing((*iter)->getCoordinates(), kingCoordinates);
+//				break;
+//				
+//			default:
+//				break;
+//			}
+//		}
 		
 		return result;
 	}
 	
-	void MovingValidator::climeTilesToCheck(const Coordinates& start, const Coordinates& finish)
-	{
-		this->board->getTileByCoordinates(start).free();
-		this->board->getTileByCoordinates(finish).occupy();
-	}
-	
-	void MovingValidator::unclimeTilesAfterCheck(const Coordinates& start, const Coordinates& finish)
-	{
-		this->board->getTileByCoordinates(start).occupy();
-		this->board->getTileByCoordinates(finish).free();
-	}
+//	void MovingValidator::climeTilesToCheck(const Coordinates& start, const Coordinates& finish)
+//	{
+//		this->board->getTileByCoordinates(start).free();
+//		this->board->getTileByCoordinates(finish).occupy();
+//	}
+//	
+//	void MovingValidator::unclimeTilesAfterCheck(const Coordinates& start, const Coordinates& finish)
+//	{
+//		this->board->getTileByCoordinates(start).occupy();
+//		this->board->getTileByCoordinates(finish).free();
+//	}
 	
 }

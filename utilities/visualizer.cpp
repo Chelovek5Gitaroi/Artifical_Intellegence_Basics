@@ -131,8 +131,6 @@ namespace chess_solver
 			{
 				short cellIndex = getBufferCellIndexFromCoordinates(row, column);
 				
-				TileColor tileColor = this->board->getTileByCoordinates(makeChessCoordinatesFromIndexes(row, column)).getColor();
-
 				for (char rowShift = 0; rowShift < TILE_WIDTH; rowShift++)
 				{
 					for (char columnShift = 0; columnShift < TILE_WIDTH; columnShift++)
@@ -141,7 +139,7 @@ namespace chess_solver
 						
 						this->emptyBoardBuffer[cellShiftIndex].Char.AsciiChar = TILE_CHAR;
 						
-						if (tileColor == TileColor::WHITE)
+						if ((row % 2 == 0 && column % 2 == 0) || (row % 2 != 0 && column % 2 != 0))						
 						{
 							this->emptyBoardBuffer[cellShiftIndex].Attributes |= Visualizer::TILE_COLOR_WHITE;
 						}

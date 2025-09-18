@@ -2,6 +2,7 @@
 #define VALIDATOR
 
 #include <cstdlib>
+#include <map>
 
 #include "..\\chess_entities\\board.h"
 #include "..\\chess_entities\\figure.h"
@@ -12,16 +13,16 @@ namespace chess_solver
 	class MovingValidator
 	{
 	public:
-		MovingValidator(Board* board);
+//		MovingValidator(Board* board);
 		
-		bool isMoveValid(Coordinates& start, Coordinates& finish, Player& firstPlayer, Player& secondPlayer);
+//		bool isMoveValid(Coordinates& start, Coordinates& finish, std::map<Coordinates, FigureType>& firstPlayerFigures, std::map<Coordinates, FigureType>& secondPlayerFigures);
 		
 	private:
-		Board* board;
+//		Board* board;
 		
-		bool isTakingValid(Figure& figure, Coordinates& finish, Player& firstPlayer, Player& secondPlayer);
+//		bool isTakingValid(Figure& figure, Coordinates& finish, std::map<Coordinates, FigureType>& firstPlayerFigures, std::map<Coordinates, FigureType>& secondPlayerFigures);
 		
-		bool isMoveValid(Figure& figure, Coordinates& finish, Player& firstPlayer, Player& secondPlayer);
+//		bool isMoveValid(Figure& figure, Coordinates& finish, std::map<Coordinates, FigureType>& firstPlayerFigures, std::map<Coordinates, FigureType>& secondPlayerFigures);
 		
 		bool isLineEmpty(const Coordinates& start, const Coordinates& finish);
 		
@@ -37,8 +38,8 @@ namespace chess_solver
 		
 		//bool isCastlingValid(bool isLong, FirstPlayer& player, SecondPlayer& finish);
 		
-		void climeTilesToCheck(const Coordinates& start, const Coordinates& finish);
-		void unclimeTilesAfterCheck(const Coordinates& start, const Coordinates& finish);
+//		void climeTilesToCheck(const Coordinates& start, const Coordinates& finish);
+//		void unclimeTilesAfterCheck(const Coordinates& start, const Coordinates& finish);
 				
 		bool hasCheck(const Coordinates& kingCoordinates, Player& firstPlayer, Player& secondPlayer);
 		

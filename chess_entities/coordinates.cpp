@@ -4,21 +4,18 @@ namespace chess_solver
 {
 	Coordinates::Coordinates(const Coordinates& other)
 	{
-		//std::cout << "*Debug* copy c-tor\n";
 		this->column = other.column;
 		this->row = other.row;
 	}
 	
 	Coordinates::Coordinates(char column, char row)
 	{
-		//std::cout << "*Debug* c-tor\n";
 		this->column = column;
 		this->row = row;
 	}
 	
 	Coordinates& Coordinates::operator=(const Coordinates& other)
 	{
-		//std::cout << "*Debug* operator=\n";
 		this->column = other.column;
 		this->row = other.row;
 		
