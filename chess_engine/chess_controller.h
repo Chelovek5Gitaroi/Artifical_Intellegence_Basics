@@ -1,8 +1,6 @@
 #ifndef CHESS_CONTROLLER
 #define CHESS_CONTROLLER
 
-//#include <map>
-
 #include "game.h"
 #include "..\\utilities/visualizer.h"
 #include "..\\utilities/file_reader.h"
@@ -14,8 +12,6 @@ namespace chess_solver
 	{
 	public:
 		static const std::string DEFAULT_FIGURE_DESCRIPTION_NAME;
-		
-//		static const std::map<FigureType, char> START_FIGURES_NUMBERS;
 		
 		ChessController(char boardSize);
 		

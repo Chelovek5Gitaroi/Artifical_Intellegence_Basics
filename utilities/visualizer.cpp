@@ -47,7 +47,7 @@ namespace chess_solver
 			}		
 			else
 			{
-				this->buffer[bufferCellIndexShifted].Attributes |= FIGURE_COLOR_BLACK;
+				this->buffer[bufferCellIndexShifted].Attributes &= ~FIGURE_COLOR_WHITE;
 			}
 		}
 	}

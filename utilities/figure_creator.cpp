@@ -24,11 +24,9 @@ namespace chess_solver
 		return result;
 	}
 	
-	FigureType FigureCreator::getFigureTypeFromString(std::string& str)
+	FigureType FigureCreator::getFigureTypeFromString(char ch)
 	{
 		FigureType figureType;
-		
-		char ch = str[0];
 		
 		switch (ch)
 		{
@@ -66,7 +64,7 @@ namespace chess_solver
 	
 	Figure* FigureCreator::createFigure(std::string& figureDescription, FigureColor color)
 	{
-		FigureType type = getFigureTypeFromString(figureDescription);
+		FigureType type = getFigureTypeFromString(figureDescription[0]);
 		
 		char column = getColumnFromString(figureDescription);
 		

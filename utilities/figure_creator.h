@@ -19,7 +19,7 @@ namespace chess_solver
 		static const char FIGURE_CHAR_KNIGHT = 'N';
 		static const char FIGURE_CHAR_BISHOP = 'B';
 		static const char FIGURE_CHAR_ROCK = 'R';
-		static const char FIGURE_CHAR_PAWN = 'p';
+		static const char FIGURE_CHAR_PAWN = 'P';
 		
 		static const char DESCRIPTION_PARTS_SEPARATOR = ' ';
 		
@@ -30,8 +30,8 @@ namespace chess_solver
 		
 		std::list<Figure*>* makeFigureList(std::list<std::string*>& figureDescriptions, FigureColor figureColor);
 		
+		static FigureType getFigureTypeFromString(char ch);
 	private:
-		FigureType getFigureTypeFromString(std::string& str);
 		
 		Figure* createFigure(std::string& figureDescription, FigureColor color);
 		

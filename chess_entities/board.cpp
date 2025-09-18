@@ -52,21 +52,16 @@ namespace chess_solver
 		}
 	}
 	
-	unsigned char Board::getRowIndexFromCoordinate(const char row) const
+	char Board::getRowIndexFromCoordinate(const char row) const
 	{
 		return this->boardSize - row;
 	}
 	
-	unsigned char Board::getColumnIndexFromCoordinate(const char column) const
+	char Board::getColumnIndexFromCoordinate(const char column) const
 	{
 		return column - MINIMAL_COLUMN_NAME;
 	}
-	
-//	Tile& Board::getTileByArrayCoordinates(short rowIndex, short columnIndex)
-//	{
-//		return *(tiles[rowIndex][columnIndex]);
-//	}
-	
+
 	Tile& Board::getTileByCoordinates(const Coordinates& coordinates)
 	{
 		return *(tiles[getRowIndexFromCoordinate(coordinates.getRow())][getColumnIndexFromCoordinate(coordinates.getColumn())]);
@@ -76,19 +71,5 @@ namespace chess_solver
 	{
 		return *(tiles[getRowIndexFromCoordinate(row)][getRowIndexFromCoordinate(column)]);
 	}
-	
-//	std::ostream& operator<<(std::ostream& os, Board& board)
-//	{
-//		for (short row = 0; row < board.getBoardSize(); row++)
-//		{
-//			for (short column = 0; column < board.getBoardSize(); column++)
-//			{
-//				os << board.getTileByArrayCoordinates(row, column);
-//			}
-//			os << '\n';
-//		}
-//		
-//		return os;
-//	}
 	
 }

@@ -2,13 +2,6 @@
 
 namespace chess_solver
 {
-//	const std::map<FigureType, char> START_FIGURES_NUMBERS =
-//		{{FigureType::KING, 1},
-//		 {FigureType::QUEEN, 1},
-//		 {FigureType::ROCK, 2},
-//		 {FigureType::BISHOP, 2},
-//		 {FigureType::KNIGHT, 2},
-//		 {FigureType::PAWN, 8}};
 	
 	const std::string ChessController::DEFAULT_FIGURE_DESCRIPTION_NAME = "figures.txt";
 	

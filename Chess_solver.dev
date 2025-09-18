@@ -29,7 +29,7 @@ IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
 CompilerSettings=0000000000000000000000000
-UnitCount=29
+UnitCount=32
 
 [VersionInfo]
 Major=1
@@ -341,7 +341,17 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit30]
-FileName=exceptions\invalid_figure_set_exception.h
+FileName=utilities\command.h
+CompileCpp=1
+Folder=utilities
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit31]
+FileName=exceptions\invalid_command_exception.h
 CompileCpp=1
 Folder=exceptions
 Compile=1
@@ -350,8 +360,8 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit31]
-FileName=exceptions\invalid_figure_set_exception.cpp
+[Unit32]
+FileName=exceptions\invalid_command_exception.cpp
 CompileCpp=1
 Folder=exceptions
 Compile=1

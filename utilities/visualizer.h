@@ -50,8 +50,7 @@ namespace chess_solver
 		static const char BOARD_FRAME_VERTICAL = '|';
 		
 
-		static const unsigned short FIGURE_COLOR_WHITE = 0x0002 | 0x0004 | 0x0008;
-		static const unsigned short FIGURE_COLOR_BLACK = 0x0004;
+		static const unsigned short FIGURE_COLOR_WHITE = 0x0001 | 0x0002 | 0x0004 | 0x0008;
 	
 		static const unsigned short FIGURE_COLOR_BACKGROUND = 0x0010 | 0x0020 | 0x0040;
 	
