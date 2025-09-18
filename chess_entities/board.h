@@ -21,6 +21,9 @@ namespace chess_solver
 		// boardSize - количество горизонталей и вертикалей доски
 		Board(char boardSize);
 		
+		
+		Board(Board& other);
+		
 		//Деструктор
 		~Board();
 		
@@ -53,6 +56,8 @@ namespace chess_solver
 		// Метод, возвращающий индекс вертикали в массиве
 		// column - обозначение вертикали в шахматной нотации
 		char getColumnIndexFromCoordinate(const char column) const;
+		
+		void prepareEmptyTilesArray();
 	};
 }
 

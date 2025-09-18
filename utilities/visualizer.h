@@ -23,7 +23,7 @@ namespace chess_solver
 		
 //		void writeMove(std::string& moveDescription);
 		
-		void render();
+		void showSituation();
 				
 	private:
 		HANDLE consoleFile;

@@ -2,6 +2,10 @@
 
 namespace chess_solver
 {
+	MovingValidator::MovingValidator(Board* board)
+	{
+	}
+	
 	bool MovingValidator::isMoveValid(Coordinates& start, Coordinates& finish, Player& firstPlayer, Player& secondPlayer)
 	{
 		bool result = false;

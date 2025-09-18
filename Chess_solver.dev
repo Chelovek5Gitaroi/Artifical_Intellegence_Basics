@@ -24,12 +24,12 @@ HostApplication=
 UseCustomMakefile=0
 CustomMakefile=
 CommandLine=
-Folders=chess_engine,chess_entities,exceptions,utilities
+Folders=chess_engine,chess_entities,exceptions,solving,utilities
 IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
 CompilerSettings=0000000000000000000000000
-UnitCount=32
+UnitCount=33
 
 [VersionInfo]
 Major=1
@@ -364,6 +364,16 @@ BuildCmd=
 FileName=exceptions\invalid_command_exception.cpp
 CompileCpp=1
 Folder=exceptions
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit33]
+FileName=solving\situation.h
+CompileCpp=1
+Folder=solving
 Compile=1
 Link=1
 Priority=1000

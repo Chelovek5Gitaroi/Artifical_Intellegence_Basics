@@ -5,6 +5,7 @@
 #include "..\\utilities/visualizer.h"
 #include "..\\utilities/file_reader.h"
 #include "..\\utilities/figure_creator.h"
+#include "../utilities/command_parser.h"
 
 namespace chess_solver
 {
@@ -13,12 +14,13 @@ namespace chess_solver
 	public:
 		static const std::string DEFAULT_FIGURE_DESCRIPTION_NAME;
 		
-		ChessController(char boardSize);
+		ChessController(char boardSize, FigureColor firstPlayer);
 		
 		void init(std::string& figureDescriptionFileName);
 		
 		void show();
 		
+		void startGame();
 		
 	private:
 		
@@ -29,6 +31,7 @@ namespace chess_solver
 		FigureCreator figureCreator;
 		
 		Visualizer visualizer;
+		
 	};
 }
 

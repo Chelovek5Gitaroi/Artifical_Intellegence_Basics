@@ -8,18 +8,9 @@ namespace chess_solver
 		this->occupied = false;
 	}
 	
-	
-//	std::ostream& operator<<(std::ostream& os, Tile& tile)
-//	{
-//		if (tile.getColor() == TileColor::WHITE)
-//		{
-//			os << 'X';
-//		}
-//		else
-//		{
-//			os << '.';
-//		}
-//		
-//		return os;
-//	}
+	Tile::Tile(Tile& other)
+	{
+		this->color = other.color;
+		this->occupied = other.occupied;		
+	}
 }

@@ -6,7 +6,6 @@ namespace chess_solver
 	const std::set<char> CommandParser::COMMAND_POSITION_MOVE_SEPARATORS = {' ', '-'};
 	const std::set<char> CommandParser::COMMAND_POSITION_BEAT_SEPARATORS = {'x', ':'};
 		
-	
 	Command CommandParser::parseCommand(std::string& command)
 	{
 		std::string::iterator iter = command.begin();
@@ -17,16 +16,19 @@ namespace chess_solver
 		
 		Coordinates finish = getCoordinates(iter, command);
 		
+		FigureType newFigureType = FigureType::PAWN;
+		
 		if (iter != command.end())
 		{
 			if (checkTransformationCommand(iter, command))
 			{
 				commandType = CommandType::TRANSFORMATION;
 				
-				FigureType
+				newFigureType = getTransormedFigureType(iter, command);
 			}
 		}
 		
+		return Command(start, finish, commandType, newFigureType);
 	}
 	
 	Coordinates CommandParser::getCoordinates(std::string::iterator& iter, std::string& command)

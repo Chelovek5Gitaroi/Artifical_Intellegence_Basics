@@ -5,7 +5,7 @@ namespace chess_solver
 {
 	const std::string Visualizer::DEFAULT_FILE = "CONOUT$";
 	
-	void Visualizer::render()
+	void Visualizer::showSituation()
 	{
 		copyBoardBufferToOutBuffer();
 		

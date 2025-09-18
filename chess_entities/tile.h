@@ -18,6 +18,8 @@ namespace chess_solver
 	public:
 		Tile(TileColor color);
 		
+		Tile(Tile& other);
+		
 		TileColor getColor() const { return color; }
 		bool isOccupied() const { return occupied; }
 		

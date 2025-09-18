@@ -16,7 +16,7 @@ int main(int argc, char** argv)
 //	std::cout << str;
 //	
 	
-	chess_solver::ChessController controller(chess_solver::Game::BOARD_SIZE);
+	chess_solver::ChessController controller(chess_solver::Game::BOARD_SIZE, chess_solver::FigureColor::WHITE);
 	
 	std::string fileName(chess_solver::ChessController::DEFAULT_FIGURE_DESCRIPTION_NAME);
 	

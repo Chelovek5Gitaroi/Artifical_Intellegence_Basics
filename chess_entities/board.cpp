@@ -5,14 +5,25 @@ namespace chess_solver
 	Board::Board(char boardSize)
 	{
 		this->boardSize	= boardSize;
-		this->tiles = new Tile**[boardSize];
 		
-		for (char i = 0; i < this->boardSize; i++)
-		{
-			this->tiles[i] = new Tile*[this->boardSize];
-		}
+		prepareEmptyTilesArray();
 		
 		createTiles();
+	}
+	
+	Board::Board(Board& other)
+	{
+		this->boardSize = other.boardSize;
+		
+		prepareEmptyTilesArray();
+		
+		for (char row = 0; row < this->boardSize; row++)
+		{
+			for (char column = 0; column < this->boardSize; column++)
+			{
+				this->tiles[row][column] = new Tile(*other.tiles[row][column]);
+			}
+		}
 	}
 	
 	Board::~Board()
@@ -72,4 +83,13 @@ namespace chess_solver
 		return *(tiles[getRowIndexFromCoordinate(row)][getRowIndexFromCoordinate(column)]);
 	}
 	
+	void Board::prepareEmptyTilesArray()
+	{
+		this->tiles = new Tile**[boardSize];
+		
+		for (char i = 0; i < this->boardSize; i++)
+		{
+			this->tiles[i] = new Tile*[this->boardSize];
+		}
+	}
 }

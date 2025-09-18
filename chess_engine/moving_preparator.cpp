@@ -26,11 +26,6 @@ namespace chess_solver
 			result->push_back(new Coordinates(coordinates.getColumn(), row));
 		}
 		
-//		for (unsigned )
-//		{
-//			
-//		}
-		
 		return result;
 	}
 	

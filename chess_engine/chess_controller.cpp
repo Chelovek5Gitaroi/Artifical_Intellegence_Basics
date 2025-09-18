@@ -5,13 +5,13 @@ namespace chess_solver
 	
 	const std::string ChessController::DEFAULT_FIGURE_DESCRIPTION_NAME = "figures.txt";
 	
-	ChessController::ChessController(char boardSize) : game(boardSize), figureCreator(boardSize), visualizer(this->game.getBoard(), this->game.getFirstPlayer(), this->game.getSecondPlayer())
+	ChessController::ChessController(char boardSize, FigureColor firstPlayer) : game(boardSize, firstPlayer), figureCreator(boardSize), visualizer(this->game.getBoard(), this->game.getFirstPlayer(), this->game.getSecondPlayer())
 	{
 	}
 	
 	void ChessController::show()
 	{
-		visualizer.render();
+		visualizer.showSituation();
 	}
 	
 	void ChessController::init(std::string& figureDescriptionFileName)
