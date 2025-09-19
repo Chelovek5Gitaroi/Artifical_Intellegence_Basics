@@ -42,6 +42,26 @@ namespace chess_solver
 		return !(*this == other);
 	}
 	
+	bool Coordinates::operator<(const Coordinates& other) const
+	{
+		return abs() < other.abs();
+	}
+	
+	bool Coordinates::operator>(const Coordinates& other) const
+	{
+		abs() > other.abs();
+	}
+	
+	bool Coordinates::operator<=(const Coordinates& other) const
+	{
+		return *this < other || *this == other;
+	}
+	
+	bool Coordinates::operator>=(const Coordinates& other) const
+	{
+		return *this > other || *this == other;
+	}
+	
 	std::ostream& operator<<(std::ostream& stream, Coordinates& coordinates)
 	{
 		stream << coordinates.toString();

@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <string>
-
+#include <cmath>
 
 namespace chess_solver
 {
@@ -24,9 +24,15 @@ namespace chess_solver
 		
 		bool operator==(const Coordinates& other) const;
 		bool operator!=(const Coordinates& other) const;
+		bool operator<(const Coordinates& other) const;
+		bool operator>(const Coordinates& other) const;
+		bool operator<=(const Coordinates& other) const;
+		bool operator>=(const Coordinates& other) const;
 		
 	private:
 		Coordinates(){}
+	
+		char abs() const {	return std::sqrt(row * row + column * column); }
 	
 		char row;
 		char column;	

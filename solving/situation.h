@@ -25,7 +25,9 @@ namespace chess_solver
 		std::map<Coordinates, FigureType> blackFigures;
 		
 		FigureColor currentPlayer;
-		Board board;		
+		Board board;
+		
+		void addListItemsToMap(std::list<Figure*>& srcList, std::map<Coordinates, FigureType>& destMap);
 	};	
 }
 

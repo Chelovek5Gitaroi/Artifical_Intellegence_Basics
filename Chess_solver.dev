@@ -29,7 +29,7 @@ IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
 CompilerSettings=0000000000000000000000000
-UnitCount=33
+UnitCount=34
 
 [VersionInfo]
 Major=1
@@ -374,6 +374,16 @@ BuildCmd=
 FileName=chess_entities\player.h
 CompileCpp=1
 Folder=chess_entities
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit34]
+FileName=solving\option_tree.cpp
+CompileCpp=1
+Folder=solving
 Compile=1
 Link=1
 Priority=1000
