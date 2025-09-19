@@ -109,27 +109,27 @@ namespace chess_solver
 //		return result;
 //	}
 	
-	bool MovingValidator::isLineEmpty(const Coordinates& start, const Coordinates& finish)
+	bool MovingValidator::isLineEmpty(const Coordinates& start, const Coordinates& finish, const Board& board)
 	{
 		bool result = false;
 		
 		if (start.getColumn() == finish.getColumn())
 		{
-			result = isVerticalEmpty(start, finish);
+			result = isVerticalEmpty(start, finish, board);
 		}
 		else if (start.getRow() == finish.getRow())
 		{
-			result = isHorizontalEmpty(start, finish);
+			result = isHorizontalEmpty(start, finish, board);
 		}
 		else if (std::abs(finish.getColumn() - start.getColumn()) == std::abs(finish.getRow() - start.getRow()))
 		{
-			result = isDiagonalEmpty(start, finish);
+			result = isDiagonalEmpty(start, finish, board);
 		}
 		
 		return result;
 	}
 	
-	bool MovingValidator::isHorizontalEmpty(const Coordinates& start, const Coordinates& finish)
+	bool MovingValidator::isHorizontalEmpty(const Coordinates& start, const Coordinates& finish, const Board& board)
 	{
 		char column = start.getColumn();
 		char step = 1;
@@ -146,16 +146,16 @@ namespace chess_solver
 				
 		for (column; column != finish.getColumn(); column += step)
 		{
-//			if (this->board->getTileByCoordinates(column, start.getRow()).isOccupied())
-//			{
-//				return false;
-//			}
+			if (board.getTileOccupancyByCoordinates(column, start.getRow()))
+			{
+				return false;
+			}
 		}
 		
 		return true;
 	}
 	
-	bool MovingValidator::isVerticalEmpty(const Coordinates& start, const Coordinates& finish)
+	bool MovingValidator::isVerticalEmpty(const Coordinates& start, const Coordinates& finish, const Board& board)
 	{
 		char row = start.getRow();
 		char step = 1;
@@ -172,20 +172,16 @@ namespace chess_solver
 		
 		for (row; row != finish.getRow(); row += step)
 		{
-			//if ()
+			if (board.getTileOccupancyByCoordinates(start.getColumn(), row))
 			{
 				return false;
 			}
-//			if (this->board->getTileByCoordinates(start.getColumn(), row).isOccupied())
-//			{
-//				return false;
-//			}
 		}
 		
 		return true;
 	}
 	
-	bool MovingValidator::isDiagonalEmpty(const Coordinates& start, const Coordinates& finish)
+	bool MovingValidator::isDiagonalEmpty(const Coordinates& start, const Coordinates& finish, const Board& board)
 	{
 		char row = start.getRow();
 		char column = start.getColumn();
@@ -215,12 +211,10 @@ namespace chess_solver
 		
 		while (row != finish.getRow() && column != finish.getColumn())
 		{
-			
-			
-//			if (this->board->getTileByCoordinates(column, row).isOccupied())
-//			{
-//				return false;
-//			}
+			if (board.getTileOccupancyByCoordinates(column, row))
+			{
+				return false;
+			}
 			
 			row += rowStep;
 			column += columnStep;
@@ -237,7 +231,7 @@ namespace chess_solver
 			   		(finish.getColumn() == start.getColumn() - 2 || finish.getColumn() == start.getColumn() + 2));
 	}
 	
-	bool MovingValidator::isReachebleForPawn(Figure& pawn, const Coordinates& finish)
+	bool MovingValidator::isReachebleForPawn(Figure& pawn, const Coordinates& finish, const Board& board)
 	{
 		Coordinates start = pawn.getCoordinates();
 		
@@ -251,7 +245,7 @@ namespace chess_solver
 				{
 					if (!pawn.wasMoved())
 					{
-						result = isVerticalEmpty(start, finish);
+						result = isVerticalEmpty(start, finish, board);
 					}
 					else
 					{

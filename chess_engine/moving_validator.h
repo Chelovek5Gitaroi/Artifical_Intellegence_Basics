@@ -2,11 +2,13 @@
 #define VALIDATOR
 
 #include <cstdlib>
-#include <map>
+//#include <map>
 
 #include "..\\chess_entities\\board.h"
 #include "..\\chess_entities\\figure.h"
 #include "..\\chess_entities\\player.h"
+
+#include "../utilities/command.h"
 
 namespace chess_solver
 {
@@ -24,13 +26,15 @@ namespace chess_solver
 		
 //		bool isMoveValid(Figure& figure, Coordinates& finish, std::map<Coordinates, FigureType>& firstPlayerFigures, std::map<Coordinates, FigureType>& secondPlayerFigures);
 		
-		bool isLineEmpty(const Coordinates& start, const Coordinates& finish);
 		
-		bool isHorizontalEmpty(const Coordinates& start, const Coordinates& finish);
-		bool isVerticalEmpty(const Coordinates& start, const Coordinates& finish);
-		bool isDiagonalEmpty(const Coordinates& start, const Coordinates& finish);
 		
-		bool isReachebleForPawn(Figure& pawn, const Coordinates& finish);
+		bool isLineEmpty(const Coordinates& start, const Coordinates& finish, const Board& board);
+		
+		bool isHorizontalEmpty(const Coordinates& start, const Coordinates& finish, const Board& board);
+		bool isVerticalEmpty(const Coordinates& start, const Coordinates& finish, const Board& board);
+		bool isDiagonalEmpty(const Coordinates& start, const Coordinates& finish, const Board& board);
+		
+		bool isReachebleForPawn(Figure& pawn, const Coordinates& finish, const Board& board);
 		bool isReachebleForPawnToTake(Figure& pawn, const Coordinates& finish);		
 		
 		bool isReachebleForKnight(const Coordinates& start, const Coordinates& finish);

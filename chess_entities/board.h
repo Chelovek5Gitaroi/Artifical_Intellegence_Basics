@@ -3,7 +3,6 @@
 
 #include "coordinates.h"
 
-
 namespace chess_solver
 {	
 	/*
@@ -30,9 +29,9 @@ namespace chess_solver
 		char getBoardSize() const { return this->boardSize; };
 		
 		//
-		bool getTileOccupancyByCoordinates(const Coordinates& coordinates);
+		bool getTileOccupancyByCoordinates(const Coordinates& coordinates) const;
 		
-		bool getTileOccupancyByCoordinates(char column, char row);
+		bool getTileOccupancyByCoordinates(char column, char row) const;
 		
 		void setOccupancyByCoordinates(const Coordinates& coordinates, bool occupancy);
 		

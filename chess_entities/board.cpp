@@ -69,12 +69,12 @@ namespace chess_solver
 		return column - MINIMAL_COLUMN_NAME;
 	}
 
-	bool Board::getTileOccupancyByCoordinates(const Coordinates& coordinates)
+	bool Board::getTileOccupancyByCoordinates(const Coordinates& coordinates) const
 	{
 		return tilesOccupancy[getRowIndexFromCoordinate(coordinates.getRow())][getColumnIndexFromCoordinate(coordinates.getColumn())];
 	}
 		
-	bool Board::getTileOccupancyByCoordinates(char column, char row)
+	bool Board::getTileOccupancyByCoordinates(char column, char row) const
 	{
 		return tilesOccupancy[getRowIndexFromCoordinate(row)][getRowIndexFromCoordinate(column)];
 	}
