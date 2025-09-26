@@ -28,21 +28,32 @@ namespace chess_solver
 	class OptionTree
 	{
 	public:
-		OptionTree(Situation& situation, Command* previousCommand, OptionTree* parent);
+		OptionTree(Situation& situation, Command* previousCommand, OptionTree* parent, short depth);
 		
 		Situation& getSituation() {	return situation; }
 		Command* getPreviousCommand() { return previousCommand; }
 		
+		short getDepth() { return this->depth; }
+		
 		OptionTree* getParent() { return parent; }
 		
+		OptionTree* getCurrentChild();
+		OptionTree* getNextChild();
+		
+		void insertChild(OptionTree* child) { this->children.push_back(child); }
+		
+		void removeChild(OptionTree* child) { this->children.remove(child); }
+		
 	private:
+		short depth;
+
 		Situation situation;
 		Command* previousCommand;
 		
 		OptionTree* parent;
 
-		OptionTree* currentChild;
-				
+		std::list<OptionTree*>::iterator currentChild;
+		
 		std::list<OptionTree*> children;
 	};
 }

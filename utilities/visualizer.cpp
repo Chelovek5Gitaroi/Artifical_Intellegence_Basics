@@ -175,19 +175,19 @@ namespace chess_solver
 		}
 	}
 	
-	Coordinates Visualizer::makeChessCoordinatesFromIndexes(short rowIndex, short columnIndex)
-	{
-		char row = this->board->getBoardSize() - static_cast<char>(rowIndex);
-		char column = static_cast<char>(columnIndex) + Board::MINIMAL_COLUMN_NAME;
-		
-		return Coordinates(column, row);
-	}
+//	Coordinates Visualizer::makeChessCoordinatesFromIndexes(short rowIndex, short columnIndex)
+//	{
+//		char row = this->board->getBoardSize() - static_cast<char>(rowIndex);
+//		char column = static_cast<char>(columnIndex) + CoordinatesConverter::MINIMAL_COLUMN_NAME;
+//		
+//		return Coordinates(column, row);
+//	}
 	
 	short Visualizer::getBufferCellIndexFromChessCoordinates(const Coordinates& coordinates)
 	{
-		short rowIndex = static_cast<short>(this->board->getBoardSize() - coordinates.getRow());
-		short columnIndex = static_cast<short>(coordinates.getColumn() - Board::MINIMAL_COLUMN_NAME);
-		
+		short rowIndex = static_cast<short>(CoordinatesConverter::getRowIndexFromCoordinate(coordinates.getRow(), this->board->getBoardSize()));
+		short columnIndex = static_cast<short>(CoordinatesConverter::getColumnIndexFromCoordinate(coordinates.getColumn()));
+
 		return getBufferCellIndexFromCoordinates(rowIndex, columnIndex);
 	}
 	
@@ -258,7 +258,7 @@ namespace chess_solver
 		
 		for (char i = 0; i < this->board->getBoardSize(); i++)
 		{
-			marksStr[i * TILE_WIDTH + TILE_WIDTH / 2] = Board::MINIMAL_COLUMN_NAME + i;
+			marksStr[i * TILE_WIDTH + TILE_WIDTH / 2] = CoordinatesConverter::MINIMAL_COLUMN_NAME + i;
 		}
 		
 		std::cout << marksStr;

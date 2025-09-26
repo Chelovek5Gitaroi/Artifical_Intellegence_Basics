@@ -6,6 +6,8 @@
 
 #include <string>
 
+
+#include "coordinates_converter.h"
 #include "..\\chess_entities\\board.h"
 #include "..\\chess_entities\\player.h"
 #include "figure_creator.h"
@@ -69,7 +71,6 @@ namespace chess_solver
 		
 		void renderPlayerFigures(Player* player);
 		
-		
 		char getFigureChar(Figure& figure);
 		
 		short getBufferCellIndexFromCoordinates(short rowIndex, short columnIndex);
@@ -77,7 +78,7 @@ namespace chess_solver
 		short getBufferCellIndexFromCoordinates(short bufferCellIndex, short rowShift, short columnShift);
 		
 		short getBufferCellIndexFromChessCoordinates(const Coordinates& coordinates);
-		Coordinates makeChessCoordinatesFromIndexes(short rowIndex, short columnIndex);
+//		Coordinates makeChessCoordinatesFromIndexes(short rowIndex, short columnIndex);
 		void drawBoardFrame();
 		
 		void drawRowMarks();

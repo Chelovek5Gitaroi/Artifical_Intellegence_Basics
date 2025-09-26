@@ -6,14 +6,14 @@ namespace chess_solver
 	{
 		this->boardSize	= boardSize;
 		
-		createEmptyTileBusynessArray();
+		createEmptyTileOccupancyArray();
 	}
 	
 	Board::Board(Board& other)
 	{
 		this->boardSize = other.boardSize;
 		
-		createEmptyTileBusynessArray();
+		createEmptyTileOccupancyArray();
 		
 		for (char row = 0; row < this->boardSize; row++)
 		{
@@ -36,65 +36,23 @@ namespace chess_solver
 		
 		delete[] tilesOccupancy;
 	}
-	
-//	void Board::createTiles()
-//	{
-//		for (char row = 0; row < this->boardSize; row++)
-//		{
-//			for (char column = 0; column < this->boardSize; column++)
-//			{
-//				TileColor color;
-//				
-//				if ((row % 2 == 0 && column % 2 == 0) || (row % 2 != 0 && column % 2 != 0))
-//				{
-//					color = TileColor::WHITE;
-//				}
-//				else
-//				{
-//					color = TileColor::BLACK;
-//				}
-//				
-//				//this->tiles[row][column] = new Tile(color);
-//			}
-//		}
-//	}
-//	
-	char Board::getRowIndexFromCoordinate(const char row) const
-	{
-		return this->boardSize - row;
-	}
-	
-	char Board::getColumnIndexFromCoordinate(const char column) const
-	{
-		return column - MINIMAL_COLUMN_NAME;
-	}
 
 	bool Board::getTileOccupancyByCoordinates(const Coordinates& coordinates) const
 	{
-		return tilesOccupancy[getRowIndexFromCoordinate(coordinates.getRow())][getColumnIndexFromCoordinate(coordinates.getColumn())];
+		return tilesOccupancy[CoordinatesConverter::getRowIndexFromCoordinate(coordinates.getRow(), this->boardSize)][CoordinatesConverter::getColumnIndexFromCoordinate(coordinates.getColumn())];
 	}
 		
 	bool Board::getTileOccupancyByCoordinates(char column, char row) const
 	{
-		return tilesOccupancy[getRowIndexFromCoordinate(row)][getRowIndexFromCoordinate(column)];
+		return tilesOccupancy[CoordinatesConverter::getRowIndexFromCoordinate(row, this->boardSize)][CoordinatesConverter::getRowIndexFromCoordinate(column, this->boardSize)];
 	}
 
 	void Board::setOccupancyByCoordinates(const Coordinates& coordinates, bool occupancy)
 	{
-		this->tilesOccupancy[getRowIndexFromCoordinate(coordinates.getRow())][getColumnIndexFromCoordinate(coordinates.getColumn())] = occupancy;
+		this->tilesOccupancy[CoordinatesConverter::getRowIndexFromCoordinate(coordinates.getRow(), this->boardSize)][CoordinatesConverter::getColumnIndexFromCoordinate(coordinates.getColumn())] = occupancy;
 	}
-
-//	Tile& Board::getTileByCoordinates(const Coordinates& coordinates)
-//	{
-//		return *(tiles[getRowIndexFromCoordinate(coordinates.getRow())][getColumnIndexFromCoordinate(coordinates.getColumn())]);
-//	}
-//	
-//	Tile& Board::getTileByCoordinates(char column, char row)
-//	{
-//		return *(tiles[getRowIndexFromCoordinate(row)][getRowIndexFromCoordinate(column)]);
-//	}
 	
-	void Board::createEmptyTileBusynessArray()
+	void Board::createEmptyTileOccupancyArray()
 	{
 		this->tilesOccupancy = new bool*[this->boardSize];
 		
@@ -106,7 +64,6 @@ namespace chess_solver
 			{
 				this->tilesOccupancy[row][column] = false;
 			}
-			
 		}
 	}
 }

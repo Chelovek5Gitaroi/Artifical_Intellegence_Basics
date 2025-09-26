@@ -11,6 +11,21 @@ namespace chess_solver
 		this->currentPlayer = currentPlayer;
 	}
 	
+	Situation::Situation(Situation& other) : board(other.board)
+	{
+		this->currentPlayer = other.currentPlayer;
+		
+		for (auto iter = other.whiteFigures.begin(); iter != other.whiteFigures.end(); iter++)
+		{
+			this->whiteFigures.insert(*iter);
+		}
+		
+		for (auto iter = other.blackFigures.begin(); iter != other.blackFigures.end(); iter++)
+		{
+			this->blackFigures.insert(*iter);
+		}
+	}
+	
 	void Situation::addListItemsToMap(std::list<Figure*>& srcList, std::map<Coordinates, FigureType>& destMap)
 	{
 		for (auto iter = srcList.begin(); iter != srcList.end(); iter++)

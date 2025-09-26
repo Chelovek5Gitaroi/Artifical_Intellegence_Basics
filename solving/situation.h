@@ -14,9 +14,12 @@ namespace chess_solver
 	public:
 		Situation(std::list<Figure*>& whiteFigures, std::list<Figure*>& blackFigures, Board& board, FigureColor currentPlayer);
 		
+		Situation(Situation& other);
+		
 		std::map<Coordinates, FigureType>& getWhiteFigures() { return whiteFigures; }
 		std::map<Coordinates, FigureType>& getBlackFigures() { return blackFigures; }
 		
+		FigureColor getTargetPlayer() { return targetPlayer; }
 		FigureColor getCurrentPlayer() { return currentPlayer; }
 		Board& getBoard() { return board; }
 		
@@ -24,6 +27,7 @@ namespace chess_solver
 		std::map<Coordinates, FigureType> whiteFigures;
 		std::map<Coordinates, FigureType> blackFigures;
 		
+		FigureColor targetPlayer;
 		FigureColor currentPlayer;
 		Board board;
 		

@@ -5,9 +5,7 @@
 #include <string>
 #include <fstream>
 
-#include "..\\chess_entities\\board.h"
 #include "..\\chess_entities\\figure.h"
-#include "..\\chess_entities\\player.h"
 
 namespace chess_solver
 {

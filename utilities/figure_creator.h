@@ -5,7 +5,7 @@
 #include <string>
 
 #include "..\\chess_entities\\figure.h"
-#include "..\\chess_entities\\board.h"
+#include "coordinates_converter.h"
 
 #include "..\\exceptions\\invalid_figure_description_exception.h"
 

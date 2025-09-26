@@ -73,7 +73,7 @@ namespace chess_solver
 		if (row == 0 || row > this->boardSize)
 			throw exceptions::InvalidFigureDescriptionException(exceptions::InvalidFigureDescriptionException::ERROR_MESSAGE_INVALID_ROW_NUMBER);
 			
-		if (column < Board::MINIMAL_COLUMN_NAME || column >= Board::MINIMAL_COLUMN_NAME + this->boardSize)
+		if (column < CoordinatesConverter::MINIMAL_COLUMN_NAME || column >= CoordinatesConverter::MINIMAL_COLUMN_NAME + this->boardSize)
 			throw exceptions::InvalidFigureDescriptionException(exceptions::InvalidFigureDescriptionException::ERROR_MESSAGE_INVALID_COLUMN_NAME);
 		
 		return new Figure(type, color, column, row);

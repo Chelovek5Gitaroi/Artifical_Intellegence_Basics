@@ -26,8 +26,6 @@ namespace chess_solver
 		
 //		bool isMoveValid(Figure& figure, Coordinates& finish, std::map<Coordinates, FigureType>& firstPlayerFigures, std::map<Coordinates, FigureType>& secondPlayerFigures);
 		
-		
-		
 		bool isLineEmpty(const Coordinates& start, const Coordinates& finish, const Board& board);
 		
 		bool isHorizontalEmpty(const Coordinates& start, const Coordinates& finish, const Board& board);
