@@ -3,34 +3,49 @@
 
 namespace chess_solver
 {
-	Situation::Situation(std::list<Figure*>& whiteFigures, std::list<Figure*>& blackFigures, Board& board, FigureColor currentPlayer) : board(board)
+	Situation::Situation(std::list<Figure*>& whiteFigures, std::list<Figure*>& blackFigures, Board& board, FigureColor currentPlayer, FigureColor targetPlayer) : board(board)
 	{
-		addListItemsToMap(whiteFigures, this->whiteFigures);
-		addListItemsToMap(blackFigures, this->blackFigures);
-		
 		this->currentPlayer = currentPlayer;
+		this->targetPlayer = targetPlayer;
+		
+		insertListItemsToOtherList(blackFigures, this->blackFigures);
+		insertListItemsToOtherList(whiteFigures, this->whiteFigures);
 	}
 	
 	Situation::Situation(Situation& other) : board(other.board)
 	{
 		this->currentPlayer = other.currentPlayer;
+		this->targetPlayer = other.targetPlayer;
 		
-		for (auto iter = other.whiteFigures.begin(); iter != other.whiteFigures.end(); iter++)
+		insertListItemsToOtherList(other.blackFigures, this->blackFigures);
+		insertListItemsToOtherList(other.whiteFigures, this->whiteFigures);
+	}
+	
+	Situation::~Situation()
+	{
+		delete addedFigure;
+	}
+	
+	void Situation::addFigure(Figure* figure)
+	{
+		this->addedFigure = figure;
+		
+		if (figure->getColor() == FigureColor::WHITE)
 		{
-			this->whiteFigures.insert(*iter);
+			this->whiteFigures.push_back(figure);
 		}
-		
-		for (auto iter = other.blackFigures.begin(); iter != other.blackFigures.end(); iter++)
+		else
 		{
-			this->blackFigures.insert(*iter);
+			this->blackFigures.push_back(figure);
 		}
 	}
 	
-	void Situation::addListItemsToMap(std::list<Figure*>& srcList, std::map<Coordinates, FigureType>& destMap)
+	void Situation::insertListItemsToOtherList(std::list<Figure*>& sourceList, std::list<Figure*>& destList)
 	{
-		for (auto iter = srcList.begin(); iter != srcList.end(); iter++)
+		for (auto iter = sourceList.begin(); iter != sourceList.end(); iter++)
 		{
-			destMap.insert(std::pair<Coordinates, FigureType>((*iter)->getCoordinates(), (*iter)->getType()));
+			destList.push_back(*iter);
 		}
 	}
+
 }

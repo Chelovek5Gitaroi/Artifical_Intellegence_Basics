@@ -15,8 +15,8 @@ namespace chess_solver
 	class Command
 	{
 	public:
-		Command(Coordinates& startCoordinates, Coordinates& finishCoordinates, CommandType type, FigureType newFigureType) :
-			startCoordinates(startCoordinates), finishCoordinates(finishCoordinates), type(type), newFigureType(newFigureType) {}
+		Command(Coordinates& startCoordinates, Coordinates& finishCoordinates, CommandType type) :
+			startCoordinates(startCoordinates), finishCoordinates(finishCoordinates), type(type) {}
 		
 		Coordinates getStartCoordinates() { return this->startCoordinates; }
 		Coordinates getFinishCoordinates() { return this->finishCoordinates; }
@@ -26,6 +26,17 @@ namespace chess_solver
 		Coordinates startCoordinates;
 		Coordinates finishCoordinates;
 		CommandType type;
+	};
+	
+	class CommandTransformation : public Command
+	{
+	public:
+		CommandTransformation(Coordinates& startCoordinates, Coordinates& finishCoordinates, CommandType type, FigureType newFigureType) :
+			Command(startCoordinates, finishCoordinates, type), newFigureType(newFigureType) {}
+			
+		FigureType getNewFigureType() { return newFigureType; }
+		
+	private:
 		FigureType newFigureType;
 	};
 }

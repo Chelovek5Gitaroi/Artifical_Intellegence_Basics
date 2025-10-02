@@ -2,14 +2,29 @@
 
 namespace chess_solver
 {
-	OptionTree::OptionTree(Situation& situation, Command* previousCommand, OptionTree* parent, short depth) : situation(situation)
+	OptionTree::OptionTree(AbstractSituation* situation, Command* previousCommand, OptionTree* parent, short depth)
 	{
+		this->situation = situation;
+		
 		this->previousCommand = previousCommand;
 		this->parent = parent;
 		
 		this->depth = depth;
 		
 		this->currentChild = this->children.begin();
+	}
+	
+	OptionTree::~OptionTree()
+	{
+		for (auto iter = this->children.begin(); iter != children.end(); iter++)
+		{
+			delete *iter;
+		}
+		
+		this->parent->removeChild(this);
+		
+		delete this->previousCommand;
+		delete this->situation;
 	}
 	
 	OptionTree* OptionTree::OptionTree::getNextChild()

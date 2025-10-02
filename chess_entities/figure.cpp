@@ -8,15 +8,11 @@ namespace chess_solver
 	{
 		this->color = color;
 		this->type = type;
-		
-		this->moved = false;
 	}
 	
 	Figure* Figure::move(Coordinates& coordinates)
 	{
 		this->coordinates = coordinates;
-		
-		this->moved = true;
 		
 		return this;
 	}
@@ -24,7 +20,6 @@ namespace chess_solver
 	bool Figure::operator==(const Figure& other)
 	{
 		return this->color == other.color && this->getType() == other.type && this->coordinates == other.coordinates;
-		
 	}
 	
 }

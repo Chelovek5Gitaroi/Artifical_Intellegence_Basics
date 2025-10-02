@@ -31,9 +31,6 @@ namespace chess_solver
 		
 		const Coordinates& getCoordinates() const { return this->coordinates; }
 		
-		
-		bool wasMoved() { return moved;}
-		
 		Figure* move(Coordinates& coordinates);
 		
 		bool operator==(const Figure& other);
@@ -42,8 +39,6 @@ namespace chess_solver
 	private:
 		FigureType type;
 		FigureColor color;	
-		
-		bool moved;
 		
 		Coordinates coordinates;
 	};

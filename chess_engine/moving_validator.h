@@ -2,7 +2,7 @@
 #define VALIDATOR
 
 #include <cstdlib>
-//#include <map>
+#include <map>
 
 #include "..\\chess_entities\\board.h"
 #include "..\\chess_entities\\figure.h"
@@ -15,16 +15,14 @@ namespace chess_solver
 	class MovingValidator
 	{
 	public:
-//		MovingValidator(Board* board);
+		bool isMoveValid(const Coordinates& start, const Coordinates& finish, std::list<Figure*>& firstPlayerFigures, std::list<Figure*>& secondPlayerFigures, Board& board);
 		
-//		bool isMoveValid(Coordinates& start, Coordinates& finish, std::map<Coordinates, FigureType>& firstPlayerFigures, std::map<Coordinates, FigureType>& secondPlayerFigures);
+		bool hasCheck(const Board& board, const Coordinates& kingCoordinates, std::list<Figure*>& firstPlayerFigures, std::list<Figure*>& secondPlayerFigures);
+		
 		
 	private:
-//		Board* board;
-		
-//		bool isTakingValid(Figure& figure, Coordinates& finish, std::map<Coordinates, FigureType>& firstPlayerFigures, std::map<Coordinates, FigureType>& secondPlayerFigures);
-		
-//		bool isMoveValid(Figure& figure, Coordinates& finish, std::map<Coordinates, FigureType>& firstPlayerFigures, std::map<Coordinates, FigureType>& secondPlayerFigures);
+		bool isMoveValid(Figure& figure, const Coordinates& finish, const Board& board);
+		bool isTakingValid(Figure& figure, const Coordinates& finish, const Board& board);
 		
 		bool isLineEmpty(const Coordinates& start, const Coordinates& finish, const Board& board);
 		
@@ -32,19 +30,13 @@ namespace chess_solver
 		bool isVerticalEmpty(const Coordinates& start, const Coordinates& finish, const Board& board);
 		bool isDiagonalEmpty(const Coordinates& start, const Coordinates& finish, const Board& board);
 		
-		bool isReachebleForPawn(Figure& pawn, const Coordinates& finish, const Board& board);
-		bool isReachebleForPawnToTake(Figure& pawn, const Coordinates& finish);		
+		bool isReachebleForPawn(const Coordinates& start, const Coordinates& finish, const Board& board);
+		bool isReachebleForPawnToTake(const Coordinates& start, const Coordinates& finish, const Board& board);
 		
-		bool isReachebleForKnight(const Coordinates& start, const Coordinates& finish);
-		bool isReachebleForKing(const Coordinates& start, const Coordinates& finish);
+		bool isReachebleForKnight(const Coordinates& start, const Coordinates& finish, const Board& board);
+		bool isReachebleForKing(const Coordinates& start, const Coordinates& finish, const Board& board);
 		
-		//bool isCastlingValid(bool isLong, FirstPlayer& player, SecondPlayer& finish);
-		
-//		void climeTilesToCheck(const Coordinates& start, const Coordinates& finish);
-//		void unclimeTilesAfterCheck(const Coordinates& start, const Coordinates& finish);
-				
-		bool hasCheck(const Coordinates& kingCoordinates, Player& firstPlayer, Player& secondPlayer);
-		
+		Figure* getFigureFromListByCoordinates(const Coordinates& coordinates, std::list<Figure*>& figures);
 	};
 }
 

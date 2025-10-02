@@ -3,34 +3,19 @@
 
 #include <list>
 
-#include "situation.h"
+#include "abstract_situation.h"
 #include "../utilities/command.h"
 
 namespace chess_solver
 {
-//	class OptionTreeTop
-//	{
-//	public:
-//		OptionTreeTop(Situation& situation, Command* previousCommand) : sitaution(situation) {}
-//		
-//		Situation& getSituation() {	return this->situation; }
-//		Command* getPreviousCommand() { return this->previousCommand; }
-//		
-//	private:
-//		Situation situation;
-//		Command* previousCommand;
-//		
-//		OptionTreeTop
-//		
-//		std::list<OptionTreeTop*> 
-//	};
-	
 	class OptionTree
 	{
 	public:
-		OptionTree(Situation& situation, Command* previousCommand, OptionTree* parent, short depth);
+		OptionTree(AbstractSituation* situation, Command* previousCommand, OptionTree* parent, short depth);
 		
-		Situation& getSituation() {	return situation; }
+		~OptionTree();
+		
+		AbstractSituation* getSituation() {	return situation; }
 		Command* getPreviousCommand() { return previousCommand; }
 		
 		short getDepth() { return this->depth; }
@@ -47,7 +32,7 @@ namespace chess_solver
 	private:
 		short depth;
 
-		Situation situation;
+		AbstractSituation* situation;
 		Command* previousCommand;
 		
 		OptionTree* parent;

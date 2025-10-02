@@ -7,34 +7,63 @@
 
 namespace chess_solver
 {
-	std::list<Coordinates>* MovingPreparator::getPawnPotentialPossibleCoordinates(Coordinates& coordinates, char boardSize, FigureColor figureColor)
+	std::list<Coordinates>* MovingPreparator::getPotentialPossibleCoordinates(Coordinates& coordinates, FigureType type, FigureColor color, char boardSize)
 	{
-		std::list<Coordinates>* result = new std::list<Coordinates>();
+		std::list<Coordinates>* result = nullptr;
 		
-		if (figureColor == FigureColor::WHITE)
+		switch (type)
 		{
+		case FigureType::PAWN:
+			result = getPawnPotentialPossibleCoordinates(coordinates, boardSize, color);
+			break;
 			
-		}
-		else
-		{
+		case FigureType::KNIGHT:
+			result = getKnightPotentialPossibleCoordinates(coordinates, boardSize);
+			break;
 			
-		}
-		
-		
-		if (1 <= coordinates.getColumn() - 1)
-		{
+		case FigureType::BISHOP:
+			result = getBishopPotentialPossibleCoordinates(coordinates, boardSize);
+			break;
 			
-		}
-		
-		if (coordinates.getColumn() + 1 <= CoordinatesConverter::MINIMAL_COLUMN_NAME + boardSize - 1)
-		{
+		case FigureType::ROCK:
+			result = getRockPotentialPossibleCoordinates(coordinates, boardSize);
+			break;
 			
+		case FigureType::QUEEN:
+			result = getQueenPotentialPossibleCoordinates(coordinates, boardSize);
+			break;
+			
+		case FigureType::KING:
+			result = getKingPotentialPossibleCoordinates(coordinates, boardSize);
+			break;
 		}
 		
 		return result;
 	}
 	
-	std::list<Coordinates>* MovingPreparator::getBishopPotentialPossibleCoordinates(Coordinates& coordinates, char boardSize)
+	std::list<Coordinates>* MovingPreparator::getPawnPotentialPossibleCoordinates(const Coordinates& coordinates, char boardSize, FigureColor figureColor)
+	{
+		std::list<Coordinates>* result = new std::list<Coordinates>();
+		
+		if (figureColor == FigureColor::WHITE)
+		{
+			if (coordinates.getRow() + 1 <= boardSize)
+			{
+				addNextTilesInRowToList(result, coordinates.getColumn(), coordinates.getRow() + 1, boardSize);
+			}
+		}
+		else
+		{
+			if (coordinates.getRow() - 1 >= 1)
+			{
+				addNextTilesInRowToList(result, coordinates.getColumn(), coordinates.getRow() - 1, boardSize);
+			}
+		}
+		
+		return result;
+	}
+	
+	std::list<Coordinates>* MovingPreparator::getBishopPotentialPossibleCoordinates(const Coordinates& coordinates, char boardSize)
 	{
 		std::list<Coordinates>* result = new std::list<Coordinates>();
 		
@@ -49,12 +78,66 @@ namespace chess_solver
 		return result;
 	}
 	
-	std::list<Coordinates>* MovingPreparator::getKnightPotentialPossibleCoordinates(Coordinates& coordinates, char boardSize)
+	std::list<Coordinates>* MovingPreparator::getKnightPotentialPossibleCoordinates(const Coordinates& coordinates, char boardSize)
 	{
+		std::list<Coordinates>* result = new std::list<Coordinates>();
 		
+		if (1 <= coordinates.getRow() - 2)
+		{
+			if (1 <= coordinates.getColumn() - 1)
+			{
+				result->push_back(Coordinates(coordinates.getColumn() - 1, coordinates.getRow() - 2));
+			}
+			
+			if (coordinates.getColumn() + 1 <= CoordinatesConverter::MINIMAL_COLUMN_NAME + boardSize - 1)
+			{
+				result->push_back(Coordinates(coordinates.getColumn() + 1, coordinates.getRow() - 2));
+			}
+		}
+		
+		if (1 <= coordinates.getRow() - 1)
+		{
+			if (1 <= coordinates.getColumn() - 2)
+			{
+				result->push_back(Coordinates(coordinates.getColumn() - 2, coordinates.getRow() - 1));
+			}
+			
+			if (coordinates.getColumn() + 2 <= CoordinatesConverter::MINIMAL_COLUMN_NAME + boardSize - 1)
+			{
+				result->push_back(Coordinates(coordinates.getColumn() + 2, coordinates.getRow() - 1));
+			}
+		}
+		
+		if (coordinates.getRow() + 1 <= boardSize)
+		{
+			if (1 <= coordinates.getColumn() - 2)
+			{
+				result->push_back(Coordinates(coordinates.getColumn() - 2, coordinates.getRow() + 1));
+			}
+			
+			if (coordinates.getColumn() + 2 <= CoordinatesConverter::MINIMAL_COLUMN_NAME + boardSize - 1)
+			{
+				result->push_back(Coordinates(coordinates.getColumn() + 2, coordinates.getRow() + 1));
+			}
+		}
+		
+		if (coordinates.getRow() + 2 <= boardSize)
+		{
+			if (1 <= coordinates.getColumn() - 1)
+			{
+				result->push_back(Coordinates(coordinates.getColumn() - 1, coordinates.getRow() + 2));
+			}
+			
+			if (coordinates.getColumn() + 1 <= CoordinatesConverter::MINIMAL_COLUMN_NAME + boardSize - 1)
+			{
+				result->push_back(Coordinates(coordinates.getColumn() + 1, coordinates.getRow() + 2));
+			}
+		}
+		
+		return result;
 	}
 	
-	std::list<Coordinates>* MovingPreparator::getRockPotentialPossibleCoordinates(Coordinates& coordinates, char boardSize)
+	std::list<Coordinates>* MovingPreparator::getRockPotentialPossibleCoordinates(const Coordinates& coordinates, char boardSize)
 	{
 		std::list<Coordinates>* result = new std::list<Coordinates>();
 		
@@ -69,7 +152,7 @@ namespace chess_solver
 		return result;
 	}
 	
-	std::list<Coordinates>* MovingPreparator::getQueenPotentialPossibleCoordinates(Coordinates& coordinates, char boardSize)
+	std::list<Coordinates>* MovingPreparator::getQueenPotentialPossibleCoordinates(const Coordinates& coordinates, char boardSize)
 	{
 		std::list<Coordinates>* result = new std::list<Coordinates>();
 		
@@ -92,23 +175,13 @@ namespace chess_solver
 		return result;	
 	}
 	
-	std::list<Coordinates>* MovingPreparator::getKingPotentialPossibleCoordinates(Coordinates& coordinates, char boardSize)
+	std::list<Coordinates>* MovingPreparator::getKingPotentialPossibleCoordinates(const Coordinates& coordinates, char boardSize)
 	{
 		std::list<Coordinates>* result = new std::list<Coordinates>();
 		
 		if (coordinates.getRow() + 1 <= boardSize)
 		{
-			result->push_back(Coordinates(coordinates.getColumn(), coordinates.getRow() + 1));
-			
-			if (CoordinatesConverter::MINIMAL_COLUMN_NAME <= coordinates.getColumn() - 1)
-			{
-				result->push_back(Coordinates(coordinates.getColumn() - 1, coordinates.getRow() + 1));
-			}
-			
-			if (coordinates.getColumn() + 1 <= CoordinatesConverter::MINIMAL_COLUMN_NAME + boardSize - 1)
-			{
-				result->push_back(Coordinates(coordinates.getColumn() + 1, coordinates.getRow() + 1));
-			}
+			addNextTilesInRowToList(result, coordinates.getColumn(), coordinates.getRow() + 1, boardSize);
 		}
 		
 		if (CoordinatesConverter::MINIMAL_COLUMN_NAME <= coordinates.getColumn() - 1)
@@ -121,19 +194,9 @@ namespace chess_solver
 			result->push_back(Coordinates(coordinates.getColumn() + 1, coordinates.getRow()));
 		}
 		
-		if (1 <= coordinates.getRow())
+		if (1 <= coordinates.getRow() - 1)
 		{
-			result->push_back(Coordinates(coordinates.getColumn(), coordinates.getRow() - 1));
-			
-			if (CoordinatesConverter::MINIMAL_COLUMN_NAME <= coordinates.getColumn() - 1)
-			{
-				result->push_back(Coordinates(coordinates.getColumn() - 1, coordinates.getRow() - 1));
-			}
-			
-			if (coordinates.getColumn() + 1 <= CoordinatesConverter::MINIMAL_COLUMN_NAME + boardSize - 1)
-			{
-				result->push_back(Coordinates(coordinates.getColumn() + 1, coordinates.getRow() - 1));
-			}
+			addNextTilesInRowToList(result, coordinates.getColumn(), coordinates.getRow() - 1, boardSize);
 		}
 		
 		return result;
@@ -202,5 +265,20 @@ namespace chess_solver
 			destList->push_back(Coordinates(column, row));
 		}
 	}
+	
+	void MovingPreparator::addNextTilesInRowToList(std::list<Coordinates>* destList, char chessColumn, char chessRow, char boardSize)
+	{
+		if (1 <= chessColumn - 1)
+		{	
+			destList->push_back(Coordinates(chessColumn - 1, chessRow));
+		}
 		
+		destList->push_back(Coordinates(chessColumn, chessRow));
+		
+		if (chessColumn + 1 <= CoordinatesConverter::MINIMAL_COLUMN_NAME + boardSize - 1)
+		{
+			destList->push_back(Coordinates(chessColumn + 1, chessRow));
+		}
+	}
+	
 }

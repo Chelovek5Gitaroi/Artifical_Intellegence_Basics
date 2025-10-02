@@ -16,7 +16,7 @@ namespace chess_solver
 	{
 	public:
 		
-		static Command parseCommand(std::string& command);
+		static Command* parseCommand(std::string& command);
 		
 		CommandParser() = delete;
 		~CommandParser() = delete;
