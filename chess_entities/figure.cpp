@@ -10,6 +10,12 @@ namespace chess_solver
 		this->type = type;
 	}
 	
+	Figure::Figure(const Figure& other) : coordinates(other.coordinates)
+	{
+		this->color = other.color;
+		this->type = other.type;
+	}
+	
 	Figure* Figure::move(Coordinates& coordinates)
 	{
 		this->coordinates = coordinates;

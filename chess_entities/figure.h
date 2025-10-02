@@ -26,6 +26,8 @@ namespace chess_solver
 	public:
 		Figure(FigureType type, FigureColor color, char column, char row);
 		
+		Figure(const Figure& other);
+		
 		FigureType getType() const { return type; }
 		FigureColor getColor() const { return color; }
 		

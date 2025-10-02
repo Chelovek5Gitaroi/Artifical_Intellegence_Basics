@@ -66,4 +66,29 @@ namespace chess_solver
 			}
 		}
 	}
+	
+	bool Board::operator==(Board& other)
+	{
+		bool result = true;
+		
+		if (this->boardSize != other.boardSize)
+		{
+			result = false;
+		}
+		else
+		{
+			for (char row = 0; row < this->boardSize && result; row++)
+			{
+				for (char column = 0; column < this->boardSize && result; column++)
+				{
+					result = this->tilesOccupancy[row][column] == other.tilesOccupancy[row][column];
+				}
+			}
+		}
+		
+		return result;
+	}
+	
 }
+
+

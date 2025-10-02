@@ -16,7 +16,7 @@ namespace chess_solver
 		// boardSize - количество горизонталей и вертикалей доски
 		Board(char boardSize);
 		
-		
+		// Конструктор копирования
 		Board(Board& other);
 		
 		//Деструктор 
@@ -25,13 +25,18 @@ namespace chess_solver
 		// Геттер для поля boardSize
 		char getBoardSize() const { return this->boardSize; };
 		
-		//
+		// Метод, возвращающий занятость клетки по её координатам, записанным в шахматной нотации
 		bool getTileOccupancyByCoordinates(const Coordinates& coordinates) const;
 		
+		// Метод, возвращающий занятость клетки по её индексам в массиве
 		bool getTileOccupancyByCoordinates(char column, char row) const;
 		
+		// Метод, устанавливающий занятость клетки по координатам, записанным в шахматной нотации
 		void setOccupancyByCoordinates(const Coordinates& coordinates, bool occupancy);
-				
+		
+		// Перегрузка оператора ==
+		bool operator==(Board& other);
+			
 	private:
 		// Длина стороны доски в клетках
 		char boardSize;

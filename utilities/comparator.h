@@ -18,6 +18,25 @@ namespace chess_solver
 		static bool less(T a, T b) { return a < b; }
 		
 		static bool lessEqual(T a, T b) { return a <= b; }
+		
+		static bool areListsEqual(std::list<T*>& firstList, std::list<T*>& secondList)
+		{
+			bool result = true;
+			
+			if (firstList.size() == secondList.size())
+			{
+				for (auto iterFirst = firstList.begin(), iterSecond = secondList.begin(); result && iterFirst != firstList.end() && iterSecond != secondList.end(); iterFirst++, iterSecond++)
+				{
+					result = **iterFirst == **iterSecond;
+				}
+			}
+			else
+			{
+				result = false;
+			}
+			
+			return result;
+		}
 	};
 }
 

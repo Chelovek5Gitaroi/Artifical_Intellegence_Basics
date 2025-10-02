@@ -7,6 +7,7 @@ namespace chess_solver
 	{
 	public:
 		virtual ~AbstractSituation() = 0;
+		
 	};
 }
 
