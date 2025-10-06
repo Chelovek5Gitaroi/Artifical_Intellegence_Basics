@@ -16,9 +16,9 @@ namespace chess_solver
 		this->type = other.type;
 	}
 	
-	Figure* Figure::move(Coordinates& coordinates)
+	Figure* Figure::move(const Coordinates& coordinates)
 	{
-		this->coordinates = coordinates;
+		this->coordinates = Coordinates(coordinates);
 		
 		return this;
 	}

@@ -8,16 +8,6 @@ namespace chess_solver
 		
 	}
 	
-	ChessSituationMaker::SituationMoves::~SituationMoves()
-	{
-		for (auto iter = this->moves->begin(); iter != this->moves->end(); iter++)
-		{
-			delete *iter;
-		}
-		
-		delete moves;
-	}
-	
 	AbstractSituation* ChessSituationMaker::getNextSituation(AbstractSituation* abstractSituation)
 	{
 		Situation* situation = reinterpret_cast<Situation*>(abstractSituation);
@@ -29,7 +19,7 @@ namespace chess_solver
 		
 		std::list<Command*>::iterator iter = commands->begin();
 		
-		while (iter != commands->end() && !command)
+		while (iter != commands->end() && !nextCommand)
 		{
 			
 			
@@ -80,6 +70,47 @@ namespace chess_solver
 	
 	void ChessSituationMaker::makeMove(Situation& situation, Command* command)
 	{
+		Coordinates& finish = command->getFinishCoordinates();
+		
+		Figure* figure = command->getFigure();
+		
+		std::list<Figure*>* figures = &situation.getWhiteFigures();
+		std::list<Figure*>* otherFigures = &situation.getBlackFigures();
+		
+		if (situation.getCurrentPlayer() == FigureColor::BLACK)
+		{
+			figures = &situation.getBlackFigures();
+			otherFigures = &situation.getWhiteFigures();
+		}
+		
+		situation.getBoard().setOccupancyByCoordinates(figure->getCoordinates(), false);
+		CommandTransformation* transCommand = nullptr;
+		
+		Figure* figureToTake = nullptr;
+		
+		switch (command->getType())
+		{
+		case CommandType::MOVE:
+			makeMove(figure, finish, situation.getBoard());
+			break;
+			
+		case CommandType::BEAT:
+			figureToTake = getFigureFromList(finish, otherFigures);
+			makeTaking(figure, finish, figureToTake, situation.getBoard(), otherFigures);
+			break;
+			
+		case CommandType::TRANSFORMATION:
+			transCommand = reinterpret_cast<CommandTransformation*>(command);
+			makeTransformation(figure, finish, situation.getBoard(), transCommand->getNewFigureType(), figures);
+			break;
+			
+		case CommandType::BEAT_TRANSFORMATION:
+			figureToTake = getFigureFromList(finish, otherFigures);
+			transCommand = reinterpret_cast<CommandTransformation*>(command);
+			makeBeatTransformation(figure, finish, figureToTake, situation.getBoard(), transCommand->getNewFigureType(), figures, otherFigures);
+			break;
+		}
+		
 		
 	}
 	
@@ -152,28 +183,51 @@ namespace chess_solver
 		return result;
 	}
 	
-//	bool ChessSituationMaker::hasSituation(Situation& situation)
-//	{
-//		bool result = false;
-//		
-//		for (auto iter = this->allPotentialMoves.begin(); iter != this->allPotentialMoves.end() && !result; iter++)
-//		{
-//			result = iter->situation == situation;
-//		}
-//		
-//		return result;
-//	}
+	void ChessSituationMaker::makeMove(Figure* figure, const Coordinates& finishCoordinates, Board& board)
+	{
+		board.setOccupancyByCoordinates(figure->getCoordinates(), false);
+		figure->move(finishCoordinates);
+		board.setOccupancyByCoordinates(finishCoordinates, true);
+	}
+
+	void ChessSituationMaker::makeTaking(Figure* figure, const Coordinates& finishCoordinates, Figure* figureToTake, Board& board, std::list<Figure*>* secondPlayerFigures)
+	{
+		makeMove(figure, finishCoordinates, board);
+		
+		secondPlayerFigures->remove(figureToTake);
+		delete figureToTake;
+		figureToTake = nullptr;
+	}
 	
-//	std::list<Command*>* ChessSituationMaker::getSituationMoves(Situation& situation)
-//	{
-//		for (auto iter = this->allPotentialMoves.begin(); iter != this->allPotentialMoves.end(); iter++)
-//		{
-//			if (iter->situation == situation)
-//			{
-//				return iter->moves;
-//			}
-//		}
-//		
-//		return nullptr;
-//	}
+	void ChessSituationMaker::makeTransformation(Figure* figure, const Coordinates& finishCoordinates, Board& board, FigureType newFigureType, std::list<Figure*>* figures)
+	{
+		board.setOccupancyByCoordinates(figure->getCoordinates(), false);
+		
+		figures->remove(figure);
+		figures->push_back(new Figure(newFigureType, figure->getColor(), finishCoordinates.getColumn(), finishCoordinates.getRow()));
+		
+		delete figure;
+		figure = nullptr;
+	}
+	
+	void ChessSituationMaker::makeBeatTransformation(Figure* figure, const Coordinates& finishCoordinates, Figure* figureToTake, Board& board, FigureType newFigureType,
+		std::list<Figure*>* figures, std::list<Figure*>* secondPlayerFigures)
+	{
+		makeTaking(figure, finishCoordinates, figureToTake, board, secondPlayerFigures);
+		makeTransformation(figure, finishCoordinates, board, newFigureType, figures);
+	}
+
+	Figure* ChessSituationMaker::getFigureFromList(const Coordinates& coordinates, std::list<Figure*>* figures)
+	{
+		for (auto iter = figures->begin(); iter != figures->end(); iter++)
+		{
+			if ((*iter)->getCoordinates() == coordinates)
+			{
+				return *iter;
+			}
+		}
+		
+		return nullptr;
+	}
+
 }

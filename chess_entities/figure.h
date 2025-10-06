@@ -33,7 +33,7 @@ namespace chess_solver
 		
 		Coordinates& getCoordinates() { return this->coordinates; }
 		
-		Figure* move(Coordinates& coordinates);
+		Figure* move(const Coordinates& coordinates);
 		
 		bool operator==(Figure& other);
 		

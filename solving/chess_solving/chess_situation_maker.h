@@ -21,20 +21,6 @@ namespace chess_solver
 		AbstractSituation* getNextSituation(AbstractSituation* abstractSituation);
 		
 	private:
-//		class SituationMoves
-//		{
-//		public:
-//			SituationMoves(Situation& situation, std::list<Command*>* moves) : situation(situation), moves(moves){}
-//			
-//			~SituationMoves();
-//			
-//			Situation& situation;
-//			std::list<Command*>* moves;
-//		};
-		
-//		std::list<SituationMoves> allPotentialMoves;
-		
-		
 		void makeMove(Situation& situation, Command* command);
 		
 		std::list<Command*>* getFigurePotentialMoves(Board& board, Figure* figure);
@@ -43,10 +29,13 @@ namespace chess_solver
 		
 		std::list<Command*>* getAllSituationMoves(Situation& situation);
 		
-//		bool hasSituation(Situation& situation);
+		void makeMove(Figure* figure, const Coordinates& finishCoordinates, Board& board);
+		void makeTaking(Figure* figure, const Coordinates& finishCoordinates, Figure* figureToTake, Board& board, std::list<Figure*>* secondPlayerFigures);
+		void makeTransformation(Figure* figure, const Coordinates& finishCoordinates, Board& board, FigureType newFigureType, std::list<Figure*>* figures);
+		void makeBeatTransformation(Figure* figure, const Coordinates& finishCoordinates, Figure* figureToTake, Board& board, FigureType newFigureType,
+			std::list<Figure*>* figures, std::list<Figure*>* secondPlayerFigures);
 		
-//		std::list<Command*>* getSituationMoves(Situation& situation, std::list<SituationMoves>& situationMoves);
-		
+		Figure* getFigureFromList(const Coordinates& coordinates, std::list<Figure*>* figures);
 	};
 }
 
