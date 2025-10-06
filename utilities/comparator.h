@@ -19,7 +19,7 @@ namespace chess_solver
 		
 		static bool lessEqual(T a, T b) { return a <= b; }
 		
-		static bool areListsEqual(std::list<T*>& firstList, std::list<T*>& secondList)
+		static bool areListsEqual(const std::list<T*>& firstList, const std::list<T*>& secondList)
 		{
 			bool result = true;
 			

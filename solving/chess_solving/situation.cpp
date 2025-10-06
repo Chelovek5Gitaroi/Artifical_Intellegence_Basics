@@ -10,6 +10,8 @@ namespace chess_solver
 		this->currentPlayer = currentPlayer;
 		this->targetPlayer = targetPlayer;
 		
+		this->potentialMoves = nullptr;
+		
 		insertListItemsToOtherList(blackFigures, this->blackFigures);
 		insertListItemsToOtherList(whiteFigures, this->whiteFigures);
 	}
@@ -21,6 +23,8 @@ namespace chess_solver
 		
 		insertListItemsToOtherList(other.blackFigures, this->blackFigures);
 		insertListItemsToOtherList(other.whiteFigures, this->whiteFigures);
+		
+		this->potentialMoves = nullptr;
 	}
 	
 	Situation::~Situation()
@@ -34,56 +38,81 @@ namespace chess_solver
 		{
 			delete *iter;
 		}
+		
+		for (auto iter = this->potentialMoves->begin(); iter != this->potentialMoves->end(); iter++)
+		{
+			delete *iter;
+		}
+		
+		this->potentialMoves->clear();
+		
+		delete this->potentialMoves;
 	}
 	
-	void Situation::addFigure(Figure& figure)
+//	void Situation::makeMove(Command* command)
+//	{
+//		Coordinates& finish = command->getFinishCoordinates();
+//		
+//		Figure* figure = command->getFigure();
+//		Figure* figureToTake = getFigureFormList(finish, blackFigures);
+//		
+//		std::list<Figure*>* figures = &whiteFigures;
+//		std::list<Figure*>* otherFigures = &blackFigures;
+//		
+//		if (currentPlayer == FigureColor::WHITE)
+//		{
+//			figureToTake = getFigureFormList(finish, whiteFigures);
+//			figures = &blackFigures;
+//			otherFigures = &whiteFigures;
+//		}
+//		
+//		board.setOccupancyByCoordinates(figure->getCoordinates(), false);
+//		CommandTransformation* transCommand = nullptr;
+//		
+//		switch (command->getType())
+//		{
+//		case CommandType::MOVE:
+//			figure->move(command->getFinishCoordinates());
+//			board.setOccupancyByCoordinates(finish, true);
+//			break;
+//			
+//		case CommandType::BEAT:
+//			figure->move(finish);
+//			otherFigures->remove(figureToTake);
+//			delete figureToTake;
+//			break;
+//			
+//		case CommandType::TRANSFORMATION:
+//			transCommand = reinterpret_cast<CommandTransformation*>(command);
+//			figures->remove(figure);
+//			figures->push_back(new Figure(transCommand->getNewFigureType(), figure->getColor(), finish.getColumn(), finish.getRow()));
+//			delete figure;
+//			break;
+//			
+//		case CommandType::BEAT_TRANSFORMATION:
+//			transCommand = reinterpret_cast<CommandTransformation*>(command);
+//			figures->remove(figure);
+//			otherFigures->remove(figureToTake);
+//			figures->push_back(new Figure(transCommand->getNewFigureType(), figure->getColor(), finish.getColumn(), finish.getRow()));
+//			delete figure;
+//			delete figureToTake;
+//			break;
+//		}			
+//	}
+	
+	Figure* Situation::getFigureFormList(const Coordinates& coordinates, std::list<Figure*>& figures)
 	{
-		Figure* figureCopy = new Figure(figure);
+		for (auto iter = figures.begin(); iter != figures.end(); iter++)
+		{
+			if ((*iter)->getCoordinates() == coordinates)
+			{
+				return *iter;
+			}
+		}
 		
-		if (figure.getColor() == FigureColor::WHITE)
-		{
-			this->whiteFigures.push_back(figureCopy);
-		}
-		else
-		{
-			this->blackFigures.push_back(figureCopy);
-		}
+		return nullptr;
 	}
 	
-	void Situation::removeFigure(Figure& figure)
-	{
-		Figure* figureToRemove = nullptr;
-		
-		if (figure.getColor() == FigureColor::WHITE)
-		{
-			for (auto iter = whiteFigures.begin(); iter != whiteFigures.end(); iter++)
-			{
-				if (**iter == figure)
-				{
-					figureToRemove = *iter;
-				}
-			}
-			
-			if (figureToRemove)
-				whiteFigures.remove(figureToRemove);
-		}
-		else
-		{
-			for (auto iter = blackFigures.begin(); iter != blackFigures.end(); iter++)
-			{
-				if (**iter == figure)
-				{
-					figureToRemove = *iter;
-				}
-			}
-			
-			if (figureToRemove)
-				blackFigures.remove(figureToRemove);
-		}
-		
-		if (figureToRemove)
-			delete figureToRemove;
-	}
 	
 	void Situation::insertListItemsToOtherList(std::list<Figure*>& sourceList, std::list<Figure*>& destList)
 	{
@@ -93,7 +122,7 @@ namespace chess_solver
 		}
 	}
 
-	bool Situation::operator==(Situation& other)
+	bool Situation::operator==(const Situation& other) const
 	{
 		bool result = this->targetPlayer == other.targetPlayer && this->board == other.board && this->currentPlayer == other.currentPlayer;
 		

@@ -10,7 +10,7 @@ namespace chess_solver
 	class AbstractSituationMaker
 	{
 	public:
-		virtual AbstractSituation* getNextSituation(AbstractSituation* situation) = 0;
+		virtual AbstractSituation* getNextSituation(AbstractSituation* abstractSituation) = 0;
 	};
 }
 

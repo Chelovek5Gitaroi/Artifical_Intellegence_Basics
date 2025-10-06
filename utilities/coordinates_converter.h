@@ -20,7 +20,7 @@ namespace chess_solver
 		
 		static Coordinates makeChessCoordinatesFromIndexes(char rowIndex, char columnIndex, char boardSize)
 		{
-			return Coordinates(getChessColumnFromColumnIndex(columnIndex), getChessRowFromRowIndex(rowIndex, columnIndex));
+			return Coordinates(getChessColumnFromColumnIndex(columnIndex), getChessRowFromRowIndex(rowIndex, boardSize));
 		}
 		
 	private:

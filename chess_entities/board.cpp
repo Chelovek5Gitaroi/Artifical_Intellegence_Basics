@@ -9,7 +9,7 @@ namespace chess_solver
 		createEmptyTileOccupancyArray();
 	}
 	
-	Board::Board(Board& other)
+	Board::Board(const Board& other)
 	{
 		this->boardSize = other.boardSize;
 		
@@ -67,7 +67,7 @@ namespace chess_solver
 		}
 	}
 	
-	bool Board::operator==(Board& other)
+	bool Board::operator==(const Board& other) const
 	{
 		bool result = true;
 		

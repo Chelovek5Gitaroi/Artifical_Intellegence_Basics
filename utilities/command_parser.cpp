@@ -8,31 +8,31 @@ namespace chess_solver
 		
 	Command* CommandParser::parseCommand(std::string& command)
 	{
-		std::string::iterator iter = command.begin();
-		
-		Coordinates start = getCoordinates(iter, command);
-		
-		CommandType commandType = getCommandType(iter, command);
-		
-		Coordinates finish = getCoordinates(iter, command);
-	
+//		std::string::iterator iter = command.begin();
+//		
+//		Coordinates start = getCoordinates(iter, command);
+//		
+//		CommandType commandType = getCommandType(iter, command);
+//		
+//		Coordinates finish = getCoordinates(iter, command);
+//	
 		Command* result = nullptr;	
-
-		if (iter != command.end())
-		{
-			if (checkTransformationCommand(iter, command))
-			{
-				commandType = CommandType::TRANSFORMATION;
-				
-				FigureType newFigureType = getTransormedFigureType(iter, command);
-				
-				result = new CommandTransformation(start, finish, commandType, newFigureType);
-			}
-		}
-		else
-		{
-			result = new Command(start, finish, commandType);
-		}
+//
+//		if (iter != command.end())
+//		{
+//			if (checkTransformationCommand(iter, command))
+//			{
+//				commandType = CommandType::TRANSFORMATION;
+//				
+//				FigureType newFigureType = getTransormedFigureType(iter, command);
+//				
+//				result = new CommandTransformation(start, finish, newFigureType, commandType);
+//			}
+//		}
+//		else
+//		{
+//			result = new Command(start, finish, commandType);
+//		}
 		
 		return result;
 	}

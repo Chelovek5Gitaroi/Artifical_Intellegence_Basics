@@ -31,7 +31,7 @@ namespace chess_solver
 		this->figures.push_back(figure);
 	}
 		
-	Figure* Player::getFigureByCoordinates(const Coordinates& coordinates) //const
+	Figure* Player::getFigureByCoordinates(Coordinates& coordinates) //const
 	{
 		Figure* result = nullptr;
 		
@@ -59,7 +59,7 @@ namespace chess_solver
 		return nullptr;
 	}
 	
-	void Player::removeFigureByCoordinates(const Coordinates& coordinates)
+	void Player::removeFigureByCoordinates(Coordinates& coordinates)
 	{
 		this->figures.remove(getFigureByCoordinates(coordinates));
 	}

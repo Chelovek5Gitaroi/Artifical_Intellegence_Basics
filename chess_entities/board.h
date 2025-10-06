@@ -17,7 +17,7 @@ namespace chess_solver
 		Board(char boardSize);
 		
 		// Конструктор копирования
-		Board(Board& other);
+		Board(const Board& other);
 		
 		//Деструктор 
 		~Board();
@@ -35,7 +35,7 @@ namespace chess_solver
 		void setOccupancyByCoordinates(const Coordinates& coordinates, bool occupancy);
 		
 		// Перегрузка оператора ==
-		bool operator==(Board& other);
+		bool operator==(const Board& other) const;
 			
 	private:
 		// Длина стороны доски в клетках

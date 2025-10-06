@@ -9,30 +9,41 @@ namespace chess_solver
 	{
 		MOVE,
 		BEAT,
-		TRANSFORMATION	
+		TRANSFORMATION,
+		BEAT_TRANSFORMATION	
 	};
 	
 	class Command
 	{
 	public:
-		Command(Coordinates& startCoordinates, Coordinates& finishCoordinates, CommandType type) :
-			startCoordinates(startCoordinates), finishCoordinates(finishCoordinates), type(type) {}
+		Command(Figure* figure, Coordinates& finishCoordinates, CommandType commandType) : figure(figure), finishCoordinates(finishCoordinates), type(commandType) {}
 		
-		Coordinates getStartCoordinates() { return this->startCoordinates; }
-		Coordinates getFinishCoordinates() { return this->finishCoordinates; }
-		CommandType getType(){ return this->type; }
+//		Command(Coordinates& startCoordinates, Coordinates& finishCoordinates, CommandType type, FigureType figureType) :
+//			startCoordinates(startCoordinates), finishCoordinates(finishCoordinates), type(type) {}
+		
+//		Coordinates getStartCoordinates() { return this->startCoordinates; }
+		Coordinates& getFinishCoordinates() { return this->finishCoordinates; }
+		Figure* getFigure() { return figure; }
+		CommandType getType() { return this->type; }
+//		FigureType getFigureType() { return this->figureType; }
 		
 	private:
-		Coordinates startCoordinates;
+//		Coordinates startCoordinates;
 		Coordinates finishCoordinates;
 		CommandType type;
+		Figure* figure;
+//		FigureType figureType;
+//		Figure
 	};
 	
 	class CommandTransformation : public Command
 	{
 	public:
-		CommandTransformation(Coordinates& startCoordinates, Coordinates& finishCoordinates, CommandType type, FigureType newFigureType) :
-			Command(startCoordinates, finishCoordinates, type), newFigureType(newFigureType) {}
+		CommandTransformation(Figure* figure, Coordinates& finishCoordinates, FigureType newFigureType, CommandType commandType = CommandType::TRANSFORMATION) :
+			Command(figure, finishCoordinates, commandType), newFigureType(newFigureType) {}
+		
+//		CommandTransformation(Coordinates& startCoordinates, Coordinates& finishCoordinates, CommandType type, FigureType newFigureType) :
+//			Command(startCoordinates, finishCoordinates, type), newFigureType(newFigureType) {}
 			
 		FigureType getNewFigureType() { return newFigureType; }
 		

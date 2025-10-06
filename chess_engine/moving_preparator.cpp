@@ -7,7 +7,7 @@
 
 namespace chess_solver
 {
-	std::list<Coordinates>* MovingPreparator::getPotentialPossibleCoordinates(Coordinates& coordinates, FigureType type, FigureColor color, char boardSize)
+	std::list<Coordinates>* MovingPreparator::getPotentialPossibleCoordinates(const Coordinates& coordinates, FigureType type, FigureColor color, char boardSize)
 	{
 		std::list<Coordinates>* result = nullptr;
 		

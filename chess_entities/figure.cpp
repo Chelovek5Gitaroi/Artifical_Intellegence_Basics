@@ -10,7 +10,7 @@ namespace chess_solver
 		this->type = type;
 	}
 	
-	Figure::Figure(const Figure& other) : coordinates(other.coordinates)
+	Figure::Figure(Figure& other) : coordinates(other.coordinates)
 	{
 		this->color = other.color;
 		this->type = other.type;
@@ -23,7 +23,7 @@ namespace chess_solver
 		return this;
 	}
 
-	bool Figure::operator==(const Figure& other)
+	bool Figure::operator==(Figure& other)
 	{
 		return this->color == other.color && this->getType() == other.type && this->coordinates == other.coordinates;
 	}

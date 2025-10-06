@@ -2,17 +2,17 @@
 
 namespace chess_solver
 {
-	Coordinates::Coordinates(const Coordinates& other)
-	{
-		this->column = other.column;
-		this->row = other.row;
-	}
-	
-	Coordinates::Coordinates(char column, char row)
-	{
-		this->column = column;
-		this->row = row;
-	}
+//	Coordinates::Coordinates(Coordinates& other)
+//	{
+//		this->column = other.column;
+//		this->row = other.row;
+//	}
+//	
+//	Coordinates::Coordinates(char column, char row)
+//	{
+//		this->column = column;
+//		this->row = row;
+//	}
 	
 	Coordinates& Coordinates::operator=(const Coordinates& other)
 	{
@@ -32,37 +32,37 @@ namespace chess_solver
 		return result;
 	}
 	
-	bool Coordinates::operator==(const Coordinates& other) const
+	bool Coordinates::operator==(const Coordinates& other)
 	{
 		return this->column == other.column && this->row == other.row;
 	}
 	
-	bool Coordinates::operator!=(const Coordinates& other) const
+	bool Coordinates::operator!=(const Coordinates& other)
 	{
 		return !(*this == other);
 	}
 	
-	bool Coordinates::operator<(const Coordinates& other) const
+	bool Coordinates::operator<(const Coordinates& other)
 	{
 		return abs() < other.abs();
 	}
 	
-	bool Coordinates::operator>(const Coordinates& other) const
+	bool Coordinates::operator>(const Coordinates& other)
 	{
 		abs() > other.abs();
 	}
 	
-	bool Coordinates::operator<=(const Coordinates& other) const
+	bool Coordinates::operator<=(const Coordinates& other)
 	{
 		return *this < other || *this == other;
 	}
 	
-	bool Coordinates::operator>=(const Coordinates& other) const
+	bool Coordinates::operator>=(const Coordinates& other)
 	{
 		return *this > other || *this == other;
 	}
 	
-	std::ostream& operator<<(std::ostream& stream, Coordinates& coordinates)
+	std::ostream& operator<<(std::ostream& stream, const Coordinates& coordinates)
 	{
 		stream << coordinates.toString();
 		return stream;

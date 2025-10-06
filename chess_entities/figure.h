@@ -26,16 +26,16 @@ namespace chess_solver
 	public:
 		Figure(FigureType type, FigureColor color, char column, char row);
 		
-		Figure(const Figure& other);
+		Figure(Figure& other);
 		
-		FigureType getType() const { return type; }
-		FigureColor getColor() const { return color; }
+		FigureType getType() { return type; }
+		FigureColor getColor() { return color; }
 		
-		const Coordinates& getCoordinates() const { return this->coordinates; }
+		Coordinates& getCoordinates() { return this->coordinates; }
 		
 		Figure* move(Coordinates& coordinates);
 		
-		bool operator==(const Figure& other);
+		bool operator==(Figure& other);
 		
 		
 	private:

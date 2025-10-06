@@ -12,31 +12,31 @@
 
 namespace chess_solver
 {
-	class MovingValidator
+	class MovingValidator final
 	{
 	public:
-		bool isMoveValid(const Coordinates& start, const Coordinates& finish, std::list<Figure*>& firstPlayerFigures, std::list<Figure*>& secondPlayerFigures, Board& board);
+		static bool isMoveValid(Command* command, std::list<Figure*>& secondPlayerFigures, Board& board);
 		
-		bool hasCheck(const Board& board, const Coordinates& kingCoordinates, std::list<Figure*>& firstPlayerFigures, std::list<Figure*>& secondPlayerFigures);
-		
+		static bool hasCheck(const Board& board, const Coordinates& kingCoordinates, std::list<Figure*>& secondPlayerFigures);
 		
 	private:
-		bool isMoveValid(Figure& figure, const Coordinates& finish, const Board& board);
-		bool isTakingValid(Figure& figure, const Coordinates& finish, const Board& board);
+		static bool isMoveValid(Figure& figure, const Coordinates& finish, const Board& board);
+		static bool isTakingValid(Figure& figure, const Coordinates& finish, std::list<Figure*>& secondPlayerFigures, const Board& board);
+		static bool isTransformationValid(Figure& figure, FigureType newFigureType, const Coordinates& finish, std::list<Figure*>& secondPlayerFigures, bool isBeatTransformation, const Board& board);
 		
-		bool isLineEmpty(const Coordinates& start, const Coordinates& finish, const Board& board);
+		static bool isLineEmpty(const Coordinates& start, const Coordinates& finish, const Board& board);
 		
-		bool isHorizontalEmpty(const Coordinates& start, const Coordinates& finish, const Board& board);
-		bool isVerticalEmpty(const Coordinates& start, const Coordinates& finish, const Board& board);
-		bool isDiagonalEmpty(const Coordinates& start, const Coordinates& finish, const Board& board);
+		static bool isHorizontalEmpty(const Coordinates& start, const Coordinates& finish, const Board& board);
+		static bool isVerticalEmpty(const Coordinates& start, const Coordinates& finish, const Board& board);
+		static bool isDiagonalEmpty(const Coordinates& start, const Coordinates& finish, const Board& board);
 		
-		bool isReachebleForPawn(const Coordinates& start, const Coordinates& finish, const Board& board);
-		bool isReachebleForPawnToTake(const Coordinates& start, const Coordinates& finish, const Board& board);
+		static bool isReachebleForPawn(const Coordinates& start, const Coordinates& finish, const Board& board);
+		static bool isReachebleForPawnToTake(const Coordinates& start, const Coordinates& finish, const Board& board);
 		
-		bool isReachebleForKnight(const Coordinates& start, const Coordinates& finish, const Board& board);
-		bool isReachebleForKing(const Coordinates& start, const Coordinates& finish, const Board& board);
+		static bool isReachebleForKnight(const Coordinates& start, const Coordinates& finish, const Board& board);
+		static bool isReachebleForKing(const Coordinates& start, const Coordinates& finish, const Board& board);
 		
-		Figure* getFigureFromListByCoordinates(const Coordinates& coordinates, std::list<Figure*>& figures);
+		static Figure* getFigureFromListByCoordinates(const Coordinates& coordinates, std::list<Figure*>& figures);
 	};
 }
 

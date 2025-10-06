@@ -12,8 +12,8 @@ namespace chess_solver
 	class Coordinates
 	{
 	public:
-		Coordinates(const Coordinates& other);
-		Coordinates(char column, char row);
+		Coordinates(const Coordinates& other) : column(other.column), row(other.row) {}
+		Coordinates(char column, char row) : column(column), row(row) {}
 		
 		char getRow() const { return row; }
 		char getColumn() const { return column; }
@@ -22,23 +22,23 @@ namespace chess_solver
 		
 		std::string toString() const;		
 		
-		bool operator==(const Coordinates& other) const;
-		bool operator!=(const Coordinates& other) const;
-		bool operator<(const Coordinates& other) const;
-		bool operator>(const Coordinates& other) const;
-		bool operator<=(const Coordinates& other) const;
-		bool operator>=(const Coordinates& other) const;
+		bool operator==(const Coordinates& other);
+		bool operator!=(const Coordinates& other);
+		bool operator<(const Coordinates& other);
+		bool operator>(const Coordinates& other);
+		bool operator<=(const Coordinates& other);
+		bool operator>=(const Coordinates& other);
 		
 	private:
-		Coordinates(){}
+//		Coordinates(){}
 	
-		char abs() const {	return std::sqrt(row * row + column * column); }
+		char abs() const { return std::sqrt(row * row + column * column); }
 	
 		char row;
 		char column;	
 	};
 	
-	std::ostream& operator<<(std::ostream& stream, Coordinates& coordinates);
+	std::ostream& operator<<(std::ostream& stream, const Coordinates& coordinates);
 		
 }
 

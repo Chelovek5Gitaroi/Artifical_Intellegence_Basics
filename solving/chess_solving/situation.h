@@ -7,6 +7,7 @@
 
 #include "../../chess_entities/figure.h"
 #include "../../chess_entities/board.h"
+#include "../../utilities/command.h"
 
 
 namespace chess_solver
@@ -23,16 +24,15 @@ namespace chess_solver
 		std::list<Figure*>& getWhiteFigures() { return whiteFigures; }
 		std::list<Figure*>& getBlackFigures() { return blackFigures; }
 		
-		void addFigure(Figure& figure);
-		
-		void removeFigure(Figure& figure);
-		
 		FigureColor getTargetPlayer() { return targetPlayer; }
 		FigureColor getCurrentPlayer() { return currentPlayer; }
 		Board& getBoard() { return board; }
 		
-		bool operator==(Situation& other);
+		bool operator==(const Situation& other) const;
 		
+		std::list<Command*>* getPotentialMoves() { return potentialMoves; }
+		
+		void setPotentialMoves(std::list<Command*>* potentialMoves) { this->potentialMoves = potentialMoves; }
 		
 	private:
 		std::list<Figure*> whiteFigures;
@@ -42,13 +42,12 @@ namespace chess_solver
 		FigureColor currentPlayer;
 		Board board;
 		
-//		std::list<Figure>::iterator currentFigure;
+		std::list<Command*>* potentialMoves;
 		
 		void insertListItemsToOtherList(std::list<Figure*>& sourceList, std::list<Figure*>& destList);
 		
-//		bool areFiguresInListsEqual(std::list<Figure*>& firstList, std::list<Figure*>& )
+		Figure* getFigureFormList(const Coordinates& coordinates, std::list<Figure*>& figures);
 		
-//		void addListItemsToMap(std::list<Figure*>& srcList, std::map<Coordinates, FigureType>& destMap);
 	};	
 }
 
