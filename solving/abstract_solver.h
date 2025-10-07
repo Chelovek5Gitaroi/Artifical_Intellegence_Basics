@@ -24,9 +24,9 @@ namespace chess_solver
 		
 		virtual void initTree(AbstractSituation* startSituation);
 		
-		virtual bool isTargetSituation(AbstractSituation* situation) = 0;
+		virtual bool isTargetSituation(OptionTree* tree) = 0;
 		
-		virtual bool isDeadlock(AbstractSituation* situation, short depth) = 0;
+		virtual bool isDeadlock(OptionTree* tree, int maximalDepth) = 0;
 		
 		AbstractSituationMaker* getSituationMaker() { return situationMaker; }
 		

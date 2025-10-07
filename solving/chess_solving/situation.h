@@ -32,7 +32,7 @@ namespace chess_solver
 		
 		std::list<Command*>* getPotentialMoves() { return potentialMoves; }
 		
-		void setPotentialMoves(std::list<Command*>* potentialMoves) { this->potentialMoves = potentialMoves; }
+		void setPotentialMoves(std::list<Command*>* potentialMoves);// { this->potentialMoves = potentialMoves; }
 		
 	private:
 		std::list<Figure*> whiteFigures;
@@ -47,6 +47,8 @@ namespace chess_solver
 		void insertListItemsToOtherList(std::list<Figure*>& sourceList, std::list<Figure*>& destList);
 		
 		Figure* getFigureFormList(const Coordinates& coordinates, std::list<Figure*>& figures);
+		
+		void clearPotentialMoves();
 		
 	};	
 }

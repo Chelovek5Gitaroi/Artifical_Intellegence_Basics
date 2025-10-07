@@ -23,11 +23,11 @@ namespace chess_solver
 	private:
 		void makeMove(Situation& situation, Command* command, std::list<Figure*>* firstPlayerFigures, std::list<Figure*>* secondPlayerFigures);
 		
-		std::list<Command*>* getFigurePotentialMoves(Board& board, Figure* figure);
+		std::list<Command*>* getFigurePotentialMoves(Board& board, Figure* figure, const Coordinates& kingCoordinates, std::list<Figure*>* otherFigures);
 
-		void addAllTransformationCommandsToList(Figure* figure, Coordinates& finish, std::list<Command*>& commands);
+//		void addAllTransformationCommandsToList(Figure* figure, Coordinates& finish, std::list<Command*>& commands, const Coordinates& kingCoordinates, std::list<Figure*>* otherFigures);
 		
-		std::list<Command*>* getAllSituationMoves(Situation& situation);
+		std::list<Command*>* getAllSituationMoves(Situation& situation, const Coordinates& kingCoordinates, std::list<Figure*>* otherFigures);
 		
 		void makeMove(Figure* figure, const Coordinates& finishCoordinates, Board& board);
 		void makeTaking(Figure* figure, const Coordinates& finishCoordinates, Figure* figureToTake, Board& board, std::list<Figure*>* secondPlayerFigures);

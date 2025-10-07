@@ -10,7 +10,7 @@ namespace chess_solver
 		this->currentPlayer = currentPlayer;
 		this->targetPlayer = targetPlayer;
 		
-		this->potentialMoves = nullptr;
+		this->potentialMoves = new std::list<Command*>();
 		
 		insertListItemsToOtherList(blackFigures, this->blackFigures);
 		insertListItemsToOtherList(whiteFigures, this->whiteFigures);
@@ -24,7 +24,7 @@ namespace chess_solver
 		insertListItemsToOtherList(other.blackFigures, this->blackFigures);
 		insertListItemsToOtherList(other.whiteFigures, this->whiteFigures);
 		
-		this->potentialMoves = nullptr;
+		this->potentialMoves = new std::list<Command*>();
 	}
 	
 	Situation::~Situation()
@@ -62,6 +62,15 @@ namespace chess_solver
 		return nullptr;
 	}
 	
+	void Situation::setPotentialMoves(std::list<Command*>* potentialMoves)
+	{
+		if (this->potentialMoves)
+		{
+			clearPotentialMoves();
+		}
+		
+		this->potentialMoves = potentialMoves;
+	}
 	
 	void Situation::insertListItemsToOtherList(std::list<Figure*>& sourceList, std::list<Figure*>& destList)
 	{
@@ -86,6 +95,16 @@ namespace chess_solver
 		}
 		
 		return result;
+	}
+
+	void Situation::clearPotentialMoves()
+	{
+		for (auto iter = this->potentialMoves->begin(); iter != this->potentialMoves->end(); iter++)
+		{
+			delete *iter;
+		}
+		
+		this->potentialMoves->clear();
 	}
 
 }

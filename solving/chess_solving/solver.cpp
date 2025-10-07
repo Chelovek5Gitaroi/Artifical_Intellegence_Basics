@@ -25,18 +25,34 @@ namespace chess_solver
 		situationMaker->prepareStartSituationMoves(situation);
 	}
 
-	bool isTargetSituation(AbstractSituation* situation)
+	bool Solver::isTargetSituation(OptionTree* tree)
 	{
-//		Situation* chessSituation = reinterpret_cast<Situation*>(situation);
-//		
-//		return chessSituation->getPotentialMoves()->empty() && ;
 	}
 	
-	bool isDeadlock(AbstractSituation* situation, short depth)
+	bool Solver::isDeadlock(OptionTree* tree, int maximalDepth)
 	{
-//		Situation* chessSituation = reinterpret_cast<Situation*>(situation);
-//		
-//		return chessSituation->getPotentialMoves()->empty() && ;
 	}
+
+	bool Solver::isTargetSituation(Situation* situation)
+	{
+		
+	}
+		
+	bool Solver::isDeadlock(Situation* situation, short maximalDepth, short currentDepth)
+	{
+		bool result = false;
+		
+		if (situation->getTargetPlayer() == situation->getCurrentPlayer())
+		{
+			result = situation->getPotentialMoves()->empty();
+		}
+		else
+		{
+			result = !situation->getPotentialMoves()->empty() && maximalDepth == currentDepth;
+		}
+		
+		return result;
+	}
+
 
 }
