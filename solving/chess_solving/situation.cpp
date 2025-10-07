@@ -49,57 +49,6 @@ namespace chess_solver
 		delete this->potentialMoves;
 	}
 	
-//	void Situation::makeMove(Command* command)
-//	{
-//		Coordinates& finish = command->getFinishCoordinates();
-//		
-//		Figure* figure = command->getFigure();
-//		Figure* figureToTake = getFigureFormList(finish, blackFigures);
-//		
-//		std::list<Figure*>* figures = &whiteFigures;
-//		std::list<Figure*>* otherFigures = &blackFigures;
-//		
-//		if (currentPlayer == FigureColor::WHITE)
-//		{
-//			figureToTake = getFigureFormList(finish, whiteFigures);
-//			figures = &blackFigures;
-//			otherFigures = &whiteFigures;
-//		}
-//		
-//		board.setOccupancyByCoordinates(figure->getCoordinates(), false);
-//		CommandTransformation* transCommand = nullptr;
-//		
-//		switch (command->getType())
-//		{
-//		case CommandType::MOVE:
-//			figure->move(command->getFinishCoordinates());
-//			board.setOccupancyByCoordinates(finish, true);
-//			break;
-//			
-//		case CommandType::BEAT:
-//			figure->move(finish);
-//			otherFigures->remove(figureToTake);
-//			delete figureToTake;
-//			break;
-//			
-//		case CommandType::TRANSFORMATION:
-//			transCommand = reinterpret_cast<CommandTransformation*>(command);
-//			figures->remove(figure);
-//			figures->push_back(new Figure(transCommand->getNewFigureType(), figure->getColor(), finish.getColumn(), finish.getRow()));
-//			delete figure;
-//			break;
-//			
-//		case CommandType::BEAT_TRANSFORMATION:
-//			transCommand = reinterpret_cast<CommandTransformation*>(command);
-//			figures->remove(figure);
-//			otherFigures->remove(figureToTake);
-//			figures->push_back(new Figure(transCommand->getNewFigureType(), figure->getColor(), finish.getColumn(), finish.getRow()));
-//			delete figure;
-//			delete figureToTake;
-//			break;
-//		}			
-//	}
-	
 	Figure* Situation::getFigureFormList(const Coordinates& coordinates, std::list<Figure*>& figures)
 	{
 		for (auto iter = figures.begin(); iter != figures.end(); iter++)

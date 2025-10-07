@@ -3,12 +3,10 @@
 
 #include "option_tree.h"
 
-#include "../chess_engine/moving_preparator.h"
-#include "../chess_engine/moving_validator.h"
 
 namespace chess_solver
 {
-	class TreeAnalyzer
+	class AbstractTreeAnalyzer
 	{
 	public:
 		

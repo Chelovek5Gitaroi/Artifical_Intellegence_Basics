@@ -16,12 +16,12 @@ namespace chess_solver
 	class ChessSituationMaker : public AbstractSituationMaker
 	{
 	public:
-		~ChessSituationMaker();
+		void prepareStartSituationMoves(Situation* startSituation);
 		
 		AbstractSituation* getNextSituation(AbstractSituation* abstractSituation);
 		
 	private:
-		void makeMove(Situation& situation, Command* command);
+		void makeMove(Situation& situation, Command* command, std::list<Figure*>* firstPlayerFigures, std::list<Figure*>* secondPlayerFigures);
 		
 		std::list<Command*>* getFigurePotentialMoves(Board& board, Figure* figure);
 
@@ -36,6 +36,8 @@ namespace chess_solver
 			std::list<Figure*>* figures, std::list<Figure*>* secondPlayerFigures);
 		
 		Figure* getFigureFromList(const Coordinates& coordinates, std::list<Figure*>* figures);
+		
+		Figure* getKingFromList(std::list<Figure*>* figures);
 	};
 }
 

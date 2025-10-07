@@ -2,86 +2,64 @@
 
 namespace chess_solver
 {
-	
-	ChessSituationMaker::~ChessSituationMaker()
-	{
-		
-	}
-	
 	AbstractSituation* ChessSituationMaker::getNextSituation(AbstractSituation* abstractSituation)
 	{
 		Situation* situation = reinterpret_cast<Situation*>(abstractSituation);
-		Situation* result = new Situation(*situation);
+		Situation* result = nullptr;
 		
 		std::list<Command*>* commands = situation->getPotentialMoves();
 		
 		Command* nextCommand = nullptr;
 		
+		std::list<Figure*>* figures = &situation->getWhiteFigures();
+		std::list<Figure*>* otherFigures = &situation->getBlackFigures();
+		
+		if (situation->getCurrentPlayer() == FigureColor::BLACK)
+		{
+			figures = &situation->getBlackFigures();
+			otherFigures = &situation->getWhiteFigures();
+		}
+		
 		std::list<Command*>::iterator iter = commands->begin();
 		
 		while (iter != commands->end() && !nextCommand)
 		{
+			if (MovingValidator::isMoveValid(*iter, *otherFigures, situation->getBoard()))
+			{
+				result = new Situation(*situation);
+				
+				nextCommand = *iter;
+				
+				makeMove(*situation, nextCommand, figures, otherFigures);
+				
+				if (MovingValidator::hasCheck(situation->getBoard(), getKingFromList(figures)->getCoordinates(), *otherFigures))
+				{
+					delete result;
+					result = nullptr;
+				}
+				else
+				{
+					result->setPotentialMoves(getAllSituationMoves(*result));
+				}
+			}
 			
-			
+			iter++;
+			commands->pop_front();
 		}
 		
-		
-//		std::list<Command*>* moves = nullptr;
-//		
-//		if (!hasSituation(*situation))
-//		{
-//			moves = getAllSituationMoves(*situation);
-//			
-//			this->potentialMoves.push_back(SituationMoves(*situation, moves));
-//		}
-//		else
-//		{
-//			moves = getSituationMoves(*situation);
-//		}
-		
-//		Command* command = nullptr;
-//		
-//		std::list<Figure*>* secondFigures = &situation->getBlackFigures();
-//		
-//		if (situation->getCurrentPlayer() == FigureColor::BLACK)
-//		{
-//			secondFigures = &situation->getWhiteFigures();
-//		}
-//		
-//		std::list<Command*>::iterator iter = moves->begin();
-//		
-//		while (iter != moves->end() && !command)
-//		{
-//			if (MovingValidator::isMoveValid(*iter, *secondFigures, result->getBoard()))
-//			{
-//				command = *iter;
-//				
-//				result->makeMove(command);
-//			
-//			}
-//			
-//			iter++;
-//			
-//			moves->pop_front();
-//		}
-		
-		return reinterpret_cast<AbstractSituation*>(result);
+		return result;
 	}
 	
-	void ChessSituationMaker::makeMove(Situation& situation, Command* command)
+	void ChessSituationMaker::prepareStartSituationMoves(Situation* startSituation)
+	{
+		startSituation->setPotentialMoves(getAllSituationMoves(*startSituation));
+	}
+	
+	void ChessSituationMaker::makeMove(Situation& situation, Command* command, std::list<Figure*>* firstPlayerFigures, std::list<Figure*>* secondPlayerFigures)
 	{
 		Coordinates& finish = command->getFinishCoordinates();
 		
 		Figure* figure = command->getFigure();
-		
-		std::list<Figure*>* figures = &situation.getWhiteFigures();
-		std::list<Figure*>* otherFigures = &situation.getBlackFigures();
-		
-		if (situation.getCurrentPlayer() == FigureColor::BLACK)
-		{
-			figures = &situation.getBlackFigures();
-			otherFigures = &situation.getWhiteFigures();
-		}
 		
 		situation.getBoard().setOccupancyByCoordinates(figure->getCoordinates(), false);
 		CommandTransformation* transCommand = nullptr;
@@ -95,23 +73,21 @@ namespace chess_solver
 			break;
 			
 		case CommandType::BEAT:
-			figureToTake = getFigureFromList(finish, otherFigures);
-			makeTaking(figure, finish, figureToTake, situation.getBoard(), otherFigures);
+			figureToTake = getFigureFromList(finish, secondPlayerFigures);
+			makeTaking(figure, finish, figureToTake, situation.getBoard(), secondPlayerFigures);
 			break;
 			
 		case CommandType::TRANSFORMATION:
 			transCommand = reinterpret_cast<CommandTransformation*>(command);
-			makeTransformation(figure, finish, situation.getBoard(), transCommand->getNewFigureType(), figures);
+			makeTransformation(figure, finish, situation.getBoard(), transCommand->getNewFigureType(), firstPlayerFigures);
 			break;
 			
 		case CommandType::BEAT_TRANSFORMATION:
-			figureToTake = getFigureFromList(finish, otherFigures);
+			figureToTake = getFigureFromList(finish, secondPlayerFigures);
 			transCommand = reinterpret_cast<CommandTransformation*>(command);
-			makeBeatTransformation(figure, finish, figureToTake, situation.getBoard(), transCommand->getNewFigureType(), figures, otherFigures);
+			makeBeatTransformation(figure, finish, figureToTake, situation.getBoard(), transCommand->getNewFigureType(), firstPlayerFigures, secondPlayerFigures);
 			break;
 		}
-		
-		
 	}
 	
 	std::list<Command*>* ChessSituationMaker::getFigurePotentialMoves(Board& board, Figure* figure)
@@ -222,6 +198,19 @@ namespace chess_solver
 		for (auto iter = figures->begin(); iter != figures->end(); iter++)
 		{
 			if ((*iter)->getCoordinates() == coordinates)
+			{
+				return *iter;
+			}
+		}
+		
+		return nullptr;
+	}
+
+	Figure* ChessSituationMaker::getKingFromList(std::list<Figure*>* figures)
+	{
+		for (auto iter = figures->begin(); iter != figures->end(); iter++)
+		{
+			if ((*iter)->getType() == FigureType::KING)
 			{
 				return *iter;
 			}

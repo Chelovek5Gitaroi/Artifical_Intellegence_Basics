@@ -29,7 +29,7 @@ IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
 CompilerSettings=0000000000000000000000000
-UnitCount=46
+UnitCount=47
 
 [VersionInfo]
 Major=1
@@ -361,16 +361,6 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit34]
-FileName=utilities\coordinates_converter.h
-CompileCpp=1
-Folder=utilities
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit35]
 FileName=utilities\comparator.h
 CompileCpp=1
 Folder=utilities
@@ -380,7 +370,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit36]
+[Unit35]
 FileName=solving\abstract_situation.h
 CompileCpp=1
 Folder=solving
@@ -390,7 +380,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit37]
+[Unit36]
 FileName=solving\abstract_solver.h
 CompileCpp=1
 Folder=solving
@@ -400,7 +390,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit38]
+[Unit37]
 FileName=solving\abstract_situation.cpp
 CompileCpp=1
 Folder=solving
@@ -410,7 +400,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit39]
+[Unit38]
 FileName=solving\abstract_solver.cpp
 CompileCpp=1
 Folder=solving
@@ -420,7 +410,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit40]
+[Unit39]
 FileName=utilities\abstract_command.h
 CompileCpp=1
 Folder=utilities
@@ -430,7 +420,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit41]
+[Unit40]
 FileName=utilities\abstract_command.cpp
 CompileCpp=1
 Folder=utilities
@@ -440,7 +430,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit42]
+[Unit41]
 FileName=solving\abstract_situation_maker.h
 CompileCpp=1
 Folder=solving
@@ -450,8 +440,18 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+[Unit42]
+FileName=solving\chess_solving\situation.cpp
+CompileCpp=1
+Folder=solving/chess_solving
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
 [Unit44]
-FileName=solving\chess_solving\situation.h
+FileName=solving\chess_solving\chess_situation_maker.h
 CompileCpp=1
 Folder=solving/chess_solving
 Compile=1
@@ -461,7 +461,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit43]
-FileName=solving\chess_solving\situation.cpp
+FileName=solving\chess_solving\situation.h
 CompileCpp=1
 Folder=solving/chess_solving
 Compile=1
@@ -480,18 +480,8 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit33]
-FileName=solving\tree_analyzer.h
-CompileCpp=1
-Folder=solving
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
 [Unit45]
-FileName=solving\chess_solving\chess_situation_maker.h
+FileName=solving\chess_solving\chess_situation_maker.cpp
 CompileCpp=1
 Folder=solving/chess_solving
 Compile=1
@@ -501,7 +491,27 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit46]
-FileName=solving\chess_solving\chess_situation_maker.cpp
+FileName=solving\chess_solving\solver.h
+CompileCpp=1
+Folder=solving/chess_solving
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit33]
+FileName=utilities\coordinates_converter.h
+CompileCpp=1
+Folder=utilities
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit47]
+FileName=solving\chess_solving\solver.cpp
 CompileCpp=1
 Folder=solving/chess_solving
 Compile=1
