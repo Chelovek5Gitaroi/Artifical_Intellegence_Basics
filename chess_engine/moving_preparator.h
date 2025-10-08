@@ -14,6 +14,8 @@ namespace chess_solver
 	class MovingPreparator final
 	{
 	public:
+		MovingPreparator() = delete;
+		
 		static std::list<Coordinates>* getPotentialPossibleCoordinates(const Coordinates& coordinates, FigureType type, FigureColor color, char boardSize);
 		
 	private:

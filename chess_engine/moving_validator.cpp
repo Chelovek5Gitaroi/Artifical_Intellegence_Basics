@@ -53,7 +53,7 @@ namespace chess_solver
 				break;
 				
 			case FigureType::PAWN:
-				result = isReachebleForPawn(start, finish, board);
+				result = isReachebleForPawn(start, finish, board, figure.getColor(), false, false);
 				break;
 			}
 		}
@@ -67,14 +67,7 @@ namespace chess_solver
 		
 		if (result)
 		{
-			if (isBeatTransformation)
-			{
-				result = isReachebleForPawnToTake(figure.getCoordinates(), finish, board);
-			}
-			else
-			{
-				result = isReachebleForPawn(figure.getCoordinates(), finish, board);
-			}
+			result = isReachebleForPawn(figure.getCoordinates(), finish, board, figure.getColor(), isBeatTransformation, true);
 		}
 		
 		return result;
@@ -110,7 +103,7 @@ namespace chess_solver
 				break;
 			
 			case FigureType::PAWN:
-				result = isReachebleForPawnToTake(start, finish, board);
+				result = isReachebleForPawn(start, finish, board, figure.getColor(), true, false);
 				break;
 			}
 		}
@@ -240,14 +233,44 @@ namespace chess_solver
 			   		(finish.getColumn() == start.getColumn() - 2 || finish.getColumn() == start.getColumn() + 2));
 	}
 	
-	bool MovingValidator::isReachebleForPawn(const Coordinates& start, const Coordinates& finish, const Board& board)
+	bool MovingValidator::isReachebleForPawn(const Coordinates& start, const Coordinates& finish, const Board& board, FigureColor color, bool isTaking, bool isTransformation)
 	{
-		return finish.getColumn() == start.getColumn() && std::abs(finish.getRow() - start.getRow()) == 1;
-	}
-	
-	bool MovingValidator::isReachebleForPawnToTake(const Coordinates& start, const Coordinates& finish, const Board& board)
-	{
-		return std::abs(finish.getRow() - start.getRow()) == 1 && std::abs(finish.getColumn() - start.getColumn()) == 1;
+		bool result = std::abs(finish.getRow() - start.getRow()) == 1;
+		
+		if (result)
+		{
+			if (isTaking)
+			{
+				result = std::abs(finish.getColumn() - start.getColumn()) == 1;
+			}
+			else
+			{
+				result = finish.getColumn() == start.getColumn();
+			}
+			
+			if (result)
+			{
+				if (color == FigureColor::WHITE)
+				{
+					result = finish.getRow() > start.getRow();
+				}
+				else
+				{
+					result = finish.getRow() < start.getRow();
+				}
+				
+				if (result && isTransformation)
+				{
+					result = finish.getRow() == 1 || finish.getRow() == board.getBoardSize();
+				}
+				else
+				{
+					result = 1 < finish.getRow() && finish.getRow() < board.getBoardSize();
+				}
+			}
+		}
+		
+		return result;
 	}
 	
 	bool MovingValidator::isReachebleForKing(const Coordinates& start, const Coordinates& finish, const Board& board)
@@ -258,7 +281,7 @@ namespace chess_solver
 	}
 	
 	
-	bool MovingValidator::hasCheck(const Board& board, const Coordinates& kingCoordinates, std::list<Figure*>& secondPlayerFigures)
+	bool MovingValidator::hasCheck(const Board& board, const Coordinates& kingCoordinates, FigureColor otherPlayerColor, std::list<Figure*>& secondPlayerFigures)
 	{
 		bool result = false;
 		
@@ -282,7 +305,8 @@ namespace chess_solver
 				break;
 				
 			case FigureType::PAWN:
-				result = isReachebleForPawnToTake((*iter)->getCoordinates(), kingCoordinates, board);
+				result = isReachebleForPawn((*iter)->getCoordinates(), kingCoordinates, board, otherPlayerColor, true, true) ||
+					isReachebleForPawn((*iter)->getCoordinates(), kingCoordinates, board, otherPlayerColor, true, false);
 				break;
 			}
 		}

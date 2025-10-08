@@ -9,6 +9,7 @@
 #include "../../chess_engine/moving_preparator.h"
 #include "../../chess_engine/moving_validator.h"
 #include "../../utilities/command.h"
+#include "../../utilities/chess_command_executor.h"
 #include "situation.h"
 
 namespace chess_solver
@@ -21,23 +22,19 @@ namespace chess_solver
 		AbstractSituation* getNextSituation(AbstractSituation* abstractSituation);
 		
 	private:
-		void makeMove(Situation& situation, Command* command, std::list<Figure*>* firstPlayerFigures, std::list<Figure*>* secondPlayerFigures);
+		ChessCommandExecutor executor;
 		
-		std::list<Command*>* getFigurePotentialMoves(Board& board, Figure* figure, const Coordinates& kingCoordinates, std::list<Figure*>* otherFigures);
+		std::list<Command*>* getFigurePotentialMoves(Board& board, Figure* figure, const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures);
 
-//		void addAllTransformationCommandsToList(Figure* figure, Coordinates& finish, std::list<Command*>& commands, const Coordinates& kingCoordinates, std::list<Figure*>* otherFigures);
-		
 		std::list<Command*>* getAllSituationMoves(Situation& situation, const Coordinates& kingCoordinates, std::list<Figure*>* otherFigures);
 		
-		void makeMove(Figure* figure, const Coordinates& finishCoordinates, Board& board);
-		void makeTaking(Figure* figure, const Coordinates& finishCoordinates, Figure* figureToTake, Board& board, std::list<Figure*>* secondPlayerFigures);
-		void makeTransformation(Figure* figure, const Coordinates& finishCoordinates, Board& board, FigureType newFigureType, std::list<Figure*>* figures);
-		void makeBeatTransformation(Figure* figure, const Coordinates& finishCoordinates, Figure* figureToTake, Board& board, FigureType newFigureType,
-			std::list<Figure*>* figures, std::list<Figure*>* secondPlayerFigures);
-		
-		Figure* getFigureFromList(const Coordinates& coordinates, std::list<Figure*>* figures);
-		
 		Figure* getKingFromList(std::list<Figure*>* figures);
+		
+		Command* createValidCommand(Figure* figure, Board& board, const Coordinates& finishCoordinates, CommandType type,
+			const Coordinates& kingCoordinates, std::list<Figure*>* figures, FigureColor otherColor, std::list<Figure*>* otherFigures);
+		
+		
+		
 	};
 }
 

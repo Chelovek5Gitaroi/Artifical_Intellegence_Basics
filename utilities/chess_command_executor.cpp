@@ -13,15 +13,30 @@ namespace chess_solver
 	
 	void ChessCommandExecutor::executeCommand(Command* command, Board& board, std::list<Figure*>* figures, std::list<Figure*>* otherFigures)
 	{
+		Figure* figureToTake = nullptr;
+		CommandTransformation* transCommand = nullptr;
+		
+		
 		switch (command->getType())
 		{
 		case CommandType::MOVE:
+			executeMove(board, command->getFigure(), command->getFinishCoordinates());
 			break;
+			
 		case CommandType::BEAT:
+			figureToTake = getFigureFromList(command->getFinishCoordinates(), otherFigures);
+			executeTake(board, command->getFigure(), figureToTake, otherFigures);
 			break;
+			
 		case CommandType::TRANSFORMATION:
+			transCommand = reinterpret_cast<CommandTransformation*>(command);
+			executeTransformation(board, command->getFigure(), transCommand->getNewFigureType(), figures);
 			break;
+			
 		case CommandType::BEAT_TRANSFORMATION:
+			transCommand = reinterpret_cast<CommandTransformation*>(command);
+			figureToTake = getFigureFromList(command->getFinishCoordinates(), otherFigures);
+			executeBeatTransformation(board, command->getFigure(), figureToTake, transCommand->getNewFigureType(), figures, otherFigures);
 			break;
 		}
 	}
@@ -31,12 +46,19 @@ namespace chess_solver
 		switch (command->getType())
 		{
 		case CommandType::MOVE:
+			undoMove(board, command->getFigure());
 			break;
+			
 		case CommandType::BEAT:
+			undoTake(board, command->getFigure(), figures);
 			break;
+			
 		case CommandType::TRANSFORMATION:
+			undoTransformation(board, command->getFigure(), command->getFinishCoordinates(), figures);
 			break;
+			
 		case CommandType::BEAT_TRANSFORMATION:
+			undoBeatTransformation(board, command->getFigure(), figures, otherFigures);
 			break;
 		}
 	}
@@ -124,13 +146,13 @@ namespace chess_solver
 	{
 		otherFigures->push_back(this->takenFigure);
 		
-		Figure* createdFigure = getFigureFromList(this->takenFigure, figures);
+		Figure* createdFigure = getFigureFromList(this->takenFigure->getCoordinates(), figures);
 		figures->remove(createdFigure);
 		delete createdFigure;
-//		
-//		board.setOccupancyByCoordinates(figure->getCoordinates(), true);
-//		
-//		figures->push_back(figure);
+		
+		figures->push_back(figure);
+		
+		board.setOccupancyByCoordinates(figure->getCoordinates(), true);
 	}
 	
 	void ChessCommandExecutor::clearStartCoordinates()

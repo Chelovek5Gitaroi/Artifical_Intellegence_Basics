@@ -24,7 +24,7 @@ namespace chess_solver
 	private:
 		Board board;
 		
-		MovingValidator validator;
+//		MovingValidator validator;
 		
 		FigureColor currentPlayer;
 		

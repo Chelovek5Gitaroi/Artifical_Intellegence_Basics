@@ -15,9 +15,11 @@ namespace chess_solver
 	class MovingValidator final
 	{
 	public:
+		MovingValidator() = delete;
+		
 		static bool isMoveValid(Command* command, std::list<Figure*>& secondPlayerFigures, Board& board);
 		
-		static bool hasCheck(const Board& board, const Coordinates& kingCoordinates, std::list<Figure*>& secondPlayerFigures);
+		static bool hasCheck(const Board& board, const Coordinates& kingCoordinates, FigureColor otherPlayerColor, std::list<Figure*>& secondPlayerFigures);
 		
 	private:
 		static bool isMoveValid(Figure& figure, const Coordinates& finish, const Board& board);
@@ -30,8 +32,7 @@ namespace chess_solver
 		static bool isVerticalEmpty(const Coordinates& start, const Coordinates& finish, const Board& board);
 		static bool isDiagonalEmpty(const Coordinates& start, const Coordinates& finish, const Board& board);
 		
-		static bool isReachebleForPawn(const Coordinates& start, const Coordinates& finish, const Board& board);
-		static bool isReachebleForPawnToTake(const Coordinates& start, const Coordinates& finish, const Board& board);
+		static bool isReachebleForPawn(const Coordinates& start, const Coordinates& finish, const Board& board, FigureColor color, bool isTaking, bool isTransformation);
 		
 		static bool isReachebleForKnight(const Coordinates& start, const Coordinates& finish, const Board& board);
 		static bool isReachebleForKing(const Coordinates& start, const Coordinates& finish, const Board& board);

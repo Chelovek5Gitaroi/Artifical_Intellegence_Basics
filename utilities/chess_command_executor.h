@@ -15,15 +15,11 @@ namespace chess_solver
 		void executeCommand(Command* command, Board& board, std::list<Figure*>* figures, std::list<Figure*>* otherFigures);
 		void undoCommand(Command* command, Board& board, std::list<Figure*>* figures, std::list<Figure*>* otherFigures);
 		
-		ChessCommandExecutor();
 		~ChessCommandExecutor();
 		
 	private:
 		Coordinates* startCoordinates = nullptr;
 		Figure* takenFigure = nullptr;
-		
-		
-		
 		
 		void executeMove(Board& board, Figure* figure, const Coordinates& finishCoordinates);
 		void undoMove(Board& board, Figure* figure);

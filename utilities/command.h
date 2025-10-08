@@ -17,7 +17,7 @@ namespace chess_solver
 	class Command : public AbstractCommand
 	{
 	public:
-		Command(Figure* figure, Coordinates& finishCoordinates, CommandType commandType) : figure(figure), finishCoordinates(finishCoordinates), type(commandType) {}
+		Command(Figure* figure, const Coordinates& finishCoordinates, CommandType commandType) : figure(figure), finishCoordinates(finishCoordinates), type(commandType) {}
 		~Command(){}
 		
 		Coordinates& getFinishCoordinates() { return this->finishCoordinates; }
@@ -43,7 +43,7 @@ namespace chess_solver
 	class CommandTransformation : public Command
 	{
 	public:
-		CommandTransformation(Figure* figure, Coordinates& finishCoordinates, FigureType newFigureType, CommandType commandType = CommandType::TRANSFORMATION) :
+		CommandTransformation(Figure* figure, const Coordinates& finishCoordinates, FigureType newFigureType, CommandType commandType = CommandType::TRANSFORMATION) :
 			Command(figure, finishCoordinates, commandType), newFigureType(newFigureType) {}
 		
 		FigureType getNewFigureType() { return newFigureType; }
