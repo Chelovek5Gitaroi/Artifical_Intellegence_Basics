@@ -4,19 +4,19 @@
 #include <list>
 
 #include "abstract_situation.h"
-#include "../utilities/command.h"
+#include "../utilities/abstract_command.h"
 
 namespace chess_solver
 {
 	class OptionTree
 	{
 	public:
-		OptionTree(AbstractSituation* situation, Command* previousCommand, OptionTree* parent, short depth);
+		OptionTree(AbstractSituation* situation, AbstractCommand* previousCommand, OptionTree* parent, short depth);
 		
 		~OptionTree();
 		
 		AbstractSituation* getSituation() {	return situation; }
-		Command* getPreviousCommand() { return previousCommand; }
+		AbstractCommand* getPreviousCommand() { return previousCommand; }
 		
 		short getDepth() { return this->depth; }
 		
@@ -33,7 +33,7 @@ namespace chess_solver
 		short depth;
 
 		AbstractSituation* situation;
-		Command* previousCommand;
+		AbstractCommand* previousCommand;
 		
 		OptionTree* parent;
 

@@ -30,8 +30,6 @@ namespace chess_solver
 		bool operator>=(const Coordinates& other);
 		
 	private:
-//		Coordinates(){}
-	
 		char abs() const { return std::sqrt(row * row + column * column); }
 	
 		char row;

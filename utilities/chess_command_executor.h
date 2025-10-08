@@ -12,30 +12,34 @@ namespace chess_solver
 	class ChessCommandExecutor
 	{
 	public:
-		void executeCommand(Command* command, Board& board, Figure* figure, std::list<Figure*>* figures, std::list<Figure*>* otherFigures);
-		void undoCommand(Command* command, Board& board, Figure* figure, std::list<Figure*>* figures, std::list<Figure*>* otherFigures);
+		void executeCommand(Command* command, Board& board, std::list<Figure*>* figures, std::list<Figure*>* otherFigures);
+		void undoCommand(Command* command, Board& board, std::list<Figure*>* figures, std::list<Figure*>* otherFigures);
 		
 		ChessCommandExecutor();
 		~ChessCommandExecutor();
 		
 	private:
-		Figure* takenFigure = nullptr;
 		Coordinates* startCoordinates = nullptr;
+		Figure* takenFigure = nullptr;
+		
+		
 		
 		
 		void executeMove(Board& board, Figure* figure, const Coordinates& finishCoordinates);
 		void undoMove(Board& board, Figure* figure);
 		
 		void executeTake(Board& board, Figure* figure, Figure* figureToTake, std::list<Figure*>* otherFigures);
-		void undoTake(Command* command, Board& board, Figure* figure, Figure* figureToTake, std::list<Figure*>* otherFigures);
+		void undoTake(Board& board, Figure* figure, std::list<Figure*>* otherFigures);
 		
-		void executeTransformation(CommandTransformation* command, Board& board, Figure* figure, std::list<Figure*>* figures);
-		void undoTransformation(CommandTransformation* command, Board& board, Figure* figure, std::list<Figure*>* figures);
+		void executeTransformation(Board& board, Figure* figure, FigureType newFigureType, std::list<Figure*>* figures);
+		void undoTransformation(Board& board, Figure* figure, const Coordinates& finishCoordinates, std::list<Figure*>* figures);
 		
-		void executeBeatTransformation(CommandTransformation* command, Board& board, Figure* figure, Figure* figureToTake, std::list<Figure*>* figures, std::list<Figure*>* otherFigures);
-		void undoBeatTransformation(CommandTransformation* command, Board& board, Figure* figure, Figure* figureToTake, std::list<Figure*>* figures, std::list<Figure*>* otherFigures);
+		void executeBeatTransformation(Board& board, Figure* figure, Figure* figureToTake, FigureType newFigureType, std::list<Figure*>* figures, std::list<Figure*>* otherFigures);
+		void undoBeatTransformation(Board& board, Figure* figure, std::list<Figure*>* figures, std::list<Figure*>* otherFigures);
 		
 		void clearStartCoordinates();
+		
+		Figure* getFigureFromList(const Coordinates& coordinates, std::list<Figure*>* figures);
 	};
 }
 

@@ -2,18 +2,6 @@
 
 namespace chess_solver
 {
-//	Coordinates::Coordinates(Coordinates& other)
-//	{
-//		this->column = other.column;
-//		this->row = other.row;
-//	}
-//	
-//	Coordinates::Coordinates(char column, char row)
-//	{
-//		this->column = column;
-//		this->row = row;
-//	}
-	
 	Coordinates& Coordinates::operator=(const Coordinates& other)
 	{
 		this->column = other.column;

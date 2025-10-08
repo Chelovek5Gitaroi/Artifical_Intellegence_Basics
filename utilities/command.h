@@ -1,6 +1,7 @@
 #ifndef COMMAND
 #define COMMAND
 
+#include "abstract_command.h"
 #include "../chess_entities/figure.h"
 
 namespace chess_solver
@@ -13,10 +14,11 @@ namespace chess_solver
 		BEAT_TRANSFORMATION	
 	};
 	
-	class Command
+	class Command : public AbstractCommand
 	{
 	public:
 		Command(Figure* figure, Coordinates& finishCoordinates, CommandType commandType) : figure(figure), finishCoordinates(finishCoordinates), type(commandType) {}
+		~Command(){}
 		
 		Coordinates& getFinishCoordinates() { return this->finishCoordinates; }
 		Figure* getFigure() { return figure; }
@@ -27,6 +29,16 @@ namespace chess_solver
 		CommandType type;
 		Figure* figure;
 	};
+	
+//	class CommandBeat : public Command
+//	{
+//	public:
+//		CommandBeat(Figure* figure, Figure* figureToTake) : Command(figure, figureToTake->getCoordinates(), CommandType::BEAT), figureToTake(figureToTake) {}
+//		
+//		Figure* getFigureToTake() { return figureToTake; }
+//	private:
+//		Figure* figureToTake;
+//	};
 	
 	class CommandTransformation : public Command
 	{
@@ -39,6 +51,17 @@ namespace chess_solver
 	private:
 		FigureType newFigureType;
 	};
+	
+//	class CommandBeatTransformation : public CommandTransformation
+//	{
+//	public:
+//		CommandBeatTransformation(Figure* figure, Figure* figureToTake, FigureType newFigureType) :
+//			Command(figure, figure->getCoordinates(), CommandType::BEAT_TRANSFORMATION), figureToTake(figureToTake) {}
+//		
+//		Figure* getFigureToTake() { return figureToTake; }
+//	private:
+//		Figure* figureToTake;	
+//	};
 }
 
 #endif

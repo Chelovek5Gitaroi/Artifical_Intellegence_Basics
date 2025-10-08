@@ -2,7 +2,7 @@
 
 namespace chess_solver
 {
-	OptionTree::OptionTree(AbstractSituation* situation, Command* previousCommand, OptionTree* parent, short depth)
+	OptionTree::OptionTree(AbstractSituation* situation, AbstractCommand* previousCommand, OptionTree* parent, short depth)
 	{
 		this->situation = situation;
 		
