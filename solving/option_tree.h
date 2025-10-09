@@ -17,8 +17,10 @@ namespace chess_solver
 		
 		AbstractSituation* getSituation() {	return situation; }
 		AbstractCommand* getPreviousCommand() { return previousCommand; }
+		void setCommand(AbstractCommand* command) { this->previousCommand = command; }
 		
 		short getDepth() { return this->depth; }
+		void increaseDepth() { this->depth++; }
 		
 		OptionTree* getParent() { return parent; }
 		

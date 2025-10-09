@@ -16,11 +16,13 @@ namespace chess_solver
 	protected:
 		void initTree(AbstractSituation* startSituation) override;
 	
+		OptionTree* createChild(OptionTree* tree) override;
+	
 		bool isTargetSituation(OptionTree* tree) override;
 	
 		bool isDeadlock(OptionTree* tree, int maximalDepth) override;
 	
-		
+		void addNewChild(OptionTree* tree);
 	
 	
 	private:

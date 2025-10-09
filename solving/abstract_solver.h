@@ -15,18 +15,22 @@ namespace chess_solver
 		virtual ~AbstractSolver() = 0;
 		
 //		virtual void UseDeepSearch(AbstractSituation* startSituation, short maximalDepth, short currentDepth) = 0;
-	
+		
 		
 	
 	protected:
-		OptionTree* getOptionTree() { return tree; }
+		OptionTree* getOptionTreeRoot() { return tree; }
 		void clearTree();
+		
+		virtual OptionTree* createChild(OptionTree* tree);
 		
 		virtual void initTree(AbstractSituation* startSituation);
 		
 		virtual bool isTargetSituation(OptionTree* tree) = 0;
 		
 		virtual bool isDeadlock(OptionTree* tree, int maximalDepth) = 0;
+		
+		
 		
 		AbstractSituationMaker* getSituationMaker() { return situationMaker; }
 		

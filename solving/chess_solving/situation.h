@@ -30,9 +30,11 @@ namespace chess_solver
 		
 		bool operator==(const Situation& other) const;
 		
+		void setCurrentPlayer(FigureColor currentPlayer) { this->currentPlayer = currentPlayer; }
+		
 		std::list<Command*>* getPotentialMoves() { return potentialMoves; }
 		
-		void setPotentialMoves(std::list<Command*>* potentialMoves);// { this->potentialMoves = potentialMoves; }
+		void setPotentialMoves(std::list<Command*>* potentialMoves);
 		
 	private:
 		std::list<Figure*> whiteFigures;

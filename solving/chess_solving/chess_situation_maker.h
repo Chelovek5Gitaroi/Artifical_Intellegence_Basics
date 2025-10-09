@@ -26,14 +26,15 @@ namespace chess_solver
 		
 		std::list<Command*>* getFigurePotentialMoves(Board& board, Figure* figure, const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures);
 
-		std::list<Command*>* getAllSituationMoves(Situation& situation, const Coordinates& kingCoordinates, std::list<Figure*>* otherFigures);
+		std::list<Command*>* getAllSituationMoves(Situation& situation);
 		
 		Figure* getKingFromList(std::list<Figure*>* figures);
 		
 		Command* createValidCommand(Figure* figure, Board& board, const Coordinates& finishCoordinates, CommandType type,
 			const Coordinates& kingCoordinates, std::list<Figure*>* figures, FigureColor otherColor, std::list<Figure*>* otherFigures);
 		
-		
+		bool createValidTransformationCommands(Figure* figure, Board& board, const Coordinates& finishCoordinates, CommandType type,
+			const Coordinates& kingCoordinates, std::list<Figure*>* figures, FigureColor otherColor, std::list<Figure*>* otherFigures, std::list<Command*>* commands);
 		
 	};
 }
