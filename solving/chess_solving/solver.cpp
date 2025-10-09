@@ -5,16 +5,14 @@ namespace chess_solver
 
 	
 	
-//	void Solver::UseDeepSearch(AbstractSituation* startSituation, short maximalDepth, short currentDepth)
-//	{
-//		
-//	}
-
-	Solver::Solver(AbstractSituationMaker* situationMaker) : AbstractSolver(situationMaker)
+	bool Solver::useDeepSearch(AbstractSituation* startSituation, short maximalDepth)
 	{
+		
+		
+		
 	}
 
-	void Solver::addNewChild(OptionTree* tree)
+	Solver::Solver(AbstractSituationMaker* situationMaker) : AbstractSolver(situationMaker)
 	{
 		
 	}
@@ -86,5 +84,26 @@ namespace chess_solver
 		return result;
 	}
 
+	bool Solver::deepSearch(OptionTree* tree, short maximalDepth)
+	{
+		if (isDeadlock(tree, maximalDepth))
+		{
+			return false;
+		}
+		else if (isTargetSituation(tree))
+		{
+			return true;
+		}
+		else
+		{
+			bool areAllChildrenTarget = true;
+			
+			OptionTree* child = createChild(tree);
+			
+			reinterpret_cast<Situation*>(tree->getSituation())->getPotentialMoves()->pop_front();
+			
+			
+		}
+	}
 
 }

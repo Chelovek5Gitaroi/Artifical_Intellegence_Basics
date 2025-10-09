@@ -11,7 +11,7 @@ namespace chess_solver
 	public:
 		Solver(AbstractSituationMaker* situationMaker);
 				
-//		void UseDeepSearch(AbstractSituation* startSituation, short maximalDepth, short currentDepth) override;
+		bool useDeepSearch(AbstractSituation* startSituation, short maximalDepth) override;
 	
 	protected:
 		void initTree(AbstractSituation* startSituation) override;
@@ -22,7 +22,7 @@ namespace chess_solver
 	
 		bool isDeadlock(OptionTree* tree, int maximalDepth) override;
 	
-		void addNewChild(OptionTree* tree);
+//		void addNewChild(OptionTree* tree);
 	
 	
 	private:
@@ -30,6 +30,8 @@ namespace chess_solver
 		bool isTargetSituation(Situation* situation);
 		
 		bool isDeadlock(Situation* situation, short maximalDepth, short currentDepth);
+		
+		bool deepSearch(OptionTree* tree, short maximalDepth);
 		
 	};
 }
