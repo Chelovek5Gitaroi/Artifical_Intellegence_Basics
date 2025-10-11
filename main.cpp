@@ -6,13 +6,13 @@
 
 int main(int argc, char** argv)
 {
-	chess_solver::ChessController controller(chess_solver::Game::BOARD_SIZE, chess_solver::FigureColor::WHITE);
+//	chess_solver::ChessController controller(chess_solver::Game::BOARD_SIZE, chess_solver::FigureColor::WHITE);
 	
-	std::string fileName(chess_solver::ChessController::DEFAULT_FIGURE_DESCRIPTION_NAME);
+//	std::string fileName(chess_solver::ChessController::DEFAULT_FIGURE_DESCRIPTION_NAME);
 	
-	controller.init(fileName);
+//	controller.init(fileName);
 	
-	controller.show();
+//	controller.show();
 	
 	system("pause");
 	

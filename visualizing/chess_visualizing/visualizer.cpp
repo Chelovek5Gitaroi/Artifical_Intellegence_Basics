@@ -5,19 +5,14 @@ namespace chess_solver
 {
 	const std::string Visualizer::DEFAULT_FILE = "CONOUT$";
 	
-	void Visualizer::showSituation()
+	void Visualizer::showSituation(AbstractSituation* abstractSituation)
 	{
+		Situation* situation = reinterpret_cast<Situation*>(abstractSituation);
+		
 		copyBoardBufferToOutBuffer();
 		
-		if (firstPlayer)
-		{
-			renderPlayerFigures(firstPlayer);
-		}
-		
-		if (secondPlayer)
-		{
-			renderPlayerFigures(secondPlayer);
-		}
+		renderFigures(situation->getWhiteFigures());
+		renderFigures(situation->getBlackFigures());
 		
 		drawColumnMarks();
 		drawRowMarks();
@@ -27,9 +22,9 @@ namespace chess_solver
 		WriteConsoleOutput(this->consoleFile, this->buffer, this->bufferSize, this->topLeftBufferPoint, &this->consoleScreenArea);
 	}
 	
-	void Visualizer::renderPlayerFigures(Player* player)
+	void Visualizer::renderFigures(std::list<Figure*>& figures)
 	{
-		for (Figure* figure: player->getAllFigures())
+		for (Figure* figure: figures)
 		{
 			short bufferCellIndex = getBufferCellIndexFromChessCoordinates(figure->getCoordinates());
 			
@@ -52,15 +47,13 @@ namespace chess_solver
 		}
 	}
 	
-	Visualizer::Visualizer(Board* board, Player* firstPlayer, Player* secondPlayer)
+	Visualizer::Visualizer(char boardSize)
 	{
-		this->board = board;
-		this->firstPlayer = firstPlayer;
-		this->secondPlayer = secondPlayer;
+		this->boardSize = boardSize;
 		
-		this->bufferSize.X = this->board->getBoardSize() * TILE_WIDTH;
-		this->bufferSize.Y = this->board->getBoardSize() * TILE_WIDTH;
-				
+		this->bufferSize.X = this->boardSize * TILE_WIDTH;
+		this->bufferSize.Y = this->boardSize * TILE_WIDTH;
+		
 		this->buffer = new CHAR_INFO[this->bufferSize.X * this->bufferSize.Y];
 		this->emptyBoardBuffer = new CHAR_INFO[this->bufferSize.X * this->bufferSize.Y];
 		
@@ -72,10 +65,12 @@ namespace chess_solver
 		this->consoleScreenArea.Left = Visualizer::LEFT_BOARD_IDENT;
 		this->consoleScreenArea.Top = Visualizer::TOP_BOARD_IDENT;
 		this->consoleScreenArea.Bottom = Visualizer::TOP_BOARD_IDENT + this->bufferSize.Y - 1;
-		this->consoleScreenArea.Right = Visualizer::LEFT_BOARD_IDENT + this->bufferSize.X - 1;	
+		this->consoleScreenArea.Right = Visualizer::LEFT_BOARD_IDENT + this->bufferSize.X - 1;
+		
+		this->currentCursorPosition.X = this->consoleScreenArea.Right + SIDE_COMMANDS_IDENT;
+		this->currentCursorPosition.Y = TOP_COMMAND_IDENT;
 		
 		prepareClearBoardBuffer();
-		
 	}
 	
 	Visualizer::~Visualizer()
@@ -84,10 +79,33 @@ namespace chess_solver
 		delete[] this->emptyBoardBuffer;
 	}
 	
-//	void Visualizer::writeMove(std::string& moveDescription)
-//	{
-//		
-//	}
+	void Visualizer::showCommand(AbstractCommand* abstractCommand)
+	{
+		SetConsoleCursorPosition(this->consoleFile, this->currentCursorPosition);
+		Command* command = reinterpret_cast<Command*>(abstractCommand);
+		
+		std::cout << getFigureChar(*command->getFigure()) << command->getFigure()->getCoordinates();
+		
+		CommandType type = command->getType();
+		
+		if (type == CommandType::BEAT || type == CommandType::BEAT_TRANSFORMATION)
+		{
+			std::cout << *ChessChars::COMMAND_POSITION_BEAT_SEPARATORS.begin();
+		}
+		else
+		{
+			std::cout << *ChessChars::COMMAND_POSITION_MOVE_SEPARATORS.begin();
+		}
+		
+		std::cout << command->getFinishCoordinates();
+		
+		if (type == CommandType::TRANSFORMATION || type == CommandType::BEAT_TRANSFORMATION)
+		{
+			std::cout << ChessChars::COMMAND_TRANSFORMATION_CHAR;
+		}
+		
+		this->currentCursorPosition.Y++;
+	}
 	
 	char Visualizer::getFigureChar(Figure& figure)
 	{
@@ -96,27 +114,27 @@ namespace chess_solver
 		switch (figure.getType())
 		{
 		case FigureType::PAWN:
-			figureChar = FigureCreator::FIGURE_CHAR_PAWN;
+			figureChar = ChessChars::FIGURE_CHAR_PAWN;
 			break;
 			
 		case FigureType::KNIGHT:
-			figureChar = FigureCreator::FIGURE_CHAR_KNIGHT;
+			figureChar = ChessChars::FIGURE_CHAR_KNIGHT;
 			break;
 				
 		case FigureType::BISHOP:
-			figureChar = FigureCreator::FIGURE_CHAR_BISHOP;
+			figureChar = ChessChars::FIGURE_CHAR_BISHOP;
 			break;
 				
 		case FigureType::ROCK:
-			figureChar = FigureCreator::FIGURE_CHAR_ROCK;
+			figureChar = ChessChars::FIGURE_CHAR_ROCK;
 			break;
 				
 		case FigureType::QUEEN:
-			figureChar = FigureCreator::FIGURE_CHAR_QUEEN;
+			figureChar = ChessChars::FIGURE_CHAR_QUEEN;
 			break;
 				
 		case FigureType::KING:
-			figureChar = FigureCreator::FIGURE_CHAR_KING;
+			figureChar = ChessChars::FIGURE_CHAR_KING;
 			break;
 		}
 			
@@ -125,9 +143,9 @@ namespace chess_solver
 	
 	void Visualizer::prepareClearBoardBuffer()
 	{
-		for (short row = 0; row < this->board->getBoardSize(); row++)
+		for (short row = 0; row < this->boardSize; row++)
 		{
-			for (short column = 0; column < this->board->getBoardSize(); column++)
+			for (short column = 0; column < this->boardSize; column++)
 			{
 				short cellIndex = getBufferCellIndexFromCoordinates(row, column);
 				
@@ -155,9 +173,9 @@ namespace chess_solver
 	
 	void Visualizer::copyBoardBufferToOutBuffer()
 	{
-		for (char row = 0; row < this->board->getBoardSize(); row++)
+		for (char row = 0; row < this->boardSize; row++)
 		{
-			for (char column = 0; column < this->board->getBoardSize(); column++)
+			for (char column = 0; column < this->boardSize; column++)
 			{
 				short cellIndex = getBufferCellIndexFromCoordinates(row, column);
 				
@@ -175,17 +193,9 @@ namespace chess_solver
 		}
 	}
 	
-//	Coordinates Visualizer::makeChessCoordinatesFromIndexes(short rowIndex, short columnIndex)
-//	{
-//		char row = this->board->getBoardSize() - static_cast<char>(rowIndex);
-//		char column = static_cast<char>(columnIndex) + CoordinatesConverter::MINIMAL_COLUMN_NAME;
-//		
-//		return Coordinates(column, row);
-//	}
-	
 	short Visualizer::getBufferCellIndexFromChessCoordinates(const Coordinates& coordinates)
 	{
-		short rowIndex = static_cast<short>(CoordinatesConverter::getRowIndexFromCoordinate(coordinates.getRow(), this->board->getBoardSize()));
+		short rowIndex = static_cast<short>(CoordinatesConverter::getRowIndexFromCoordinate(coordinates.getRow(), this->boardSize));
 		short columnIndex = static_cast<short>(CoordinatesConverter::getColumnIndexFromCoordinate(coordinates.getColumn()));
 
 		return getBufferCellIndexFromCoordinates(rowIndex, columnIndex);
@@ -211,14 +221,14 @@ namespace chess_solver
 		std::string frameRow = "";
 		
 		frameRow += BOARD_FRAME_ANGLE_CHAR;
-		frameRow.insert(frameRow.end(), this->board->getBoardSize() * TILE_WIDTH, BOARD_FRAME_HORIZONTAL);
+		frameRow.insert(frameRow.end(), this->boardSize * TILE_WIDTH, BOARD_FRAME_HORIZONTAL);
 		frameRow += BOARD_FRAME_ANGLE_CHAR;
 		
 		SetConsoleCursorPosition(this->consoleFile, cursorPosition);
 		
 		std::cout << frameRow;
 		
-		for (char row = 0; row < this->board->getBoardSize(); row++)
+		for (char row = 0; row < this->boardSize; row++)
 		{
 			for (char rowShift = 0; rowShift < TILE_WIDTH; rowShift++)
 			{
@@ -254,11 +264,11 @@ namespace chess_solver
 		
 		std::string marksStr = "";
 		
-		marksStr.insert(marksStr.begin(), this->board->getBoardSize() * TILE_WIDTH, TILE_CHAR);
+		marksStr.insert(marksStr.begin(), this->boardSize * TILE_WIDTH, TILE_CHAR);
 		
-		for (char i = 0; i < this->board->getBoardSize(); i++)
+		for (char i = 0; i < this->boardSize; i++)
 		{
-			marksStr[i * TILE_WIDTH + TILE_WIDTH / 2] = CoordinatesConverter::MINIMAL_COLUMN_NAME + i;
+			marksStr[i * TILE_WIDTH + TILE_WIDTH / 2] = ChessChars::FIRST_ENGLISH_LETTER + i;
 		}
 		
 		std::cout << marksStr;
@@ -271,12 +281,12 @@ namespace chess_solver
 		
 		COORD cursorPosition{ cursorColumn, cursorRow };
 		
-		for (short row = 0; row < this->board->getBoardSize(); row++)
+		for (short row = 0; row < this->boardSize; row++)
 		{
 			cursorPosition.Y = cursorRow + row * TILE_WIDTH + TILE_WIDTH / 2;
 			
 			SetConsoleCursorPosition(consoleFile, cursorPosition);
-			std::cout << (this->board->getBoardSize() - row);
+			std::cout << (this->boardSize - row);
 		}
 	}
 	

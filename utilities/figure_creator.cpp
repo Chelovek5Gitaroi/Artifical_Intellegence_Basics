@@ -30,27 +30,27 @@ namespace chess_solver
 		
 		switch (ch)
 		{
-		case  FIGURE_CHAR_PAWN:
+		case ChessChars::FIGURE_CHAR_PAWN:
 			figureType = FigureType::PAWN;
 			break;
 			
-		case FIGURE_CHAR_BISHOP:
+		case ChessChars::FIGURE_CHAR_BISHOP:
 			figureType = FigureType::BISHOP;
 			break;
 			
-		case FIGURE_CHAR_KNIGHT:
+		case ChessChars::FIGURE_CHAR_KNIGHT:
 			figureType = FigureType::KNIGHT;
 			break;
 			
-		case FIGURE_CHAR_ROCK:
+		case ChessChars::FIGURE_CHAR_ROCK:
 			figureType = FigureType::ROCK;
 			break;
 			
-		case FIGURE_CHAR_QUEEN:
+		case ChessChars::FIGURE_CHAR_QUEEN:
 			figureType = FigureType::QUEEN;
 			break;
 			
-		case FIGURE_CHAR_KING:
+		case ChessChars::FIGURE_CHAR_KING:
 			figureType = FigureType::KING;
 			break;
 		
@@ -73,7 +73,7 @@ namespace chess_solver
 		if (row == 0 || row > this->boardSize)
 			throw exceptions::InvalidFigureDescriptionException(exceptions::InvalidFigureDescriptionException::ERROR_MESSAGE_INVALID_ROW_NUMBER);
 			
-		if (column < CoordinatesConverter::MINIMAL_COLUMN_NAME || column >= CoordinatesConverter::MINIMAL_COLUMN_NAME + this->boardSize)
+		if (column < ChessChars::FIRST_ENGLISH_LETTER || column >= ChessChars::FIRST_ENGLISH_LETTER + this->boardSize)
 			throw exceptions::InvalidFigureDescriptionException(exceptions::InvalidFigureDescriptionException::ERROR_MESSAGE_INVALID_COLUMN_NAME);
 		
 		return new Figure(type, color, column, row);
@@ -97,7 +97,7 @@ namespace chess_solver
 
 		std::string columnString = "";
 		
-		while (FIRST_ENGLISH_LETTER <= std::tolower(str[index]) && std::tolower(str[index]) <= LAST_ENGLISH_LETTER && index < str.size())
+		while (ChessChars::FIRST_ENGLISH_LETTER <= std::tolower(str[index]) && std::tolower(str[index]) <= ChessChars::LAST_ENGLISH_LETTER && index < str.size())
 		{
 			columnString += str[index];
 			index++;

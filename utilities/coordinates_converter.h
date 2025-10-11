@@ -2,13 +2,13 @@
 #define COORDINATES_CONVERTER
 
 #include "../chess_entities/coordinates.h"
-
+#include "chess_chars.h"
 namespace chess_solver
 {
 	class CoordinatesConverter
 	{
 	public:
-		static const char MINIMAL_COLUMN_NAME = 'a';
+//		static const char MINIMAL_COLUMN_NAME = 'a';
 		
 		// ћетод, возвращающий индекс горизонтали в массиве
 		// row - обозначение горизонтали в шахматной нотации
@@ -16,7 +16,7 @@ namespace chess_solver
 		
 		// ћетод, возвращающий индекс вертикали в массиве
 		// column - обозначение вертикали в шахматной нотации
-		static char getColumnIndexFromCoordinate(char column) {	return column - MINIMAL_COLUMN_NAME; };
+		static char getColumnIndexFromCoordinate(char column) {	return column - ChessChars::FIRST_ENGLISH_LETTER; };
 		
 		static Coordinates makeChessCoordinatesFromIndexes(char rowIndex, char columnIndex, char boardSize)
 		{
@@ -24,7 +24,7 @@ namespace chess_solver
 		}
 		
 	private:
-		static char getChessColumnFromColumnIndex(char columnIndex) { return MINIMAL_COLUMN_NAME + columnIndex; }
+		static char getChessColumnFromColumnIndex(char columnIndex) { return ChessChars::FIRST_ENGLISH_LETTER + columnIndex; }
 		static char getChessRowFromRowIndex(char rowIndex, char boardSize) { return boardSize - rowIndex; }
 		
 	};

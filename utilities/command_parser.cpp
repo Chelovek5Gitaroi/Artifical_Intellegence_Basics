@@ -3,9 +3,6 @@
 
 namespace chess_solver
 {
-	const std::set<char> CommandParser::COMMAND_POSITION_MOVE_SEPARATORS = {' ', '-'};
-	const std::set<char> CommandParser::COMMAND_POSITION_BEAT_SEPARATORS = {'x', ':'};
-		
 	Command* CommandParser::parseCommand(std::string& command)
 	{
 //		std::string::iterator iter = command.begin();
@@ -69,13 +66,13 @@ namespace chess_solver
 		
 	CommandType CommandParser::getCommandType(std::string::iterator& iter, std::string& command)
 	{
-		if (hasItemInSet(COMMAND_POSITION_MOVE_SEPARATORS, *iter))
+		if (hasItemInSet(ChessChars::COMMAND_POSITION_MOVE_SEPARATORS, *iter))
 		{
 			iter++;
 			return CommandType::MOVE;			
 		}
 		
-		if (hasItemInSet(COMMAND_POSITION_BEAT_SEPARATORS, *iter))
+		if (hasItemInSet(ChessChars::COMMAND_POSITION_BEAT_SEPARATORS, *iter))
 		{
 			iter++;
 			return CommandType::BEAT;
@@ -86,7 +83,7 @@ namespace chess_solver
 		
 	bool CommandParser::checkTransformationCommand(std::string::iterator& iter, std::string& command)
 	{
-		if (*iter == COMMAND_TRANSFORMATION_CHAR)
+		if (*iter == ChessChars::COMMAND_TRANSFORMATION_CHAR)
 		{
 			iter++;
 			return true;

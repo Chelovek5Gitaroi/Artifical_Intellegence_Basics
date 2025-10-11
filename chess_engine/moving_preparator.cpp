@@ -67,13 +67,13 @@ namespace chess_solver
 	{
 		std::list<Coordinates>* result = new std::list<Coordinates>();
 		
-		addDiagonalTilesToList(result, coordinates.getColumn() - 1, CoordinatesConverter::MINIMAL_COLUMN_NAME, coordinates.getRow() + 1, boardSize);
+		addDiagonalTilesToList(result, coordinates.getColumn() - 1, ChessChars::FIRST_ENGLISH_LETTER, coordinates.getRow() + 1, boardSize);
 		
-		addDiagonalTilesToList(result, coordinates.getColumn() + 1, CoordinatesConverter::MINIMAL_COLUMN_NAME + boardSize - 1, coordinates.getRow() + 1, boardSize);
+		addDiagonalTilesToList(result, coordinates.getColumn() + 1, ChessChars::FIRST_ENGLISH_LETTER + boardSize - 1, coordinates.getRow() + 1, boardSize);
 		
-		addDiagonalTilesToList(result, coordinates.getColumn() + 1, CoordinatesConverter::MINIMAL_COLUMN_NAME + boardSize - 1, coordinates.getRow() - 1, 1);
+		addDiagonalTilesToList(result, coordinates.getColumn() + 1, ChessChars::FIRST_ENGLISH_LETTER + boardSize - 1, coordinates.getRow() - 1, 1);
 		
-		addDiagonalTilesToList(result, coordinates.getColumn() - 1, CoordinatesConverter::MINIMAL_COLUMN_NAME, coordinates.getRow() - 1, 1);
+		addDiagonalTilesToList(result, coordinates.getColumn() - 1, ChessChars::FIRST_ENGLISH_LETTER, coordinates.getRow() - 1, 1);
 		
 		return result;
 	}
@@ -89,7 +89,7 @@ namespace chess_solver
 				result->push_back(Coordinates(coordinates.getColumn() - 1, coordinates.getRow() - 2));
 			}
 			
-			if (coordinates.getColumn() + 1 <= CoordinatesConverter::MINIMAL_COLUMN_NAME + boardSize - 1)
+			if (coordinates.getColumn() + 1 <= ChessChars::FIRST_ENGLISH_LETTER + boardSize - 1)
 			{
 				result->push_back(Coordinates(coordinates.getColumn() + 1, coordinates.getRow() - 2));
 			}
@@ -102,7 +102,7 @@ namespace chess_solver
 				result->push_back(Coordinates(coordinates.getColumn() - 2, coordinates.getRow() - 1));
 			}
 			
-			if (coordinates.getColumn() + 2 <= CoordinatesConverter::MINIMAL_COLUMN_NAME + boardSize - 1)
+			if (coordinates.getColumn() + 2 <= ChessChars::FIRST_ENGLISH_LETTER + boardSize - 1)
 			{
 				result->push_back(Coordinates(coordinates.getColumn() + 2, coordinates.getRow() - 1));
 			}
@@ -115,7 +115,7 @@ namespace chess_solver
 				result->push_back(Coordinates(coordinates.getColumn() - 2, coordinates.getRow() + 1));
 			}
 			
-			if (coordinates.getColumn() + 2 <= CoordinatesConverter::MINIMAL_COLUMN_NAME + boardSize - 1)
+			if (coordinates.getColumn() + 2 <= ChessChars::FIRST_ENGLISH_LETTER + boardSize - 1)
 			{
 				result->push_back(Coordinates(coordinates.getColumn() + 2, coordinates.getRow() + 1));
 			}
@@ -128,7 +128,7 @@ namespace chess_solver
 				result->push_back(Coordinates(coordinates.getColumn() - 1, coordinates.getRow() + 2));
 			}
 			
-			if (coordinates.getColumn() + 1 <= CoordinatesConverter::MINIMAL_COLUMN_NAME + boardSize - 1)
+			if (coordinates.getColumn() + 1 <= ChessChars::FIRST_ENGLISH_LETTER + boardSize - 1)
 			{
 				result->push_back(Coordinates(coordinates.getColumn() + 1, coordinates.getRow() + 2));
 			}
@@ -141,9 +141,9 @@ namespace chess_solver
 	{
 		std::list<Coordinates>* result = new std::list<Coordinates>();
 		
-		addRowTilesToList(result, coordinates.getColumn() + 1, CoordinatesConverter::MINIMAL_COLUMN_NAME + boardSize - 1, coordinates.getRow());
+		addRowTilesToList(result, coordinates.getColumn() + 1, ChessChars::FIRST_ENGLISH_LETTER + boardSize - 1, coordinates.getRow());
 		
-		addRowTilesToList(result, coordinates.getColumn() - 1, CoordinatesConverter::MINIMAL_COLUMN_NAME, coordinates.getRow());
+		addRowTilesToList(result, coordinates.getColumn() - 1, ChessChars::FIRST_ENGLISH_LETTER, coordinates.getRow());
  		
  		addColumnTilesToList(result, coordinates.getColumn(), coordinates.getRow() + 1, boardSize);
  		
@@ -156,21 +156,21 @@ namespace chess_solver
 	{
 		std::list<Coordinates>* result = new std::list<Coordinates>();
 		
-		addRowTilesToList(result, coordinates.getColumn() + 1, CoordinatesConverter::MINIMAL_COLUMN_NAME + boardSize - 1, coordinates.getRow());
+		addRowTilesToList(result, coordinates.getColumn() + 1, ChessChars::FIRST_ENGLISH_LETTER + boardSize - 1, coordinates.getRow());
 				
-		addRowTilesToList(result, coordinates.getColumn() - 1, CoordinatesConverter::MINIMAL_COLUMN_NAME, coordinates.getRow());
+		addRowTilesToList(result, coordinates.getColumn() - 1, ChessChars::FIRST_ENGLISH_LETTER, coordinates.getRow());
  		
  		addColumnTilesToList(result, coordinates.getColumn(), coordinates.getRow() + 1, boardSize);
  		
 		addColumnTilesToList(result, coordinates.getColumn(), coordinates.getRow() - 1, 1);
 		
-		addDiagonalTilesToList(result, coordinates.getColumn() - 1, CoordinatesConverter::MINIMAL_COLUMN_NAME, coordinates.getRow() + 1, boardSize);
+		addDiagonalTilesToList(result, coordinates.getColumn() - 1, ChessChars::FIRST_ENGLISH_LETTER, coordinates.getRow() + 1, boardSize);
 		
-		addDiagonalTilesToList(result, coordinates.getColumn() + 1, CoordinatesConverter::MINIMAL_COLUMN_NAME + boardSize - 1, coordinates.getRow() + 1, boardSize);
+		addDiagonalTilesToList(result, coordinates.getColumn() + 1, ChessChars::FIRST_ENGLISH_LETTER + boardSize - 1, coordinates.getRow() + 1, boardSize);
 		
-		addDiagonalTilesToList(result, coordinates.getColumn() + 1, CoordinatesConverter::MINIMAL_COLUMN_NAME + boardSize - 1, coordinates.getRow() - 1, 1);
+		addDiagonalTilesToList(result, coordinates.getColumn() + 1, ChessChars::FIRST_ENGLISH_LETTER + boardSize - 1, coordinates.getRow() - 1, 1);
 		
-		addDiagonalTilesToList(result, coordinates.getColumn() - 1, CoordinatesConverter::MINIMAL_COLUMN_NAME, coordinates.getRow() - 1, 1);
+		addDiagonalTilesToList(result, coordinates.getColumn() - 1, ChessChars::FIRST_ENGLISH_LETTER, coordinates.getRow() - 1, 1);
 		
 		return result;	
 	}
@@ -184,12 +184,12 @@ namespace chess_solver
 			addNextTilesInRowToList(result, coordinates.getColumn(), coordinates.getRow() + 1, boardSize);
 		}
 		
-		if (CoordinatesConverter::MINIMAL_COLUMN_NAME <= coordinates.getColumn() - 1)
+		if (ChessChars::FIRST_ENGLISH_LETTER <= coordinates.getColumn() - 1)
 		{
 			result->push_back(Coordinates(coordinates.getColumn() - 1, coordinates.getRow()));
 		}
 		
-		if (coordinates.getColumn() + 1 <= CoordinatesConverter::MINIMAL_COLUMN_NAME + boardSize - 1)
+		if (coordinates.getColumn() + 1 <= ChessChars::FIRST_ENGLISH_LETTER + boardSize - 1)
 		{
 			result->push_back(Coordinates(coordinates.getColumn() + 1, coordinates.getRow()));
 		}
@@ -275,7 +275,7 @@ namespace chess_solver
 		
 		destList->push_back(Coordinates(chessColumn, chessRow));
 		
-		if (chessColumn + 1 <= CoordinatesConverter::MINIMAL_COLUMN_NAME + boardSize - 1)
+		if (chessColumn + 1 <= ChessChars::FIRST_ENGLISH_LETTER + boardSize - 1)
 		{
 			destList->push_back(Coordinates(chessColumn + 1, chessRow));
 		}

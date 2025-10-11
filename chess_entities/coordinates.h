@@ -7,8 +7,6 @@
 
 namespace chess_solver
 {
-	
-	
 	class Coordinates
 	{
 	public:

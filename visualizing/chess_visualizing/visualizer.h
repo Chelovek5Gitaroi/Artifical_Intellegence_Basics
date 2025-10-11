@@ -6,40 +6,46 @@
 
 #include <string>
 
-
-#include "coordinates_converter.h"
-#include "..\\chess_entities\\board.h"
-#include "..\\chess_entities\\player.h"
-#include "figure_creator.h"
+#include "../abstract_visualizer.h"
+#include "../../solving/chess_solving/situation.h"
+#include "../../utilities/chess_chars.h"
+#include "../../utilities/command.h"
 
 namespace chess_solver
 {
-	class Visualizer
+	class Visualizer : public AbstractVisualizer
 	{
 	public:
 		
-		Visualizer(Board* board, Player* firstPlayer, Player* secondPlayer);
+		Visualizer(char boardSize);
+		
 		~Visualizer();
 		
-		static const std::string DEFAULT_FILE;// = "CONOUT$";
+		static const std::string DEFAULT_FILE;
 		
-//		void writeMove(std::string& moveDescription);
+		void showSituation(AbstractSituation* abstractSituation) override;
 		
-		void showSituation();
+		void showCommand(AbstractCommand* abstractCommand) override;
 				
 	private:
 		HANDLE consoleFile;
 		
 		COORD bufferSize;
 		COORD topLeftBufferPoint;
+		
+		COORD currentCursorPosition;
 
 		SMALL_RECT consoleScreenArea;
 
 		CHAR_INFO* buffer;
 		CHAR_INFO* emptyBoardBuffer;
 		
+		char boardSize;
+		
 		static const short LEFT_BOARD_IDENT = 4;
 		static const short TOP_BOARD_IDENT = 3;
+		static const short SIDE_COMMANDS_IDENT = 3;
+		static const short TOP_COMMAND_IDENT = 4;
 		
 		static const short LEFT_COMMAND_IDENT = 15;
 		
@@ -60,16 +66,11 @@ namespace chess_solver
 		
 		static const unsigned short BACKGROUND_COLOR_INTENSIFIED = 0X0800;
 		
-		Board* board;
-		
-		Player* firstPlayer;
-		Player* secondPlayer;
-		
 		void prepareClearBoardBuffer();
 		
 		void copyBoardBufferToOutBuffer();
 		
-		void renderPlayerFigures(Player* player);
+		void renderFigures(std::list<Figure*>& figures);
 		
 		char getFigureChar(Figure& figure);
 		
@@ -78,7 +79,6 @@ namespace chess_solver
 		short getBufferCellIndexFromCoordinates(short bufferCellIndex, short rowShift, short columnShift);
 		
 		short getBufferCellIndexFromChessCoordinates(const Coordinates& coordinates);
-//		Coordinates makeChessCoordinatesFromIndexes(short rowIndex, short columnIndex);
 		void drawBoardFrame();
 		
 		void drawRowMarks();
