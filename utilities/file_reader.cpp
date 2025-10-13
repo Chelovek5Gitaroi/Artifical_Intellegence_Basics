@@ -13,7 +13,7 @@ namespace chess_solver
 		clearFigureList(blackFigures);
 	}
 	
-	void FileReader::readFigureFile(std::string& fileName)
+	void FileReader::readFigureFile(const std::string& fileName)
 	{
 		std::ifstream fin(fileName);
 		

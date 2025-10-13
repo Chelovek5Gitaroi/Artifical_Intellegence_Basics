@@ -14,7 +14,7 @@ namespace chess_solver
 //		visualizer.showSituation();
 //	}
 	
-	void ChessController::init(std::string& figureDescriptionFileName)
+	void ChessController::init(const std::string& figureDescriptionFileName)
 	{
 		this->reader.readFigureFile(figureDescriptionFileName);
 		
@@ -34,6 +34,13 @@ namespace chess_solver
 		}
 		
 		delete blackFigures;
+	}
+	
+	void ChessController::control()
+	{
+		init(DEFAULT_FIGURE_DESCRIPTION_NAME);
+		
+		
 		
 	}
 }

@@ -5,10 +5,8 @@ namespace chess_solver
 
 	
 	
-	bool Solver::useDeepSearch(AbstractSituation* startSituation, short maximalDepth)
+	bool Solver::useDeepSearch(short maximalDepth)
 	{
-		initTree(startSituation);
-		
 		return deepSearch(getOptionTreeRoot(), maximalDepth);
 	}
 

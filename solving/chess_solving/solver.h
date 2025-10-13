@@ -11,10 +11,11 @@ namespace chess_solver
 	public:
 		Solver(AbstractSituationMaker* situationMaker);
 				
-		bool useDeepSearch(AbstractSituation* startSituation, short maximalDepth) override;
+		bool useDeepSearch(short maximalDepth) override;
+	
+		void initTree(AbstractSituation* startSituation) override;
 	
 	protected:
-		void initTree(AbstractSituation* startSituation) override;
 	
 		OptionTree* createChild(OptionTree* tree) override;
 	

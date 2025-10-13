@@ -19,7 +19,7 @@ namespace chess_solver
 		
 		static const std::string PLAYER_SEPARATOR;
 
-		void readFigureFile(std::string& fileName);
+		void readFigureFile(const std::string& fileName);
 
 		FigureColor getMovingPlayerColor() { return movingPlayerColor; }
 		

@@ -29,7 +29,7 @@ IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
 CompilerSettings=0000000000000000000000000
-UnitCount=52
+UnitCount=53
 
 [VersionInfo]
 Major=1
@@ -261,36 +261,6 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit26]
-FileName=utilities\command.h
-CompileCpp=1
-Folder=utilities
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit25]
-FileName=chess_engine\game.cpp
-CompileCpp=1
-Folder=chess_engine
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit29]
-FileName=solving\option_tree.h
-CompileCpp=1
-Folder=solving
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit27]
 FileName=exceptions\invalid_command_exception.h
 CompileCpp=1
 Folder=exceptions
@@ -300,17 +270,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit28]
-FileName=exceptions\invalid_command_exception.cpp
-CompileCpp=1
-Folder=exceptions
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit30]
+[Unit29]
 FileName=solving\option_tree.cpp
 CompileCpp=1
 Folder=solving
@@ -320,10 +280,40 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit32]
-FileName=utilities\comparator.h
+[Unit27]
+FileName=exceptions\invalid_command_exception.cpp
+CompileCpp=1
+Folder=exceptions
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit28]
+FileName=solving\option_tree.h
+CompileCpp=1
+Folder=solving
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit30]
+FileName=utilities\coordinates_converter.h
 CompileCpp=1
 Folder=utilities
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit32]
+FileName=solving\abstract_situation.h
+CompileCpp=1
+Folder=solving
 Compile=1
 Link=1
 Priority=1000
@@ -341,16 +331,6 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit34]
-FileName=solving\abstract_solver.h
-CompileCpp=1
-Folder=solving
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit35]
 FileName=solving\abstract_situation.cpp
 CompileCpp=1
 Folder=solving
@@ -360,7 +340,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit36]
+[Unit35]
 FileName=solving\abstract_solver.cpp
 CompileCpp=1
 Folder=solving
@@ -370,7 +350,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit37]
+[Unit36]
 FileName=utilities\abstract_command.h
 CompileCpp=1
 Folder=utilities
@@ -380,7 +360,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit38]
+[Unit37]
 FileName=utilities\abstract_command.cpp
 CompileCpp=1
 Folder=utilities
@@ -390,7 +370,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit39]
+[Unit38]
 FileName=solving\abstract_situation_maker.h
 CompileCpp=1
 Folder=solving
@@ -400,7 +380,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit40]
+[Unit39]
 FileName=solving\chess_solving\situation.cpp
 CompileCpp=1
 Folder=solving/chess_solving
@@ -410,7 +390,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit41]
+[Unit40]
 FileName=solving\chess_solving\situation.h
 CompileCpp=1
 Folder=solving/chess_solving
@@ -420,7 +400,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit42]
+[Unit41]
 FileName=solving\chess_solving\chess_situation_maker.h
 CompileCpp=1
 Folder=solving/chess_solving
@@ -430,17 +410,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit44]
-FileName=solving\chess_solving\solver.h
-CompileCpp=1
-Folder=solving/chess_solving
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit43]
+[Unit42]
 FileName=solving\chess_solving\chess_situation_maker.cpp
 CompileCpp=1
 Folder=solving/chess_solving
@@ -450,17 +420,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit31]
-FileName=utilities\coordinates_converter.h
-CompileCpp=1
-Folder=utilities
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit45]
+[Unit44]
 FileName=solving\chess_solving\solver.cpp
 CompileCpp=1
 Folder=solving/chess_solving
@@ -470,7 +430,27 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit46]
+[Unit43]
+FileName=solving\chess_solving\solver.h
+CompileCpp=1
+Folder=solving/chess_solving
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit31]
+FileName=utilities\comparator.h
+CompileCpp=1
+Folder=utilities
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit45]
 FileName=utilities\chess_command_executor.h
 CompileCpp=1
 Folder=utilities
@@ -480,17 +460,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit33]
-FileName=solving\abstract_situation.h
-CompileCpp=1
-Folder=solving
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit47]
+[Unit46]
 FileName=utilities\chess_command_executor.cpp
 CompileCpp=1
 Folder=utilities
@@ -500,10 +470,30 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit50]
-FileName=visualizing\chess_visualizing\visualizer.h
+[Unit33]
+FileName=solving\abstract_solver.h
 CompileCpp=1
-Folder=visualizing/chess_visualizing
+Folder=solving
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit47]
+FileName=visualizing\abstract_visualizer.h
+CompileCpp=1
+Folder=visualizing
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit50]
+FileName=utilities\chess_chars.h
+CompileCpp=1
+Folder=utilities
 Compile=1
 Link=1
 Priority=1000
@@ -531,16 +521,6 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit48]
-FileName=visualizing\abstract_visualizer.h
-CompileCpp=1
-Folder=visualizing
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit49]
 FileName=visualizing\chess_visualizing\visualizer.cpp
 CompileCpp=1
 Folder=visualizing/chess_visualizing
@@ -550,8 +530,18 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+[Unit49]
+FileName=visualizing\chess_visualizing\visualizer.h
+CompileCpp=1
+Folder=visualizing/chess_visualizing
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
 [Unit51]
-FileName=utilities\chess_chars.h
+FileName=utilities\chess_chars.cpp
 CompileCpp=1
 Folder=utilities
 Compile=1
@@ -561,7 +551,37 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit52]
-FileName=utilities\chess_chars.cpp
+FileName=abstract_controller.h
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit53]
+FileName=abstract_controller.cpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit54]
+FileName=abstract_controller.cpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit25]
+FileName=utilities\command.h
 CompileCpp=1
 Folder=utilities
 Compile=1

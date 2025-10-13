@@ -6,6 +6,8 @@
 
 #include "../chess_engine/moving_validator.h"
 
+#include "../solving/chess_solving/situation.h"
+
 namespace chess_solver
 {
 	class Game
@@ -13,14 +15,13 @@ namespace chess_solver
 	public:
 		static const char BOARD_SIZE = 8;
 		
-		Game(char boardSize, FigureColor firstPlayer);
+		Game(char boardSize, FigureColor firstPlayer) : board(boardSize), currentPlayer(firstPlayer) {}
 		
 		Board* getBoard(){ return &board; }
 		Player* getFirstPlayer(){ return &firstPlayer; }
 		Player* getSecondPlayer() {	return &secondPlayer; }
 		FigureColor getCurrentPlayer() { return currentPlayer; }
 		
-
 	private:
 		Board board;
 		

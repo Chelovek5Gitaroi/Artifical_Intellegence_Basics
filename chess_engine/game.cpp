@@ -2,9 +2,10 @@
 
 namespace chess_solver
 {
-	Game::Game(char boardSize, FigureColor firstPlayer) : board(boardSize), currentPlayer(firstPlayer)
-	{
-	}
+//	Game::Game(char boardSize, FigureColor firstPlayer) : board(boardSize), currentPlayer(firstPlayer)
+//	{
+//	}
+	
 	
 	
 }
