@@ -7,6 +7,7 @@
 #include "..\\utilities/file_reader.h"
 #include "..\\utilities/figure_creator.h"
 #include "../utilities/command_parser.h"
+#include "../solving/chess_solving/solver.h"
 
 namespace chess_solver
 {
@@ -34,6 +35,8 @@ namespace chess_solver
 		FigureCreator figureCreator;
 		
 		Situation* makeStartSituation();
+		
+		void initSolver();
 		
 //		Visualizer visualizer;
 		

@@ -67,10 +67,19 @@ namespace chess_solver
 		this->consoleScreenArea.Bottom = Visualizer::TOP_BOARD_IDENT + this->bufferSize.Y - 1;
 		this->consoleScreenArea.Right = Visualizer::LEFT_BOARD_IDENT + this->bufferSize.X - 1;
 		
-		this->currentCursorPosition.X = this->consoleScreenArea.Right + SIDE_COMMANDS_IDENT;
-		this->currentCursorPosition.Y = TOP_COMMAND_IDENT;
+		this->commandTop.X = this->consoleScreenArea.Right + SIDE_COMMANDS_IDENT;
+		this->commandTop.Y = TOP_COMMAND_IDENT;
 		
 		prepareClearBoardBuffer();
+		
+		this->menuTop.X = this->MENU_LEFT_IDENT;
+		this->menuTop.Y = this->consoleScreenArea.Bottom + MENU_TOP_IDENT;
+		
+		this->commandCurrentCursorPosition.X = commandTop.X;
+		this->commandCurrentCursorPosition.Y = commandTop.Y;
+		
+		this->currentCursorPosition.X = 0;
+		this->currentCursorPosition.Y = 0;
 	}
 	
 	Visualizer::~Visualizer()
@@ -81,7 +90,7 @@ namespace chess_solver
 	
 	void Visualizer::showCommand(AbstractCommand* abstractCommand)
 	{
-		SetConsoleCursorPosition(this->consoleFile, this->currentCursorPosition);
+		SetConsoleCursorPosition(this->consoleFile, this->commandCurrentCursorPosition);
 		Command* command = reinterpret_cast<Command*>(abstractCommand);
 		
 		std::cout << getFigureChar(*command->getFigure()) << command->getFigure()->getCoordinates();
@@ -101,10 +110,15 @@ namespace chess_solver
 		
 		if (type == CommandType::TRANSFORMATION || type == CommandType::BEAT_TRANSFORMATION)
 		{
-			std::cout << ChessChars::COMMAND_TRANSFORMATION_CHAR;
+//			std::cout << ChessChars::COMMAND_TRANSFORMATION_CHAR << ChessChars::;
 		}
 		
-		this->currentCursorPosition.Y++;
+		this->commandCurrentCursorPosition.Y++;
+	}
+	
+	void showMenu()
+	{
+		
 	}
 	
 	char Visualizer::getFigureChar(Figure& figure)

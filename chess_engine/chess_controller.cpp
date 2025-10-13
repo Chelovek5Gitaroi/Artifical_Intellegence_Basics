@@ -40,7 +40,23 @@ namespace chess_solver
 	{
 		init(DEFAULT_FIGURE_DESCRIPTION_NAME);
 		
+		initSolver();
 		
 		
+		
+		
+	}
+	
+	void ChessController::initSolver()
+	{
+		Solver* solver = reinterpret_cast<Solver*>(this->solver);
+		
+		solver->clearTree();
+		
+		Situation* startSituation = new Situation(this->game.getFirstPlayer()->getAllFigures(), this->game.getSecondPlayer()->getAllFigures(), *this->game.getBoard(), this->game.getCurrentPlayer(), this->game.getCurrentPlayer());
+		
+		solver->initTree(startSituation);
+		
+		delete startSituation;
 	}
 }

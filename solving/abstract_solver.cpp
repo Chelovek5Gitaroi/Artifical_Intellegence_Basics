@@ -15,7 +15,11 @@ namespace chess_solver
 	
 	void AbstractSolver::clearTree()
 	{
-		delete this->tree;
+		if (this->tree)
+		{
+			delete this->tree;
+		}
+		
 		this->tree = nullptr;
 	}
 	

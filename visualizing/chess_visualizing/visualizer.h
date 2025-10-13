@@ -26,7 +26,9 @@ namespace chess_solver
 		void showSituation(AbstractSituation* abstractSituation) override;
 		
 		void showCommand(AbstractCommand* abstractCommand) override;
-				
+		
+		void showMenu() override;
+			
 	private:
 		HANDLE consoleFile;
 		
@@ -35,7 +37,13 @@ namespace chess_solver
 		
 		COORD currentCursorPosition;
 
+		COORD menuTop;
+
 		SMALL_RECT consoleScreenArea;
+
+		COORD commandTop;
+		
+		COORD commandCurrentCursorPosition;
 
 		CHAR_INFO* buffer;
 		CHAR_INFO* emptyBoardBuffer;
@@ -46,6 +54,9 @@ namespace chess_solver
 		static const short TOP_BOARD_IDENT = 3;
 		static const short SIDE_COMMANDS_IDENT = 3;
 		static const short TOP_COMMAND_IDENT = 4;
+		
+		static const short MENU_LEFT_IDENT = 3;
+		static const short MENU_TOP_IDENT = 2;
 		
 		static const short LEFT_COMMAND_IDENT = 15;
 		

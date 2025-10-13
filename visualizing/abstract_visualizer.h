@@ -13,6 +13,11 @@ namespace chess_solver
 		
 		virtual void showCommand(AbstractCommand* abstractCommand) = 0;
 		
+		virtual void showMenu() = 0;
+		
+		
+		
+		
 	private:
 	};
 }

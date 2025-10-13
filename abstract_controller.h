@@ -18,8 +18,8 @@ namespace chess_solver
 		
 		
 		virtual void control() = 0;
-		
-	private:
+	
+	protected:
 		AbstractSolver* solver;
 		AbstractVisualizer* visualizer;
 		

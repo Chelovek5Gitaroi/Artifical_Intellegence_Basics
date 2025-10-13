@@ -18,9 +18,11 @@ namespace chess_solver
 	
 		virtual void initTree(AbstractSituation* startSituation);
 	
+		void clearTree();
+		
 	protected:
 		OptionTree* getOptionTreeRoot() { return tree; }
-		void clearTree();
+		
 		
 		virtual OptionTree* createChild(OptionTree* tree);
 		
