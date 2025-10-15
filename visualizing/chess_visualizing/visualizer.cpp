@@ -5,9 +5,7 @@ namespace chess_solver
 {
 	const std::string Visualizer::DEFAULT_FILE = "CONOUT$";
 	
-	const std::string Visualizer::MENU_TIILE = "Выберите способ решения:";
-	
-	const std::string Visualizer::MENU_ITEM_DEEP_SEARCH = "Поиск в глубину";
+	const std::string Visualizer::SELECTED_ITEM_MARKER = " <-";
 	
 	void Visualizer::showSituation(AbstractSituation* abstractSituation)
 	{
@@ -53,6 +51,8 @@ namespace chess_solver
 	
 	Visualizer::Visualizer(char boardSize)
 	{
+//		std::cout << "*Debug* visualizer c-tor\n";
+		
 		this->boardSize = boardSize;
 		
 		this->bufferSize.X = this->boardSize * TILE_WIDTH;
@@ -120,9 +120,23 @@ namespace chess_solver
 		this->commandCurrentCursorPosition.Y++;
 	}
 	
-	void Visualizer::showMenu()
+	void Visualizer::showMenu(std::vector<std::pair<std::string, bool>>& menuStrings)
 	{
+		this->currentCursorPosition.X = this->menuTop.X;
+		this->currentCursorPosition.Y = this->menuTop.Y;
 		
+		for (auto iter = menuStrings.begin(); iter != menuStrings.end(); iter++)
+		{
+			SetConsoleCursorPosition(this->consoleFile, this->currentCursorPosition);
+			std::cout << iter->first;
+			
+			if (iter->second)
+			{
+				std::cout << SELECTED_ITEM_MARKER;
+			}
+			
+			this->currentCursorPosition.Y += 1;
+		}
 	}
 	
 	char Visualizer::getFigureChar(Figure& figure)

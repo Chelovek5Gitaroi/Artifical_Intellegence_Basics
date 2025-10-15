@@ -8,6 +8,8 @@ namespace chess_solver
 		
 		Figure* figure = command->getFigure();
 		
+		std::cout << "*Debug* validating move start: " << figure->getCoordinates() << ", finish: " << command->getFinishCoordinates() << "... ";
+		
 		switch (command->getType())
 		{
 		case CommandType::MOVE:
@@ -25,11 +27,15 @@ namespace chess_solver
 			break;
 		}
 		
+		std::cout << " move validated...\n";
+		
 		return result;
 	}
 	
 	bool MovingValidator::isMoveValid(Figure& figure, const Coordinates& finish, const Board& board)
 	{
+		std::cout << " validating simple move... ";
+		
 		bool result = !board.getTileOccupancyByCoordinates(finish);
 		
 		if (result)
@@ -58,11 +64,15 @@ namespace chess_solver
 			}
 		}
 		
+		std::cout << " simple move validated... ";
+		
 		return result;
 	}
 	
 	bool MovingValidator::isTransformationValid(Figure& figure, FigureType newFigureType, const Coordinates& finish, std::list<Figure*>& secondPlayerFigures, bool isBeatTransformation, const Board& board)
 	{
+		std::cout << " validating transform... ";
+		
 		bool result = figure.getType() == FigureType::PAWN && newFigureType != FigureType::PAWN && newFigureType != FigureType::KING;
 		
 		if (result)
@@ -70,11 +80,15 @@ namespace chess_solver
 			result = isReachebleForPawn(figure.getCoordinates(), finish, board, figure.getColor(), isBeatTransformation, true);
 		}
 		
+		std::cout << " transform validated... ";
+		
 		return result;
 	}
 	
 	bool MovingValidator::isTakingValid(Figure& figure, const Coordinates& finish, std::list<Figure*>& secondPlayerFigures, const Board& board)
 	{
+		std::cout << " validate taking... ";
+		
 		bool result = false;
 		
 		if (board.getTileOccupancyByCoordinates(figure.getCoordinates()))
@@ -108,11 +122,15 @@ namespace chess_solver
 			}
 		}
 		
+		std::cout << " taking validated... ";
+		
 		return result;
 	}
 	
 	bool MovingValidator::isLineEmpty(const Coordinates& start, const Coordinates& finish, const Board& board)
 	{
+		std::cout << " validate line emptyness... ";
+		
 		bool result = false;
 		
 		if (start.getColumn() == finish.getColumn())
@@ -127,6 +145,8 @@ namespace chess_solver
 		{
 			result = isDiagonalEmpty(start, finish, board);
 		}
+		
+		std::cout << " line emptyness validated... ";
 		
 		return result;
 	}

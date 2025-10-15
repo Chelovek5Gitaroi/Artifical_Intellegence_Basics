@@ -12,7 +12,7 @@ namespace chess_solver
 	public:
 		AbstractSolver(AbstractSituationMaker* situationMaker);
 		
-		virtual ~AbstractSolver() = 0;
+		virtual ~AbstractSolver();
 		
 		virtual bool useDeepSearch(short maximalDepth) = 0;
 	

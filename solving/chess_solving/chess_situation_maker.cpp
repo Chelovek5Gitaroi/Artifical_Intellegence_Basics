@@ -42,12 +42,16 @@ namespace chess_solver
 	
 	void ChessSituationMaker::prepareStartSituationMoves(Situation* startSituation)
 	{
+		std::cout << "*Debug* preparing start moves...\n";
+		
 		startSituation->setPotentialMoves(getAllSituationMoves(*startSituation));
 	}
 	
 	Command* ChessSituationMaker::createValidCommand(Figure* figure, Board& board, const Coordinates& finishCoordinates, CommandType type,
 		const Coordinates& kingCoordinates, std::list<Figure*>* figures, FigureColor otherColor, std::list<Figure*>* otherFigures)
 	{
+		std::cout << "*Debug* creating valid command...\n";
+		
 		Command* result = new Command(figure, finishCoordinates, type);
 		
 		bool isValid = MovingValidator::isMoveValid(result, *otherFigures, board);
@@ -70,6 +74,17 @@ namespace chess_solver
 		{
 			delete result;
 			result = nullptr;
+		}
+		
+		std::cout << "*Debug* end valid command creating... ";
+		
+		if (result)
+		{
+			std::cout << "valid command...\n";
+		}
+		else
+		{
+			std::cout << "no command...\n";
 		}
 		
 		return result;
@@ -112,6 +127,8 @@ namespace chess_solver
 	
 	std::list<Command*>* ChessSituationMaker::getFigurePotentialMoves(Board& board, Figure* figure, const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures)
 	{
+		std::cout << "*Debug* preparing figure moves figure type: " << (int)figure->getType() << "\n";
+		
 		std::list<Command*>* result = new std::list<Command*>();
 		
 		Coordinates startCoordinates = figure->getCoordinates();
@@ -124,6 +141,13 @@ namespace chess_solver
 		}
 		
 		std::list<Coordinates>* coordinates = MovingPreparator::getPotentialPossibleCoordinates(startCoordinates, figure->getType(), figure->getColor(), board.getBoardSize());
+		
+//		std::cout << "*Debug* coordinates:\n";
+//		
+//		for (auto iter = coordinates->begin(); iter != coordinates->end(); iter++)
+//		{
+//			std::cout << "*Debug* " << *iter << "\n";
+//		}
 		
 		Command* command = nullptr;
 		
@@ -157,11 +181,15 @@ namespace chess_solver
 			}
 		}
 		
+		std::cout << "*Debug* figure moves prepared...\n";
+		
 		return result;
 	}
 	
 	std::list<Command*>* ChessSituationMaker::getAllSituationMoves(Situation& situation)
 	{
+		std::cout << "*Debug* making situation moves\n";
+		
 		std::list<Command*>* result = new std::list<Command*>();
 		
 		std::list<Figure*>* figures = &situation.getWhiteFigures();
@@ -173,7 +201,11 @@ namespace chess_solver
 			otherFigures = &situation.getWhiteFigures();
 		}
 		
+		std::cout << "*Debug* getting king coordinates...\n";
+		
 		const Coordinates& kingCoordinates = getKingFromList(figures)->getCoordinates();
+		
+		std::cout << "*Debug* preparing figures moves\n";
 		
 		for (auto iter = figures->begin(); iter != figures->end(); iter++)
 		{
@@ -186,6 +218,8 @@ namespace chess_solver
 			
 			delete moves;
 		}
+		
+		std::cout << "*Debug* situation moves prepared...\n";
 		
 		return result;
 	}

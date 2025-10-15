@@ -4,7 +4,6 @@
 #include <windows.h>
 #include <wincon.h>
 
-#include <string>
 
 #include "../abstract_visualizer.h"
 #include "../../solving/chess_solving/situation.h"
@@ -26,7 +25,7 @@ namespace chess_solver
 		
 		void showCommand(AbstractCommand* abstractCommand) override;
 		
-		void showMenu() override;
+		void showMenu(std::vector<std::pair<std::string, bool>>& menuStrings) override;
 			
 	private:
 		HANDLE consoleFile;
@@ -65,6 +64,8 @@ namespace chess_solver
 		static const char BOARD_FRAME_HORIZONTAL = '-';
 		static const char BOARD_FRAME_VERTICAL = '|';
 
+		static const std::string SELECTED_ITEM_MARKER;
+
 		static const unsigned short FIGURE_COLOR_WHITE = 0x0001 | 0x0002 | 0x0004 | 0x0008;
 	
 		static const unsigned short FIGURE_COLOR_BACKGROUND = 0x0010 | 0x0020 | 0x0040;
@@ -73,8 +74,6 @@ namespace chess_solver
 		
 		static const unsigned short BACKGROUND_COLOR_INTENSIFIED = 0X0800;
 		
-		static const std::string MENU_TIILE;
-		static const std::string MENU_ITEM_DEEP_SEARCH;
 		
 		void prepareClearBoardBuffer();
 		

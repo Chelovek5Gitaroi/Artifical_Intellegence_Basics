@@ -12,11 +12,12 @@ namespace chess_solver
 
 	Solver::Solver(AbstractSituationMaker* situationMaker) : AbstractSolver(situationMaker)
 	{
-		
 	}
 
 	void Solver::initTree(AbstractSituation* startSituation)
 	{
+		std::cout << "*Debug* init tree...\n";
+		
 		AbstractSolver::initTree(startSituation);
 		
 		Situation* situation = reinterpret_cast<Situation*>(startSituation);
@@ -24,6 +25,8 @@ namespace chess_solver
 		ChessSituationMaker* situationMaker = reinterpret_cast<ChessSituationMaker*>(getSituationMaker());
 		
 		situationMaker->prepareStartSituationMoves(situation);
+		
+		std::cout << "*Debug* tree inited...\n";
 	}
 
 	OptionTree* Solver::createChild(OptionTree* tree)

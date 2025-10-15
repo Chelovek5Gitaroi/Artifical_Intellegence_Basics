@@ -1,6 +1,8 @@
 #ifndef VALIDATOR
 #define VALIDATOR
 
+#include <iostream>
+
 #include <cstdlib>
 #include <map>
 

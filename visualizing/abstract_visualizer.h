@@ -1,6 +1,9 @@
 #ifndef ABSTRACT_VISUALIZER
 #define ABSTRACT_VISUALIZER
 
+#include <vector>
+#include <string>
+
 #include "../solving/abstract_situation.h"
 #include "../utilities/abstract_command.h"
 
@@ -13,7 +16,7 @@ namespace chess_solver
 		
 		virtual void showCommand(AbstractCommand* abstractCommand) = 0;
 		
-		virtual void showMenu() = 0;
+		virtual void showMenu(std::vector<std::pair<std::string, bool>>& menuStrings) = 0;
 		
 		
 		

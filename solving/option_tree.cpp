@@ -1,9 +1,13 @@
 #include "option_tree.h"
 
+#include <iostream>
+
 namespace chess_solver
 {
 	OptionTree::OptionTree(AbstractSituation* situation, AbstractCommand* previousCommand, OptionTree* parent, short depth)
 	{
+		std::cout << "*Debug* option tree ñ-tor...\n";
+		
 		this->situation = situation;
 		
 		this->previousCommand = previousCommand;
@@ -12,10 +16,14 @@ namespace chess_solver
 		this->depth = depth;
 		
 		this->currentChild = this->children.begin();
+		
+		std::cout << "*Debug* option tree ñ-tor end...\n";
 	}
 	
 	OptionTree::~OptionTree()
 	{
+		std::cout << "*Debug* option tree d-tor...\n";
+		
 		for (auto iter = this->children.begin(); iter != children.end(); iter++)
 		{
 			delete *iter;

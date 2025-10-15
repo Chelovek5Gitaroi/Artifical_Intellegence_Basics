@@ -2,19 +2,26 @@
 #include <string>
 #include <list>
 
+#include "solving/chess_solving/solver.h"
+#include "solving/chess_solving/chess_situation_maker.h"
 #include "chess_engine/chess_controller.h"
+#include "abstract_controller.h"
+#include "visualizing/chess_visualizing/visualizer.h"
+
+using namespace chess_solver;
 
 int main(int argc, char** argv)
 {
-//	chess_solver::ChessController controller(chess_solver::Game::BOARD_SIZE, chess_solver::FigureColor::WHITE);
+	system("chcp 1251");
+//	system("cls");
 	
-//	std::string fileName(chess_solver::ChessController::DEFAULT_FIGURE_DESCRIPTION_NAME);
+	AbstractController* controller = new ChessController(new Solver(new ChessSituationMaker()), new Visualizer(ChessController::BOARD_SIZE), ChessController::BOARD_SIZE);
 	
-//	controller.init(fileName);
+	controller->control();
 	
-//	controller.show();
+	delete controller;
 	
-	system("pause");
+//	system("pause");
 	
 	return 0;
 }

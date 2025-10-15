@@ -10,7 +10,7 @@ namespace chess_solver
 	{
 	public:
 		
-		AbstractController(AbstractSolver* solver, AbstractVisualizer* visualizer, int maximalSearchDepth);
+		AbstractController(AbstractSolver* solver, AbstractVisualizer* visualizer);
 		
 		virtual ~AbstractController() = 0;
 		
@@ -21,6 +21,7 @@ namespace chess_solver
 	
 	protected:
 		int getMaximalDepth() { return maximalDepth; }
+		void setMaximalDepth(int maximalDepth) { this->maximalDepth = maximalDepth; }
 		
 		AbstractSolver* getSolver() { return this->solver; }
 		AbstractVisualizer* getVisualizer() { return this->visualizer; }

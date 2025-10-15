@@ -5,11 +5,21 @@ namespace chess_solver
 	
 	const std::string ChessController::DEFAULT_FIGURE_DESCRIPTION_NAME = "figures.txt";
 	
-	ChessController::ChessController(AbstractSolver* solver, AbstractVisualizer* visualizer, int maximalDepth, char boardSize) : AbstractController(solver, visualizer, maximalDepth), game(boardSize), figureCreator(boardSize)
+	const std::string ChessController::MENU_TIILE = "Выберите способ решения:";
+	const std::string ChessController::MENU_ITEM_DEEP_SEARCH = "Поиск в глубину";
+	const std::string ChessController::MENU_ITEM_EXIT = "Выйти";
+
+	const std::map<ChessController::MenuItem, std::string> ChessController::menu = {{MenuItem::DEEP_SEARCH, MENU_ITEM_DEEP_SEARCH}, {MenuItem::EXIT, MENU_ITEM_EXIT}};
+	
+	ChessController::ChessController(AbstractSolver* solver, AbstractVisualizer* visualizer, char boardSize) : AbstractController(solver, visualizer), game(boardSize), figureCreator(boardSize)
 	{
 		init(DEFAULT_FIGURE_DESCRIPTION_NAME);
 		
 		this->selectedMenuItem = MenuItem::DEEP_SEARCH;
+		
+		this->isRunning = true;
+		
+		initSolver();
 	}
 	
 	void ChessController::init(const std::string& figureDescriptionFileName)
@@ -38,12 +48,13 @@ namespace chess_solver
 	
 	void ChessController::control()
 	{
-		init(DEFAULT_FIGURE_DESCRIPTION_NAME);
+		this->makeMenuStrings(MENU_TIILE);
+		this->getVisualizer()->showMenu(this->menuStrings);
 		
-		
-		
-		
-		
+//		while (isRunning)
+//		{
+//			
+//		}
 	}
 	
 	void ChessController::enterSelectedItem()
@@ -68,7 +79,27 @@ namespace chess_solver
 		
 		solver->initTree(startSituation);
 		
-		delete startSituation;
+//		delete startSituation;
 		return solver;
+	}
+	
+	void ChessController::makeMenuStrings(const std::string& title)
+	{
+		this->menuStrings.push_back(std::pair<std::string, bool>(std::string(title), false));
+		
+		for (auto iter = menu.begin(); iter != menu.end(); iter++)
+		{
+			this->menuStrings.push_back(std::pair<std::string, bool>(std::to_string(((int)iter->first)) + ". " + iter->second, this->selectedMenuItem == iter->first));
+		}
+	}
+	
+	void ChessController::selectItem(MenuItem item)
+	{
+		this->selectedMenuItem = item;
+		
+		for (int i = 0; i < this->menuStrings.size(); i++)
+		{
+			this->menuStrings[i].second = (int)this->selectedMenuItem == i;
+		}
 	}
 }

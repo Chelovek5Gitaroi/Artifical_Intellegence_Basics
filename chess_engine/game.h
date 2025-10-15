@@ -13,7 +13,7 @@ namespace chess_solver
 	class Game
 	{
 	public:
-		static const char BOARD_SIZE = 8;
+		
 		
 		Game(char boardSize) : board(boardSize) {}
 		

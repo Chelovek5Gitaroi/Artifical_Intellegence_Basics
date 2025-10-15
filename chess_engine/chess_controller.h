@@ -1,7 +1,12 @@
 #ifndef CHESS_CONTROLLER
 #define CHESS_CONTROLLER
 
+#include <iostream>
+
 #include "../abstract_controller.h"
+
+#include <map>
+#include <vector>
 
 #include "game.h"
 #include "..\\utilities/file_reader.h"
@@ -11,17 +16,16 @@
 
 namespace chess_solver
 {
-	enum class MenuItem
-	{
-		DEEP_SEARCH
-	};
+	
 	
 	class ChessController : public AbstractController
 	{
 	public:
+		static const char BOARD_SIZE = 8;
+		
 		static const std::string DEFAULT_FIGURE_DESCRIPTION_NAME;
 		
-		ChessController(AbstractSolver* solver, AbstractVisualizer* visualizer, int maximalDepth, char boardSize);
+		ChessController(AbstractSolver* solver, AbstractVisualizer* visualizer, char boardSize);
 		
 		void init(const std::string& figureDescriptionFileName);
 		
@@ -31,9 +35,20 @@ namespace chess_solver
 		
 		void control() override;
 		
-		MenuItem getSelectedItem() { return selectedMenuItem; }
-		
 	private:
+		enum class MenuItem
+		{
+			DEEP_SEARCH = 1,
+			EXIT
+		};
+		
+		static const std::string MENU_TIILE;
+		static const std::string MENU_ITEM_DEEP_SEARCH;
+		static const std::string MENU_ITEM_EXIT;
+
+		static const std::map<MenuItem, std::string> menu;
+		
+		bool isRunning;
 		
 		Game game;
 		
@@ -49,6 +64,11 @@ namespace chess_solver
 		
 		void enterSelectedItem();
 		
+		std::vector<std::pair<std::string, bool>> menuStrings;
+		
+		void makeMenuStrings(const std::string& title);
+		
+		void selectItem(MenuItem item);
 	};
 }
 
