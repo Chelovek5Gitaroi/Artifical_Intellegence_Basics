@@ -2,9 +2,9 @@
 
 namespace chess_solver
 {
-	AbstractController::AbstractController(AbstractSolver* solver, AbstractVisualizer* visualizer)
+	AbstractController::AbstractController(AbstractSolver* solver, AbstractVisualizer* visualizer, int maximalSearchDepth)
 	{
-		
+		this->maximalDepth = maximalSearchDepth;
 	}
 	
 	AbstractController::~AbstractController()

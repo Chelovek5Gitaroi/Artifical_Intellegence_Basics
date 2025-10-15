@@ -11,12 +11,17 @@
 
 namespace chess_solver
 {
+	enum class MenuItem
+	{
+		DEEP_SEARCH
+	};
+	
 	class ChessController : public AbstractController
 	{
 	public:
 		static const std::string DEFAULT_FIGURE_DESCRIPTION_NAME;
 		
-		ChessController(char boardSize);
+		ChessController(AbstractSolver* solver, AbstractVisualizer* visualizer, int maximalDepth, char boardSize);
 		
 		void init(const std::string& figureDescriptionFileName);
 		
@@ -24,7 +29,9 @@ namespace chess_solver
 		
 		void startGame();
 		
-		void control() override;		
+		void control() override;
+		
+		MenuItem getSelectedItem() { return selectedMenuItem; }
 		
 	private:
 		
@@ -36,9 +43,11 @@ namespace chess_solver
 		
 		Situation* makeStartSituation();
 		
-		void initSolver();
+		Solver* initSolver();
 		
-//		Visualizer visualizer;
+		MenuItem selectedMenuItem;
+		
+		void enterSelectedItem();
 		
 	};
 }

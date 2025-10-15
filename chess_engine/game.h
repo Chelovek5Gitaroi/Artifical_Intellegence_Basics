@@ -15,17 +15,17 @@ namespace chess_solver
 	public:
 		static const char BOARD_SIZE = 8;
 		
-		Game(char boardSize, FigureColor firstPlayer) : board(boardSize), currentPlayer(firstPlayer) {}
+		Game(char boardSize) : board(boardSize) {}
 		
 		Board* getBoard(){ return &board; }
 		Player* getFirstPlayer(){ return &firstPlayer; }
 		Player* getSecondPlayer() {	return &secondPlayer; }
 		FigureColor getCurrentPlayer() { return currentPlayer; }
 		
+		void setCurrentPlayer(FigureColor currentPlayer) { this->currentPlayer = currentPlayer; }
+		
 	private:
 		Board board;
-		
-//		MovingValidator validator;
 		
 		FigureColor currentPlayer;
 		

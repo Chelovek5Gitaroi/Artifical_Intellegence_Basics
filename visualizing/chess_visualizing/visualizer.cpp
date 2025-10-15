@@ -5,6 +5,10 @@ namespace chess_solver
 {
 	const std::string Visualizer::DEFAULT_FILE = "CONOUT$";
 	
+	const std::string Visualizer::MENU_TIILE = "Выберите способ решения:";
+	
+	const std::string Visualizer::MENU_ITEM_DEEP_SEARCH = "Поиск в глубину";
+	
 	void Visualizer::showSituation(AbstractSituation* abstractSituation)
 	{
 		Situation* situation = reinterpret_cast<Situation*>(abstractSituation);
@@ -110,22 +114,27 @@ namespace chess_solver
 		
 		if (type == CommandType::TRANSFORMATION || type == CommandType::BEAT_TRANSFORMATION)
 		{
-//			std::cout << ChessChars::COMMAND_TRANSFORMATION_CHAR << ChessChars::;
+			std::cout << ChessChars::COMMAND_TRANSFORMATION_CHAR << getFigureChar(reinterpret_cast<CommandTransformation*>(command)->getNewFigureType());
 		}
 		
 		this->commandCurrentCursorPosition.Y++;
 	}
 	
-	void showMenu()
+	void Visualizer::showMenu()
 	{
 		
 	}
 	
 	char Visualizer::getFigureChar(Figure& figure)
 	{
-		char figureChar = Visualizer::TILE_CHAR;
+		return getFigureChar(figure.getType());
+	}
+	
+	char Visualizer::getFigureChar(FigureType figureType)
+	{
+		char figureChar = ChessChars::TILE_CHAR;
 			
-		switch (figure.getType())
+		switch (figureType)
 		{
 		case FigureType::PAWN:
 			figureChar = ChessChars::FIGURE_CHAR_PAWN;
@@ -169,7 +178,7 @@ namespace chess_solver
 					{
 						short cellShiftIndex = getBufferCellIndexFromCoordinates(cellIndex, rowShift, columnShift);
 						
-						this->emptyBoardBuffer[cellShiftIndex].Char.AsciiChar = TILE_CHAR;
+						this->emptyBoardBuffer[cellShiftIndex].Char.AsciiChar = ChessChars::TILE_CHAR;
 						
 						if ((row % 2 == 0 && column % 2 == 0) || (row % 2 != 0 && column % 2 != 0))						
 						{
@@ -278,7 +287,7 @@ namespace chess_solver
 		
 		std::string marksStr = "";
 		
-		marksStr.insert(marksStr.begin(), this->boardSize * TILE_WIDTH, TILE_CHAR);
+		marksStr.insert(marksStr.begin(), this->boardSize * TILE_WIDTH, ChessChars::TILE_CHAR);
 		
 		for (char i = 0; i < this->boardSize; i++)
 		{

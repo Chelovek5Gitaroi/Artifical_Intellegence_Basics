@@ -8,6 +8,8 @@ namespace chess_solver
 	class ChessChars
 	{
 	public:
+		static const char TILE_CHAR = ' ';
+		
 		static const char FIGURE_CHAR_KING = 'K';
 		static const char FIGURE_CHAR_QUEEN = 'Q';
 		static const char FIGURE_CHAR_KNIGHT = 'N';

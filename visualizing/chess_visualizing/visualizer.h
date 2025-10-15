@@ -16,7 +16,6 @@ namespace chess_solver
 	class Visualizer : public AbstractVisualizer
 	{
 	public:
-		
 		Visualizer(char boardSize);
 		
 		~Visualizer();
@@ -60,14 +59,11 @@ namespace chess_solver
 		
 		static const short LEFT_COMMAND_IDENT = 15;
 		
-		static const char TILE_CHAR = ' ';
-		
 		static const char TILE_WIDTH = 3;
 		
 		static const char BOARD_FRAME_ANGLE_CHAR = '+';
 		static const char BOARD_FRAME_HORIZONTAL = '-';
 		static const char BOARD_FRAME_VERTICAL = '|';
-		
 
 		static const unsigned short FIGURE_COLOR_WHITE = 0x0001 | 0x0002 | 0x0004 | 0x0008;
 	
@@ -77,6 +73,9 @@ namespace chess_solver
 		
 		static const unsigned short BACKGROUND_COLOR_INTENSIFIED = 0X0800;
 		
+		static const std::string MENU_TIILE;
+		static const std::string MENU_ITEM_DEEP_SEARCH;
+		
 		void prepareClearBoardBuffer();
 		
 		void copyBoardBufferToOutBuffer();
@@ -84,6 +83,7 @@ namespace chess_solver
 		void renderFigures(std::list<Figure*>& figures);
 		
 		char getFigureChar(Figure& figure);
+		char getFigureChar(FigureType figureType);
 		
 		short getBufferCellIndexFromCoordinates(short rowIndex, short columnIndex);
 		

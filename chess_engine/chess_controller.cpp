@@ -5,18 +5,18 @@ namespace chess_solver
 	
 	const std::string ChessController::DEFAULT_FIGURE_DESCRIPTION_NAME = "figures.txt";
 	
-//	ChessController::ChessController(char boardSize) : game(boardSize, FigureColor::WHITE), figureCreator(boardSize), /*visualizer(this->game.getBoard(), this->game.getFirstPlayer(),*/ this->game.getSecondPlayer())
-//	{
-//	}
-	
-//	void ChessController::show()
-//	{
-//		visualizer.showSituation();
-//	}
+	ChessController::ChessController(AbstractSolver* solver, AbstractVisualizer* visualizer, int maximalDepth, char boardSize) : AbstractController(solver, visualizer, maximalDepth), game(boardSize), figureCreator(boardSize)
+	{
+		init(DEFAULT_FIGURE_DESCRIPTION_NAME);
+		
+		this->selectedMenuItem = MenuItem::DEEP_SEARCH;
+	}
 	
 	void ChessController::init(const std::string& figureDescriptionFileName)
 	{
 		this->reader.readFigureFile(figureDescriptionFileName);
+		
+		this->game.setCurrentPlayer(this->reader.getMovingPlayerColor());
 		
 		std::list<Figure*>* blackFigures = this->figureCreator.makeFigureList(this->reader.getBlackFigures(), FigureColor::BLACK);
 		std::list<Figure*>* whiteFigures = this->figureCreator.makeFigureList(this->reader.getWhiteFigures(), FigureColor::WHITE);
@@ -40,16 +40,27 @@ namespace chess_solver
 	{
 		init(DEFAULT_FIGURE_DESCRIPTION_NAME);
 		
-		initSolver();
 		
 		
 		
 		
 	}
 	
-	void ChessController::initSolver()
+	void ChessController::enterSelectedItem()
 	{
-		Solver* solver = reinterpret_cast<Solver*>(this->solver);
+		switch (selectedMenuItem)
+		{
+		case MenuItem::DEEP_SEARCH:
+			this->initSolver()->useDeepSearch(this->getMaximalDepth());
+			break;
+		default:
+			break;
+		}
+	}
+	
+	Solver* ChessController::initSolver()
+	{
+		Solver* solver = reinterpret_cast<Solver*>(this->getSolver());
 		
 		solver->clearTree();
 		
@@ -58,5 +69,6 @@ namespace chess_solver
 		solver->initTree(startSituation);
 		
 		delete startSituation;
+		return solver;
 	}
 }
