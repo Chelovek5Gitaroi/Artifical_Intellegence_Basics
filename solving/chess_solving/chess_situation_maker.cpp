@@ -93,6 +93,8 @@ namespace chess_solver
 	bool ChessSituationMaker::createValidTransformationCommands(Figure* figure, Board& board, const Coordinates& finishCoordinates, CommandType type,
 		const Coordinates& kingCoordinates, std::list<Figure*>* figures, FigureColor otherColor, std::list<Figure*>* otherFigures, std::list<Command*>* commands)
 	{
+		std::cout << "*Debug* creating valid transformation commands...\n";
+		
 		Command* command = new CommandTransformation(figure, finishCoordinates, FigureType::BISHOP, type);
 		
 		bool isValid = MovingValidator::isMoveValid(command, *otherFigures, board);
@@ -122,6 +124,17 @@ namespace chess_solver
 			delete command;
 		}
 		
+		std::cout << "end creating valid trans commands... ";
+		
+		if (isValid)
+		{
+			std::cout << "valid\n";
+		}
+		else
+		{
+			std::cout << "non valid\n";
+		}
+		
 		return isValid;
 	}
 	
@@ -141,13 +154,6 @@ namespace chess_solver
 		}
 		
 		std::list<Coordinates>* coordinates = MovingPreparator::getPotentialPossibleCoordinates(startCoordinates, figure->getType(), figure->getColor(), board.getBoardSize());
-		
-//		std::cout << "*Debug* coordinates:\n";
-//		
-//		for (auto iter = coordinates->begin(); iter != coordinates->end(); iter++)
-//		{
-//			std::cout << "*Debug* " << *iter << "\n";
-//		}
 		
 		Command* command = nullptr;
 		

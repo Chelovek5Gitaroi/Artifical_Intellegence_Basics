@@ -4,9 +4,7 @@
 
 #include <list>
 
-
 #include "..\\chess_entities\\figure.h"
-
 
 
 namespace chess_solver

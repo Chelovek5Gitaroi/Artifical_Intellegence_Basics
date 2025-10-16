@@ -3,6 +3,9 @@
 
 #include "coordinates.h"
 
+#include <iostream>
+#include <string>
+
 namespace chess_solver
 {
 	enum class FigureColor
@@ -28,6 +31,8 @@ namespace chess_solver
 		
 		Figure(Figure& other);
 		
+		~Figure();
+		
 		FigureType getType() { return type; }
 		FigureColor getColor() { return color; }
 		
@@ -37,6 +42,7 @@ namespace chess_solver
 		
 		bool operator==(Figure& other);
 		
+		std::string toString();
 		
 	private:
 		FigureType type;
@@ -44,6 +50,8 @@ namespace chess_solver
 		
 		Coordinates coordinates;
 	};
+	
+//	std::ostream& operator<<(std::ostream& os, Figure& figure);
 }
 
 #endif

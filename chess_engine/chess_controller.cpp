@@ -49,7 +49,7 @@ namespace chess_solver
 	void ChessController::control()
 	{
 		this->makeMenuStrings(MENU_TIILE);
-		this->getVisualizer()->showMenu(this->menuStrings);
+//		this->getVisualizer()->showMenu(this->menuStrings);
 		
 //		while (isRunning)
 //		{

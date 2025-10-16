@@ -77,7 +77,25 @@ namespace chess_solver
 		
 		if (result)
 		{
-			result = isReachebleForPawn(figure.getCoordinates(), finish, board, figure.getColor(), isBeatTransformation, true);
+			if (isBeatTransformation)
+			{
+				result = board.getTileOccupancyByCoordinates(finish);
+				
+				Figure* figureToTake = getFigureFromListByCoordinates(finish, secondPlayerFigures);
+				
+				if (figureToTake)
+				{
+					result = isReachebleForPawn(figure.getCoordinates(), finish, board, figure.getColor(), isBeatTransformation, true);
+				}
+				else
+				{
+					result = false;
+				}
+			}
+			else
+			{
+				result = isReachebleForPawn(figure.getCoordinates(), finish, board, figure.getColor(), isBeatTransformation, true);
+			}
 		}
 		
 		std::cout << " transform validated... ";
