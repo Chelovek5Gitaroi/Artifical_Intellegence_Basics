@@ -37,7 +37,9 @@ namespace chess_solver
 		case CommandType::BEAT_TRANSFORMATION:
 			transCommand = reinterpret_cast<CommandTransformation*>(command);
 			this->takenFigurePosition = getFigurePosition(command->getFinishCoordinates(), otherFigures);
+			
 			executeBeatTransformation(board, command->getFigure(), *this->takenFigurePosition, transCommand->getNewFigureType(), figures, otherFigures);
+			
 			break;
 		}
 		
@@ -151,9 +153,7 @@ namespace chess_solver
 	
 	void ChessCommandExecutor::executeBeatTransformation(Board& board, Figure* figure, Figure* figureToTake, FigureType newFigureType, std::list<Figure*>* figures, std::list<Figure*>* otherFigures)
 	{
-		std::cout << "beat trans";
-		
-		std::cout << " taken figure: " << takenFigure->toString() << " ";
+		std::cout << "beat trans taken figure: " << figureToTake->toString() << " ";
 		
 		this->takenFigure = figureToTake;
 		
@@ -178,7 +178,7 @@ namespace chess_solver
 		std::cout << " creating new figure... ";
 		Figure* createdFigure = new Figure(newFigureType, figure->getColor(), figureToTake->getCoordinates().getColumn(), figureToTake->getCoordinates().getRow());
 		
-//		std::cout << " created figure: " << createdFigure << " ";
+		std::cout << " created figure: " << createdFigure->toString() << " ";
 		
 		std::cout << " adding figure... ";
 		figures->insert(this->figurePosition, createdFigure);		
@@ -223,17 +223,12 @@ namespace chess_solver
 	{
 		std::list<Figure*>::iterator result = figures->begin();
 		
-		bool isFound = false;
-		
-		for (result; result != figures->end() && !isFound; result++)
+		for (result; result != figures->end(); result++)
 		{
-			std::cout << "target: " << coordinates << ", current: " << (*result)->getCoordinates() << " ";
 			
 			if ((*result)->getCoordinates() == coordinates)
 			{
-				std::cout << " found! ";
-				
-				isFound = true;
+				return result;
 			}
 		}
 		

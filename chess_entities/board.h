@@ -3,6 +3,8 @@
 
 #include "../utilities/coordinates_converter.h"
 
+#include <string>
+
 namespace chess_solver
 {	
 	/*
@@ -37,6 +39,8 @@ namespace chess_solver
 		// Перегрузка оператора ==
 		bool operator==(const Board& other) const;
 			
+		std::string toString() const;	
+		
 	private:
 		// Длина стороны доски в клетках
 		char boardSize;

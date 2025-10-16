@@ -58,11 +58,13 @@ namespace chess_solver
 		
 		if (isValid)
 		{
-			executor.executeCommand(result, board, figures, otherFigures);
+			isValid = !MovingValidator::hasCheck(result, board, kingCoordinates, otherColor, *otherFigures);
 			
-			isValid = !MovingValidator::hasCheck(board, kingCoordinates, otherColor, *otherFigures);
-			
-			executor.undoCommand(result, board, figures, otherFigures);
+//			executor.executeCommand(result, board, figures, otherFigures);
+//			
+//			isValid = !MovingValidator::hasCheck(board, kingCoordinates, otherColor, *otherFigures);
+//			
+//			executor.undoCommand(result, board, figures, otherFigures);
 			
 			if (!isValid)
 			{
@@ -101,11 +103,7 @@ namespace chess_solver
 		
 		if (isValid)
 		{
-			executor.executeCommand(command, board, figures, otherFigures);
-			
-			isValid = !MovingValidator::hasCheck(board, kingCoordinates, otherColor, *otherFigures);
-			
-			executor.undoCommand(command, board, figures, otherFigures);
+			isValid = !MovingValidator::hasCheck(command, board, kingCoordinates, otherColor, *otherFigures);
 			
 			if (isValid)
 			{

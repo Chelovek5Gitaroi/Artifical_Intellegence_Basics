@@ -2,6 +2,30 @@
 
 namespace chess_solver
 {
+	std::string Board::toString() const
+	{
+		std::string result;
+		
+		for (short row = 0; row < this->boardSize; row++)
+		{
+			for (short col = 0; col < this->boardSize; col++)
+			{
+				if (this->tilesOccupancy[row][col])
+				{
+					result += '+';
+				}
+				else
+				{
+					result += '-';
+				}
+			}
+			
+			result += '\n';
+		}
+		
+		return result;
+	}
+	
 	Board::Board(char boardSize)
 	{
 		this->boardSize	= boardSize;
@@ -19,10 +43,12 @@ namespace chess_solver
 		{
 			for (char column = 0; column < this->boardSize; column++)
 			{
-				if (other.tilesOccupancy[row][column])
-				{
-					this->tilesOccupancy[row][column] = true;
-				}
+				this->tilesOccupancy[row][column] = other.tilesOccupancy[row][column];
+				
+//				if (other.tilesOccupancy[row][column])
+//				{
+//					this->tilesOccupancy[row][column] = true;
+//				}
 			}
 		}
 	}

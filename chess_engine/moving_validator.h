@@ -4,7 +4,6 @@
 #include <iostream>
 
 #include <cstdlib>
-#include <map>
 
 #include "..\\chess_entities\\board.h"
 #include "..\\chess_entities\\figure.h"
@@ -21,7 +20,7 @@ namespace chess_solver
 		
 		static bool isMoveValid(Command* command, std::list<Figure*>& secondPlayerFigures, Board& board);
 		
-		static bool hasCheck(const Board& board, const Coordinates& kingCoordinates, FigureColor otherPlayerColor, std::list<Figure*>& secondPlayerFigures);
+		static bool hasCheck(Command* command, Board& board, const Coordinates& kingCoordinates, FigureColor otherPlayerColor, std::list<Figure*>& secondPlayerFigures);
 		
 	private:
 		static bool isMoveValid(Figure& figure, const Coordinates& finish, const Board& board);

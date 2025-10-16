@@ -6,7 +6,7 @@ namespace chess_solver
 {
 	OptionTree::OptionTree(AbstractSituation* situation, AbstractCommand* previousCommand, OptionTree* parent, short depth)
 	{
-		std::cout << "*Debug* option tree ñ-tor...\n";
+//		std::cout << "*Debug* option tree ñ-tor...\n";
 		
 		this->situation = situation;
 		
@@ -17,21 +17,28 @@ namespace chess_solver
 		
 		this->currentChild = this->children.begin();
 		
-		std::cout << "*Debug* option tree ñ-tor end...\n";
+//		std::cout << "*Debug* option tree ñ-tor end...\n";
 	}
 	
 	OptionTree::~OptionTree()
 	{
-		std::cout << "*Debug* option tree d-tor...\n";
+//		std::cout << "*Debug* option tree d-tor...\n children: " << this->children.size() << "\n";
 		
 		for (auto iter = this->children.begin(); iter != children.end(); iter++)
 		{
 			delete *iter;
 		}
 		
-		this->parent->removeChild(this);
+		if (this->parent)
+		{
+			this->parent->removeChild(this);
+		}
 		
-		delete this->previousCommand;
+		if (this->previousCommand)
+		{
+			delete this->previousCommand;
+		}
+		
 		delete this->situation;
 	}
 	
@@ -56,22 +63,5 @@ namespace chess_solver
 		
 		return *currentChild;
 	}
-	
-//	void OptionTree::removeChild(OptionTree* child)
-//	{
-//		auto iter = children.begin();
-//		
-//		bool wasRemoved = false;
-//
-//		for (iter; iter != children.end() && !wasRemoved; iter++)
-//		{
-//			if (*iter == child)
-//			{
-//				wasRemoved = true;
-//				
-//				children.remove()
-//			}
-//		}
-//	}
-	
+		
 }

@@ -34,6 +34,8 @@ namespace chess_solver
 		for (Figure* figure : *whiteFigures)
 		{
 			this->game.getFirstPlayer()->addFigure(figure);
+			
+			this->game.getBoard()->setOccupancyByCoordinates(figure->getCoordinates(), true);
 		}
 		
 		delete whiteFigures;
@@ -41,7 +43,10 @@ namespace chess_solver
 		for (Figure* figure : *blackFigures)
 		{
 			this->game.getSecondPlayer()->addFigure(figure);
+			this->game.getBoard()->setOccupancyByCoordinates(figure->getCoordinates(), true);
 		}
+		
+		std::cout << "*debug* start board:\n" << this->game.getBoard()->toString();
 		
 		delete blackFigures;
 	}
@@ -49,6 +54,8 @@ namespace chess_solver
 	void ChessController::control()
 	{
 		this->makeMenuStrings(MENU_TIILE);
+//		system("cls");
+		
 //		this->getVisualizer()->showMenu(this->menuStrings);
 		
 //		while (isRunning)
