@@ -128,6 +128,11 @@ namespace chess_solver
 		for (auto iter = menuStrings.begin(); iter != menuStrings.end(); iter++)
 		{
 			SetConsoleCursorPosition(this->consoleFile, this->currentCursorPosition);
+			
+			std::cout << std::string(iter->first.size() + 4, ' ');
+			
+			SetConsoleCursorPosition(this->consoleFile, this->currentCursorPosition);
+			
 			std::cout << iter->first;
 			
 			if (iter->second)

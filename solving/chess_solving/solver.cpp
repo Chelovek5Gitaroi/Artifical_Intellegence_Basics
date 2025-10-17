@@ -66,8 +66,18 @@ namespace chess_solver
 
 	bool Solver::isTargetSituation(Situation* situation)
 	{
+		std::list<Figure*>* figures = &situation->getWhiteFigures();
+		std::list<Figure*>* secondPlayerFigures = &situation->getBlackFigures();
 		
-//		return situation->getCurrentPlayer() != situation->getTargetPlayer() && situation->getPotentialMoves()->empty() && MovingValidator::hasCheck(situation->getBoard(), );
+		if (situation->getCurrentPlayer() == FigureColor::BLACK)
+		{
+			std::swap(figures, secondPlayerFigures);
+		}
+		
+		Coordinates* kingCoordinates;
+		
+		return situation->getCurrentPlayer() != situation->getTargetPlayer() && situation->getPotentialMoves()->empty() &&
+			MovingValidator::hasCheck(situation->getBoard(), *kingCoordinates, *secondPlayerFigures);
 	}
 		
 	bool Solver::isDeadlock(Situation* situation, short maximalDepth, short currentDepth)

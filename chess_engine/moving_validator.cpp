@@ -231,7 +231,7 @@ namespace chess_solver
 		
 		for (row; row != finish.getRow(); row += step)
 		{
-			std::cout << start.getColumn() << (short)row << " " << board.getTileOccupancyByCoordinates(start.getColumn(), row) << "\n";
+//			std::cout << start.getColumn() << (short)row << " " << board.getTileOccupancyByCoordinates(start.getColumn(), row) << "\n";
 			
 			if (board.getTileOccupancyByCoordinates(start.getColumn(), row))
 			{
@@ -441,37 +441,37 @@ namespace chess_solver
 		return result;
 	}
 	
-	bool hasCheck(Board& board, const Coordinates& kingCoordinates, std::list<Figure*>& secondPlayerFigures)
+	bool MovingValidator::hasCheck(Board& board, const Coordinates& kingCoordinates, std::list<Figure*>& secondPlayerFigures)
 	{
 		bool result = false;
 		
-		for (auto iter = secondPlayerFigures->begin(); iter != secondPlayerFigures->end() && !result; iter++)
+		for (auto iter = secondPlayerFigures.begin(); iter != secondPlayerFigures.end() && !result; iter++)
 		{
 			switch ((*iter)->getType())
 			{
-			case FgiureType::PAWN:
-				result = isReachebleForPawn((*iter)=>getCoordinates(), kingCoordinates, board, (*iter)->getColor(), true, false) ||
-					isReachebleForPawn((*iter)=>getCoordinates(), kingCoordinates, board, (*iter)->getColor(), true, true);
+			case FigureType::PAWN:
+				result = isReachebleForPawn((*iter)->getCoordinates(), kingCoordinates, board, (*iter)->getColor(), true, false) ||
+					isReachebleForPawn((*iter)->getCoordinates(), kingCoordinates, board, (*iter)->getColor(), true, true);
 				break;
 				
 			case FigureType::BISHOP:
-				result = isDiagonalEmpty((*iter)=>getCoordinates(), kingCoordinates, board);
+				result = isDiagonalEmpty((*iter)->getCoordinates(), kingCoordinates, board);
 				break;
 				
 			case FigureType::KNIGHT:
-				result = isReachebleForKnight((*iter)=>getCoordinates(), kingCoordinates, board);
+				result = isReachebleForKnight((*iter)->getCoordinates(), kingCoordinates, board);
 				break;
 				
 			case FigureType::ROCK:
-				result = isVerticalEmpty((*iter)=>getCoordinates(), kingCoordinates, board) || isHorizontalEmpty((*iter)=>getCoordinates(), kingCoordinates, board);
+				result = isVerticalEmpty((*iter)->getCoordinates(), kingCoordinates, board) || isHorizontalEmpty((*iter)->getCoordinates(), kingCoordinates, board);
 				break;
 				
 			case FigureType::QUEEN:
-				result = isLineEmpty((*iter)=>getCoordinates(), kingCoordinates, board);
+				result = isLineEmpty((*iter)->getCoordinates(), kingCoordinates, board);
 				break;
 				
-			case FgiureType::KING:
-				result = isReachebleForKing((*iter)=>getCoordinates(), kingCoordinates, board);
+			case FigureType::KING:
+				result = isReachebleForKing((*iter)->getCoordinates(), kingCoordinates, board);
 				break;
 			}
 		}

@@ -45,16 +45,13 @@ namespace chess_solver
 		static const std::string MENU_ITEM_DEEP_SEARCH;
 		static const std::string MENU_ITEM_EXIT;
 
-		static const char CONTROLLER_STATE_RUNNING = 1 << 7;
-		static const char CONTROLLER_STATE_MENU_SELECT_SOLVING_METHOD = 1 << 6;
-		static const char CONTROLLER_STATE_SELECTING_SITUATION = 1 << 5;
+		static const unsigned short CONTROLLER_STATE_RUNNING = 1 << 7;
+		static const unsigned short CONTROLLER_STATE_MENU_SELECT_SOLVING_METHOD = 1 << 6;
+		static const unsigned short CONTROLLER_STATE_SELECTING_SITUATION = 1 << 5;
 
 		static const std::map<MenuItem, std::string> menu;
 		
-		char controllerState;
-		
-//		bool isRunning;
-//		bool 
+		unsigned short controllerState;
 		
 		Game game;
 		
@@ -75,6 +72,12 @@ namespace chess_solver
 		void makeMenuStrings(const std::string& title);
 		
 		void selectItem(MenuItem item);
+		
+		void selectNextMenuItem();
+		
+		void selectPreviousItem();
+		
+		void selectNextItem();
 		
 		void processKeyEnter();
 		
