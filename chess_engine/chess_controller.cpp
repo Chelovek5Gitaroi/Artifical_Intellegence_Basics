@@ -64,22 +64,22 @@ namespace chess_solver
 		
 		while (this->controllerState & CONTROLLER_STATE_RUNNING)
 		{
-			if (GetAsyncKeyState(VK_RETURN) & 0x8000)
+			if (GetKeyState(VK_RETURN) & 0x8000)
 			{
 				processKeyEnter();
 			}
 			
-			if (GetAsyncKeyState(VK_UP) & 0x8000)
+			if (GetKeyState(VK_UP) & 0x8000)
 			{
 				processKeyUp();
 			}
 			
-			if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+			if (GetKeyState(VK_DOWN) & 0x8000)
 			{
 				processKeyDown();
 			}
 			
-			if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
+			if (GetKeyState(VK_ESCAPE) & 0x8000)
 			{
 				
 			}
@@ -128,26 +128,81 @@ namespace chess_solver
 		
 		for (int i = 0; i < this->menuStrings.size(); i++)
 		{
-			this->menuStrings[i].second = (int)this->selectedMenuItem == i;
+			this->menuStrings[i].second = static_cast<short>(this->selectedMenuItem) == i;
 		}
+	}
+	
+	void ChessController::selectPreviousItem()
+	{
+		short selected = static_cast<short>(selectedMenuItem);
+		
+		if (selectedMenuItem == MenuItem::DEEP_SEARCH)
+		{
+			selected = static_cast<short>(MenuItem::EXIT);
+		}
+		else
+		{
+			selected -= 1;
+		}
+		
+		selectItem(static_cast<MenuItem>(selected));
+	}
+		
+	void ChessController::selectNextItem()
+	{
+		short selected = static_cast<short>(selectedMenuItem);
+		
+		if (selectedMenuItem == MenuItem::EXIT)
+		{
+			selected = static_cast<short>(MenuItem::DEEP_SEARCH);
+		}
+		else
+		{
+			selected += 1;
+		}
+		
+		selectItem(static_cast<MenuItem>(selected));
 	}
 	
 	void ChessController::processKeyEnter()
 	{
-//		if ()
-//		{
-//			
-//		}
+		if (controllerState & CONTROLLER_STATE_MENU_SELECT_SOLVING_METHOD)
+		{
+			switch (this->selectedMenuItem)
+			{
+			case MenuItem::DEEP_SEARCH:
+				break;
+				
+			case MenuItem::EXIT:
+				this->controllerState &= ~CONTROLLER_STATE_RUNNING;
+				break;
+			}
+		}
 	}
 	
 	void ChessController::processKeyUp()
 	{
-		
+		if (controllerState & CONTROLLER_STATE_MENU_SELECT_SOLVING_METHOD)
+		{
+			selectPreviousItem();
+			this->getVisualizer()->showMenu(this->menuStrings);
+		}
 	}
 		
 	void ChessController::processKeyDown()
 	{
+//		std::cout << "*debug* controller state: " << (unsigned short)this->controllerState << std::endl;
 		
+//		system("pause");
+		
+		if (controllerState & CONTROLLER_STATE_MENU_SELECT_SOLVING_METHOD)
+		{
+			selectNextItem();
+			this->getVisualizer()->showMenu(this->menuStrings);
+		}
+		
+//		std::cout << "*debug* controller state: " << (unsigned short)this->controllerState << std::endl;
+//		system("pause");
 	}
 
 }
