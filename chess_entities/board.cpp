@@ -44,11 +44,6 @@ namespace chess_solver
 			for (char column = 0; column < this->boardSize; column++)
 			{
 				this->tilesOccupancy[row][column] = other.tilesOccupancy[row][column];
-				
-//				if (other.tilesOccupancy[row][column])
-//				{
-//					this->tilesOccupancy[row][column] = true;
-//				}
 			}
 		}
 	}
@@ -70,7 +65,7 @@ namespace chess_solver
 		
 	bool Board::getTileOccupancyByCoordinates(char column, char row) const
 	{
-		return tilesOccupancy[CoordinatesConverter::getRowIndexFromCoordinate(row, this->boardSize)][CoordinatesConverter::getRowIndexFromCoordinate(column, this->boardSize)];
+		return tilesOccupancy[CoordinatesConverter::getRowIndexFromCoordinate(row, this->boardSize)][CoordinatesConverter::getColumnIndexFromCoordinate(column)];
 	}
 
 	void Board::setOccupancyByCoordinates(const Coordinates& coordinates, bool occupancy)

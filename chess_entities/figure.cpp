@@ -6,7 +6,7 @@ namespace chess_solver
 {
 	Figure::~Figure()
 	{
-		std::cout << "*debug* deleting figure: ";
+//		std::cout << "*debug* deleting figure: ";
 		
 //		if (color == FigureColor::WHITE)
 //		{

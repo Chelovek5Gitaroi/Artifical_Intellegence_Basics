@@ -3,7 +3,7 @@
 
 #include "coordinates.h"
 
-#include <iostream>
+//#include <iostream>
 #include <string>
 
 namespace chess_solver
