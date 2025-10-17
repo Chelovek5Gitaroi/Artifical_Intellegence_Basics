@@ -16,7 +16,7 @@ namespace chess_solver
 
 	void Solver::initTree(AbstractSituation* startSituation)
 	{
-		std::cout << "*Debug* init tree...\n";
+//		std::cout << "*Debug* init tree...\n";
 		
 		AbstractSolver::initTree(startSituation);
 		
@@ -26,7 +26,7 @@ namespace chess_solver
 		
 		situationMaker->prepareStartSituationMoves(situation);
 		
-		std::cout << "*Debug* tree inited...\n";
+//		std::cout << "*Debug* tree inited...\n";
 	}
 
 	OptionTree* Solver::createChild(OptionTree* tree)
@@ -66,7 +66,8 @@ namespace chess_solver
 
 	bool Solver::isTargetSituation(Situation* situation)
 	{
-		return situation->getCurrentPlayer() != situation->getTargetPlayer() && situation->getPotentialMoves()->empty();
+		
+//		return situation->getCurrentPlayer() != situation->getTargetPlayer() && situation->getPotentialMoves()->empty() && MovingValidator::hasCheck(situation->getBoard(), );
 	}
 		
 	bool Solver::isDeadlock(Situation* situation, short maximalDepth, short currentDepth)

@@ -68,12 +68,11 @@ namespace chess_solver
 
 		static const unsigned short FIGURE_COLOR_WHITE = 0x0001 | 0x0002 | 0x0004 | 0x0008;
 	
-		static const unsigned short FIGURE_COLOR_BACKGROUND = 0x0010 | 0x0020 | 0x0040;
+		static const unsigned short BACKGROUND_COLOR_INTENSIFIED = 0X0080;
+	
+		static const unsigned short FIGURE_COLOR_BACKGROUND = /*0x0010 | 0x0020 | 0x0040 |*/ 0x0080;
 	
 		static const unsigned short TILE_COLOR_WHITE =  0x0010 | 0x0020 | 0x0040 | 0x0080;
-		
-		static const unsigned short BACKGROUND_COLOR_INTENSIFIED = 0X0800;
-		
 		
 		void prepareClearBoardBuffer();
 		

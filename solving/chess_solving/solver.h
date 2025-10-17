@@ -1,7 +1,7 @@
 #ifndef SOLVER
 #define SOLVER
 
-#include <iostream>
+//#include <iostream>
 
 #include "../abstract_solver.h"
 #include "chess_situation_maker.h"
@@ -12,7 +12,7 @@ namespace chess_solver
 	{
 	public:
 		Solver(AbstractSituationMaker* situationMaker);
-		~Solver(){ std::cout << "*Debug* solver d-tor\n"; }
+//		~Solver(){ std::cout << "*Debug* solver d-tor\n"; }
 				
 		bool useDeepSearch(short maximalDepth) override;
 	

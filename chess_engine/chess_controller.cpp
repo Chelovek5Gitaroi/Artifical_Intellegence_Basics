@@ -17,7 +17,9 @@ namespace chess_solver
 		
 		this->selectedMenuItem = MenuItem::DEEP_SEARCH;
 		
-		this->isRunning = true;
+		this->controllerState |= CONTROLLER_STATE_RUNNING;
+		
+//		this->isRunning = true;
 		
 		initSolver();
 	}
@@ -46,7 +48,7 @@ namespace chess_solver
 			this->game.getBoard()->setOccupancyByCoordinates(figure->getCoordinates(), true);
 		}
 		
-		std::cout << "*debug* start board:\n" << this->game.getBoard()->toString();
+//		std::cout << "*debug* start board:\n" << this->game.getBoard()->toString();
 		
 		delete blackFigures;
 	}
@@ -54,14 +56,34 @@ namespace chess_solver
 	void ChessController::control()
 	{
 		this->makeMenuStrings(MENU_TIILE);
-//		system("cls");
+		system("cls");
 		
-//		this->getVisualizer()->showMenu(this->menuStrings);
+		this->getVisualizer()->showSituation(this->getSolver()->getTree()->getSituation());
 		
-//		while (isRunning)
-//		{
-//			
-//		}
+		this->getVisualizer()->showMenu(this->menuStrings);
+		
+		while (this->controllerState & CONTROLLER_STATE_RUNNING)
+		{
+			if (GetAsyncKeyState(VK_RETURN) & 0x8000)
+			{
+				processKeyEnter();
+			}
+			
+			if (GetAsyncKeyState(VK_UP) & 0x8000)
+			{
+				processKeyUp();
+			}
+			
+			if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+			{
+				processKeyDown();
+			}
+			
+			if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
+			{
+				
+			}
+		}
 	}
 	
 	void ChessController::enterSelectedItem()
@@ -109,4 +131,23 @@ namespace chess_solver
 			this->menuStrings[i].second = (int)this->selectedMenuItem == i;
 		}
 	}
+	
+	void ChessController::processKeyEnter()
+	{
+//		if ()
+//		{
+//			
+//		}
+	}
+	
+	void ChessController::processKeyUp()
+	{
+		
+	}
+		
+	void ChessController::processKeyDown()
+	{
+		
+	}
+
 }

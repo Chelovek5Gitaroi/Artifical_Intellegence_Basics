@@ -1,9 +1,9 @@
 #ifndef VALIDATOR
 #define VALIDATOR
 
-#include <iostream>
+//#include <iostream>
 
-#include <cstdlib>
+//#include <cstdlib>
 
 #include "..\\chess_entities\\board.h"
 #include "..\\chess_entities\\figure.h"
@@ -20,7 +20,9 @@ namespace chess_solver
 		
 		static bool isMoveValid(Command* command, std::list<Figure*>& secondPlayerFigures, Board& board);
 		
-		static bool hasCheck(Command* command, Board& board, const Coordinates& kingCoordinates, FigureColor otherPlayerColor, std::list<Figure*>& secondPlayerFigures);
+		static bool hasCheck(Command* command, Board& board, const Coordinates& kingCoordinates, std::list<Figure*>& secondPlayerFigures);
+		
+		static bool hasCheck(Board& board, const Coordinates& kingCoordinates, std::list<Figure*>& secondPlayerFigures);
 		
 	private:
 		static bool isMoveValid(Figure& figure, const Coordinates& finish, const Board& board);

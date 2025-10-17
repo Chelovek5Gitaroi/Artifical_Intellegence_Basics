@@ -1,7 +1,8 @@
 #ifndef CHESS_CONTROLLER
 #define CHESS_CONTROLLER
 
-#include <iostream>
+#include <Windows.h>
+#include <WinUser.h>
 
 #include "../abstract_controller.h"
 
@@ -16,8 +17,6 @@
 
 namespace chess_solver
 {
-	
-	
 	class ChessController : public AbstractController
 	{
 	public:
@@ -46,9 +45,16 @@ namespace chess_solver
 		static const std::string MENU_ITEM_DEEP_SEARCH;
 		static const std::string MENU_ITEM_EXIT;
 
+		static const char CONTROLLER_STATE_RUNNING = 1 << 7;
+		static const char CONTROLLER_STATE_MENU_SELECT_SOLVING_METHOD = 1 << 6;
+		static const char CONTROLLER_STATE_SELECTING_SITUATION = 1 << 5;
+
 		static const std::map<MenuItem, std::string> menu;
 		
-		bool isRunning;
+		char controllerState;
+		
+//		bool isRunning;
+//		bool 
 		
 		Game game;
 		
@@ -69,6 +75,12 @@ namespace chess_solver
 		void makeMenuStrings(const std::string& title);
 		
 		void selectItem(MenuItem item);
+		
+		void processKeyEnter();
+		
+		void processKeyUp();
+		
+		void processKeyDown();
 	};
 }
 

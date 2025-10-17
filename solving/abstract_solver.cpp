@@ -4,7 +4,7 @@ namespace chess_solver
 {
 	AbstractSolver::~AbstractSolver()
 	{
-		std::cout << "*Debug* abstract solver d-tor...\n";
+//		std::cout << "*Debug* abstract solver d-tor...\n";
 		
 		delete this->tree;
 		delete this->situationMaker;
@@ -28,7 +28,7 @@ namespace chess_solver
 	
 	void AbstractSolver::initTree(AbstractSituation* startSituation)
 	{
-		std::cout << "*Debug* base init tree...\n";
+//		std::cout << "*Debug* base init tree...\n";
 		
 		if (tree)
 		{

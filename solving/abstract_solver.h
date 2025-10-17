@@ -18,6 +18,8 @@ namespace chess_solver
 	
 		virtual void initTree(AbstractSituation* startSituation);
 	
+		OptionTree* getTree() const { return tree; }
+	
 		void clearTree();
 		
 	protected:

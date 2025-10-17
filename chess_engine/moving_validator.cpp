@@ -8,7 +8,7 @@ namespace chess_solver
 		
 		Figure* figure = command->getFigure();
 		
-		std::cout << "*Debug* validating move figure: " << figure->toString() << ", finish: " << command->getFinishCoordinates() << "... ";
+//		std::cout << "*Debug* validating move figure: " << figure->toString() << ", finish: " << command->getFinishCoordinates() << "... ";
 		
 		switch (command->getType())
 		{
@@ -34,7 +34,7 @@ namespace chess_solver
 	
 	bool MovingValidator::isMoveValid(Figure& figure, const Coordinates& finish, const Board& board)
 	{
-		std::cout << " validating simple move... ";
+//		std::cout << " validating simple move... ";
 		
 		bool result = !board.getTileOccupancyByCoordinates(finish);
 		
@@ -64,14 +64,14 @@ namespace chess_solver
 			}
 		}
 		
-		std::cout << " simple move validated... ";
+//		std::cout << " simple move validated... ";
 		
 		return result;
 	}
 	
 	bool MovingValidator::isTransformationValid(Figure& figure, FigureType newFigureType, const Coordinates& finish, std::list<Figure*>& secondPlayerFigures, bool isBeatTransformation, const Board& board)
 	{
-		std::cout << " validating transform... ";
+//		std::cout << " validating transform... ";
 		
 		bool result = figure.getType() == FigureType::PAWN && newFigureType != FigureType::PAWN && newFigureType != FigureType::KING;
 		
@@ -98,14 +98,14 @@ namespace chess_solver
 			}
 		}
 		
-		std::cout << " transform validated... ";
+//		std::cout << " transform validated... ";
 		
 		return result;
 	}
 	
 	bool MovingValidator::isTakingValid(Figure& figure, const Coordinates& finish, std::list<Figure*>& secondPlayerFigures, const Board& board)
 	{
-		std::cout << " validate taking... ";
+//		std::cout << " validate taking... ";
 		
 		bool result = false;
 		
@@ -121,7 +121,13 @@ namespace chess_solver
 			switch (figure.getType())
 			{
 			case FigureType::BISHOP:
+				result = isDiagonalEmpty(start, finish, board);
+				break;
+				
 			case FigureType::ROCK:
+				result = isVerticalEmpty(start, finish, board) || isHorizontalEmpty(start, finish, board);
+				break;
+				
 			case FigureType::QUEEN:
 				result = isLineEmpty(start, finish, board);
 				break;
@@ -140,14 +146,14 @@ namespace chess_solver
 			}
 		}
 		
-		std::cout << " taking validated... ";
+//		std::cout << " taking validated... ";
 		
 		return result;
 	}
 	
 	bool MovingValidator::isLineEmpty(const Coordinates& start, const Coordinates& finish, const Board& board)
 	{
-		std::cout << " validate line emptyness " << start << "-" << finish << " ";
+//		std::cout << " validate line emptyness " << start << "-" << finish << " ";
 		
 //		std::cout << "\n" << board.toString() << "\n";
 		
@@ -238,6 +244,11 @@ namespace chess_solver
 	
 	bool MovingValidator::isDiagonalEmpty(const Coordinates& start, const Coordinates& finish, const Board& board)
 	{
+		if (std::abs(start.getColumn() - finish.getColumn()) != std::abs(start.getRow() - finish.getRow()))
+		{
+			return false;
+		}
+		
 		char row = start.getRow();
 		char column = start.getColumn();
 		
@@ -264,8 +275,12 @@ namespace chess_solver
 			columnStep = -1;
 		}
 		
+//		std::cout << "checking diagonal emptyness " << start << "-" << finish << "\n";
+		
 		while (row != finish.getRow() && column != finish.getColumn())
 		{
+//			std::cout << column << (short)row << " " << board.getTileOccupancyByCoordinates(column, row) << "\n";
+			
 			if (board.getTileOccupancyByCoordinates(column, row))
 			{
 				return false;
@@ -334,7 +349,7 @@ namespace chess_solver
 	}
 	
 	
-	bool MovingValidator::hasCheck(Command* command, Board& board, const Coordinates& kingCoordinates, FigureColor otherPlayerColor, std::list<Figure*>& secondPlayerFigures)
+	bool MovingValidator::hasCheck(Command* command, Board& board, const Coordinates& kingCoordinates, std::list<Figure*>& secondPlayerFigures)
 	{
 		bool result = false;
 		
@@ -365,13 +380,19 @@ namespace chess_solver
 		{
 			if (*iter != takenFigure)
 			{
-				std::cout << "checking check " << (*iter)->getCoordinates() << "-" << *coords << " ";
+//				std::cout << "checking check " << (*iter)->getCoordinates() << "-" << *coords << " ";
 				
 				switch ((*iter)->getType())
 				{
 				//breaks are not forgotten
 				case FigureType::ROCK:
+					result = isVerticalEmpty((*iter)->getCoordinates(), *coords, board) || isHorizontalEmpty((*iter)->getCoordinates(), *coords, board);
+					break;
+					
 				case FigureType::BISHOP:
+					result = isDiagonalEmpty((*iter)->getCoordinates(), *coords, board);
+					break;
+					
 				case FigureType::QUEEN:
 					result = isLineEmpty((*iter)->getCoordinates(), *coords, board);
 					
@@ -397,15 +418,15 @@ namespace chess_solver
 					break;
 				
 				case FigureType::PAWN:
-					result = isReachebleForPawn((*iter)->getCoordinates(), *coords, board, otherPlayerColor, true, true) ||
-						isReachebleForPawn((*iter)->getCoordinates(), *coords, board, otherPlayerColor, true, false);
+					result = isReachebleForPawn((*iter)->getCoordinates(), *coords, board, (*iter)->getColor(), true, true) ||
+						isReachebleForPawn((*iter)->getCoordinates(), *coords, board, (*iter)->getColor(), true, false);
 					break;
 				}
 				
-				if (result)
-				{
-					std::cout << " check! ";
-				}
+//				if (result)
+//				{
+//					std::cout << " check! ";
+//				}
 			}
 		}
 		
@@ -416,17 +437,44 @@ namespace chess_solver
 			board.setOccupancyByCoordinates(command->getFinishCoordinates(), false);
 //			takenFigure = getFigureFromListByCoordinates(command->getFinishCoordinates(), secondPlayerFigures);
 		}
+	
+		return result;
+	}
+	
+	bool hasCheck(Board& board, const Coordinates& kingCoordinates, std::list<Figure*>& secondPlayerFigures)
+	{
+		bool result = false;
 		
-		if (result)
+		for (auto iter = secondPlayerFigures->begin(); iter != secondPlayerFigures->end() && !result; iter++)
 		{
-			std::cout << " check! ";
+			switch ((*iter)->getType())
+			{
+			case FgiureType::PAWN:
+				result = isReachebleForPawn((*iter)=>getCoordinates(), kingCoordinates, board, (*iter)->getColor(), true, false) ||
+					isReachebleForPawn((*iter)=>getCoordinates(), kingCoordinates, board, (*iter)->getColor(), true, true);
+				break;
+				
+			case FigureType::BISHOP:
+				result = isDiagonalEmpty((*iter)=>getCoordinates(), kingCoordinates, board);
+				break;
+				
+			case FigureType::KNIGHT:
+				result = isReachebleForKnight((*iter)=>getCoordinates(), kingCoordinates, board);
+				break;
+				
+			case FigureType::ROCK:
+				result = isVerticalEmpty((*iter)=>getCoordinates(), kingCoordinates, board) || isHorizontalEmpty((*iter)=>getCoordinates(), kingCoordinates, board);
+				break;
+				
+			case FigureType::QUEEN:
+				result = isLineEmpty((*iter)=>getCoordinates(), kingCoordinates, board);
+				break;
+				
+			case FgiureType::KING:
+				result = isReachebleForKing((*iter)=>getCoordinates(), kingCoordinates, board);
+				break;
+			}
 		}
-		else
-		{
-			std::cout << " no check ";
-		}
-		
-//		std::cout << "\nBoard:\n" << board.toString();
 		
 		return result;
 	}

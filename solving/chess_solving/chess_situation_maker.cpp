@@ -42,15 +42,15 @@ namespace chess_solver
 	
 	void ChessSituationMaker::prepareStartSituationMoves(Situation* startSituation)
 	{
-		std::cout << "*Debug* preparing start moves...\n";
+//		std::cout << "*Debug* preparing start moves...\n";
 		
 		startSituation->setPotentialMoves(getAllSituationMoves(*startSituation));
 	}
 	
 	Command* ChessSituationMaker::createValidCommand(Figure* figure, Board& board, const Coordinates& finishCoordinates, CommandType type,
-		const Coordinates& kingCoordinates, std::list<Figure*>* figures, FigureColor otherColor, std::list<Figure*>* otherFigures)
+		const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures)
 	{
-		std::cout << "*Debug* creating valid command...\n";
+//		std::cout << "*Debug* creating valid command...\n";
 		
 		Command* result = new Command(figure, finishCoordinates, type);
 		
@@ -58,13 +58,7 @@ namespace chess_solver
 		
 		if (isValid)
 		{
-			isValid = !MovingValidator::hasCheck(result, board, kingCoordinates, otherColor, *otherFigures);
-			
-//			executor.executeCommand(result, board, figures, otherFigures);
-//			
-//			isValid = !MovingValidator::hasCheck(board, kingCoordinates, otherColor, *otherFigures);
-//			
-//			executor.undoCommand(result, board, figures, otherFigures);
+			isValid = !MovingValidator::hasCheck(result, board, kingCoordinates, *otherFigures);
 			
 			if (!isValid)
 			{
@@ -78,24 +72,24 @@ namespace chess_solver
 			result = nullptr;
 		}
 		
-		std::cout << "*Debug* end valid command creating... ";
-		
-		if (result)
-		{
-			std::cout << "valid command...\n";
-		}
-		else
-		{
-			std::cout << "no command...\n";
-		}
+//		std::cout << "*Debug* end valid command creating... ";
+//		
+//		if (result)
+//		{
+//			std::cout << "valid command...\n";
+//		}
+//		else
+//		{
+//			std::cout << "no command...\n";
+//		}
 		
 		return result;
 	}
 	
 	bool ChessSituationMaker::createValidTransformationCommands(Figure* figure, Board& board, const Coordinates& finishCoordinates, CommandType type,
-		const Coordinates& kingCoordinates, std::list<Figure*>* figures, FigureColor otherColor, std::list<Figure*>* otherFigures, std::list<Command*>* commands)
+		const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures, std::list<Command*>* commands)
 	{
-		std::cout << "*Debug* creating valid transformation commands...\n";
+//		std::cout << "*Debug* creating valid transformation commands...\n";
 		
 		Command* command = new CommandTransformation(figure, finishCoordinates, FigureType::BISHOP, type);
 		
@@ -103,7 +97,7 @@ namespace chess_solver
 		
 		if (isValid)
 		{
-			isValid = !MovingValidator::hasCheck(command, board, kingCoordinates, otherColor, *otherFigures);
+			isValid = !MovingValidator::hasCheck(command, board, kingCoordinates, *otherFigures);
 			
 			if (isValid)
 			{
@@ -122,34 +116,27 @@ namespace chess_solver
 			delete command;
 		}
 		
-		std::cout << "end creating valid trans commands... ";
-		
-		if (isValid)
-		{
-			std::cout << "valid\n";
-		}
-		else
-		{
-			std::cout << "non valid\n";
-		}
+//		std::cout << "end creating valid trans commands... ";
+//		
+//		if (isValid)
+//		{
+//			std::cout << "valid\n";
+//		}
+//		else
+//		{
+//			std::cout << "non valid\n";
+//		}
 		
 		return isValid;
 	}
 	
 	std::list<Command*>* ChessSituationMaker::getFigurePotentialMoves(Board& board, Figure* figure, const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures)
 	{
-		std::cout << "*Debug* preparing figure moves figure type: " << (int)figure->getType() << "\n";
+//		std::cout << "*Debug* preparing figure moves figure type: " << (int)figure->getType() << "\n";
 		
 		std::list<Command*>* result = new std::list<Command*>();
 		
 		Coordinates startCoordinates = figure->getCoordinates();
-		
-		FigureColor otherColor = FigureColor::BLACK;
-		
-		if (figure->getColor() == FigureColor::BLACK)
-		{
-			otherColor = FigureColor::WHITE;
-		}
 		
 		std::list<Coordinates>* coordinates = MovingPreparator::getPotentialPossibleCoordinates(startCoordinates, figure->getType(), figure->getColor(), board.getBoardSize());
 		
@@ -159,7 +146,7 @@ namespace chess_solver
 		
 		for (auto iter = coordinates->begin(); iter != coordinates->end(); iter++)
 		{
-			command = createValidCommand(figure, board, *iter, CommandType::MOVE, kingCoordinates, figures, otherColor, otherFigures);
+			command = createValidCommand(figure, board, *iter, CommandType::MOVE, kingCoordinates, figures, otherFigures);
 			
 			if (command)
 			{
@@ -167,7 +154,7 @@ namespace chess_solver
 			}
 			else
 			{
-				command = createValidCommand(figure, board, *iter, CommandType::BEAT, kingCoordinates, figures, otherColor, otherFigures);
+				command = createValidCommand(figure, board, *iter, CommandType::BEAT, kingCoordinates, figures, otherFigures);
 				
 				if (command)
 				{
@@ -175,24 +162,24 @@ namespace chess_solver
 				}
 				else if (figure->getType() == FigureType::PAWN)
 				{
-					wasCreated = createValidTransformationCommands(figure, board, *iter, CommandType::TRANSFORMATION, kingCoordinates, figures, otherColor, otherFigures, result);
+					wasCreated = createValidTransformationCommands(figure, board, *iter, CommandType::TRANSFORMATION, kingCoordinates, figures, otherFigures, result);
 					
 					if (!wasCreated)
 					{
-						createValidTransformationCommands(figure, board, *iter, CommandType::BEAT_TRANSFORMATION, kingCoordinates, figures, otherColor, otherFigures, result);
+						createValidTransformationCommands(figure, board, *iter, CommandType::BEAT_TRANSFORMATION, kingCoordinates, figures, otherFigures, result);
 					}
 				}
 			}
 		}
 		
-		std::cout << "*Debug* figure moves prepared...\n";
+//		std::cout << "*Debug* figure moves prepared...\n";
 		
 		return result;
 	}
 	
 	std::list<Command*>* ChessSituationMaker::getAllSituationMoves(Situation& situation)
 	{
-		std::cout << "*Debug* making situation moves\n";
+//		std::cout << "*Debug* making situation moves\n";
 		
 		std::list<Command*>* result = new std::list<Command*>();
 		
@@ -205,11 +192,11 @@ namespace chess_solver
 			otherFigures = &situation.getWhiteFigures();
 		}
 		
-		std::cout << "*Debug* getting king coordinates...\n";
+//		std::cout << "*Debug* getting king coordinates...\n";
 		
 		const Coordinates& kingCoordinates = getKingFromList(figures)->getCoordinates();
 		
-		std::cout << "*Debug* preparing figures moves\n";
+//		std::cout << "*Debug* preparing figures moves\n";
 		
 		for (auto iter = figures->begin(); iter != figures->end(); iter++)
 		{
@@ -223,7 +210,7 @@ namespace chess_solver
 			delete moves;
 		}
 		
-		std::cout << "*Debug* situation moves prepared...\n";
+//		std::cout << "*Debug* situation moves prepared...\n";
 		
 		return result;
 	}
