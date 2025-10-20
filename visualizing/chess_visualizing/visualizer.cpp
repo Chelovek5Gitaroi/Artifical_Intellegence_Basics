@@ -51,8 +51,6 @@ namespace chess_solver
 	
 	Visualizer::Visualizer(char boardSize)
 	{
-//		std::cout << "*Debug* visualizer c-tor\n";
-		
 		this->boardSize = boardSize;
 		
 		this->bufferSize.X = this->boardSize * TILE_WIDTH;
@@ -61,7 +59,7 @@ namespace chess_solver
 		this->buffer = new CHAR_INFO[this->bufferSize.X * this->bufferSize.Y];
 		this->emptyBoardBuffer = new CHAR_INFO[this->bufferSize.X * this->bufferSize.Y];
 		
-		this->consoleFile = CreateFileA(Visualizer::DEFAULT_FILE.c_str(), GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_EXISTING, 0, nullptr);
+		this->consoleFile = GetStdHandle(STD_OUTPUT_HANDLE);
 		
 		this->topLeftBufferPoint.X = 0;
 		this->topLeftBufferPoint.Y = 0;
@@ -81,6 +79,18 @@ namespace chess_solver
 		
 		this->currentCursorPosition.X = 0;
 		this->currentCursorPosition.Y = 0;
+		
+		this->screenSize.X = 100;
+		this->screenSize.Y = 35;
+		
+		this->windowPosition.Left = 10;
+		this->windowPosition.Top = 10;
+		this->windowPosition.Right = this->windowPosition.Left + screenSize.X - 1;
+		this->windowPosition.Bottom = this->windowPosition.Top + screenSize.Y - 1;
+		
+		SetConsoleScreenBufferSize(this->consoleFile, screenSize);
+		SetConsoleWindowInfo(this->consoleFile, TRUE, &windowPosition);
+		
 	}
 	
 	Visualizer::~Visualizer()

@@ -20,14 +20,14 @@ namespace chess_solver
 		virtual void control() = 0;
 	
 	protected:
-		int getMaximalDepth() { return maximalDepth; }
+		short getMaximalDepth() { return maximalDepth; }
 		void setMaximalDepth(int maximalDepth) { this->maximalDepth = maximalDepth; }
 		
 		AbstractSolver* getSolver() { return this->solver; }
 		AbstractVisualizer* getVisualizer() { return this->visualizer; }
 		
 	private:
-		int maximalDepth;
+		short maximalDepth;
 		
 		AbstractSolver* solver;
 		AbstractVisualizer* visualizer;

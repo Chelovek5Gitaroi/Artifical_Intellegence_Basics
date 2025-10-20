@@ -3,7 +3,6 @@
 #include <list>
 
 #include "solving/chess_solving/solver.h"
-#include "solving/chess_solving/chess_situation_maker.h"
 #include "chess_engine/chess_controller.h"
 #include "abstract_controller.h"
 #include "visualizing/chess_visualizing/visualizer.h"
@@ -15,7 +14,7 @@ int main(int argc, char** argv)
 	system("chcp 1251");
 //	system("cls");
 	
-	AbstractController* controller = new ChessController(new Solver(new ChessSituationMaker()), new Visualizer(ChessController::BOARD_SIZE), ChessController::BOARD_SIZE);
+	AbstractController* controller = new ChessController(new Solver(), new Visualizer(ChessController::BOARD_SIZE), ChessController::BOARD_SIZE);
 	
 	controller->control();
 	

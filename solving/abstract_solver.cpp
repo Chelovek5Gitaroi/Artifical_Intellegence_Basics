@@ -7,12 +7,13 @@ namespace chess_solver
 //		std::cout << "*Debug* abstract solver d-tor...\n";
 		
 		delete this->tree;
-		delete this->situationMaker;
+//		delete this->situationMaker;
 	}
 	
-	AbstractSolver::AbstractSolver(AbstractSituationMaker* situationMaker)
+	AbstractSolver::AbstractSolver()
+//	AbstractSolver::AbstractSolver(AbstractSituationMaker* situationMaker)
 	{
-		this->situationMaker = situationMaker;
+//		this->situationMaker = situationMaker;
 		this->tree = nullptr;
 	}
 	
@@ -46,7 +47,7 @@ namespace chess_solver
 		
 		if (!commands->empty())
 		{
-			AbstractSituation* nextSituation = situationMaker->getNextSituation(tree->getSituation(), commands->front());
+			AbstractSituation* nextSituation = getNextSituation(tree->getSituation(), commands->front());
 			
 			result = new OptionTree(nextSituation, nullptr, tree, tree->getDepth());
 		}

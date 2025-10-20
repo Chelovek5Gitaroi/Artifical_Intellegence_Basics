@@ -40,6 +40,10 @@ namespace chess_solver
 
 		COORD menuTop;
 
+		COORD screenSize;
+		
+		SMALL_RECT windowPosition;
+
 		SMALL_RECT consoleScreenArea;
 
 		COORD commandTop;

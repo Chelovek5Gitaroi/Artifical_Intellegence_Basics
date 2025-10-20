@@ -3,14 +3,15 @@
 
 #include "option_tree.h"
 
-#include "abstract_situation_maker.h"
+//#include "abstract_situation_maker.h"
 
 namespace chess_solver
 {
 	class AbstractSolver
 	{
 	public:
-		AbstractSolver(AbstractSituationMaker* situationMaker);
+//		AbstractSolver(AbstractSituationMaker* situationMaker);
+		AbstractSolver();
 		
 		virtual ~AbstractSolver();
 		
@@ -25,6 +26,7 @@ namespace chess_solver
 	protected:
 		OptionTree* getOptionTreeRoot() { return tree; }
 		
+		virtual AbstractSituation* getNextSituation(AbstractSituation* abstractSituation, AbstractCommand* command) = 0;
 		
 		virtual OptionTree* createChild(OptionTree* tree);
 		
@@ -32,12 +34,12 @@ namespace chess_solver
 		
 		virtual bool isDeadlock(OptionTree* tree, int maximalDepth) = 0;
 		
-		AbstractSituationMaker* getSituationMaker() { return situationMaker; }
+//		AbstractSituationMaker* getSituationMaker() { return situationMaker; }
 		
 	private:
 		OptionTree* tree;
 		
-		AbstractSituationMaker* situationMaker;
+//		AbstractSituationMaker* situationMaker;
 	};
 }
 

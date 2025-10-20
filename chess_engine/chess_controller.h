@@ -79,7 +79,7 @@ namespace chess_solver
 		
 		void makeMenuStrings(const std::string& title);
 		
-		std::vector<std::pair<std::string, bool>>* solvingMenu;
+		std::vector<std::pair<std::string, bool>> solvingMenu;
 		
 		void selectItem(MenuItem item);
 		

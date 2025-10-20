@@ -22,8 +22,6 @@ namespace chess_solver
 		
 		this->controllerState |= CONTROLLER_STATE_RUNNING;
 		
-		this->solvingMenu = nullptr;
-		
 		initSolver();
 		
 		this->currentTreeNode = nullptr;
@@ -69,9 +67,11 @@ namespace chess_solver
 			
 		visualizer->showMenu(this->menuStrings, visualizer->getMenuTop());
 		
-//		this->getVisualizer()->showMenu(this->menuStrings, reinterpret_cast<Visualizer*>(this->getVisualizer())->getMenuTop());
+		visualizer->showMenu(this->menuStrings, reinterpret_cast<Visualizer*>(this->getVisualizer())->getMenuTop());
 		
 		bool wasPressed = false;
+		
+		this->setMaximalDepth(2);
 		
 		while (this->controllerState & CONTROLLER_STATE_RUNNING)
 		{
@@ -169,7 +169,7 @@ namespace chess_solver
 		{
 			bool isSolved = false;
 			
-			this->solvingMenu->clear();
+			this->solvingMenu.clear();
 			
 			switch (this->selectedMenuItem)
 			{
@@ -185,6 +185,8 @@ namespace chess_solver
 			if (isSolved)
 			{
 				makeSolvingMenu(this->getSolver()->getTree()->getCommandSequence());
+				Visualizer* visualizer = reinterpret_cast<Visualizer*>(this->getVisualizer());
+				visualizer->showMenu(this->solvingMenu, visualizer->getCommandsTop());
 			}
 		}
 	}
@@ -237,7 +239,7 @@ namespace chess_solver
 	{
 		std::string cmd = CommandParser::makeStringCommand(reinterpret_cast<Command*>(tree->getPreviousCommand()));
 		
-		for (auto iter = this->solvingMenu->begin(); iter != this->solvingMenu->end(); iter++)
+		for (auto iter = this->solvingMenu.begin(); iter != this->solvingMenu.end(); iter++)
 		{
 			if (iter->first == cmd)
 			{
@@ -252,15 +254,9 @@ namespace chess_solver
 
 	void ChessController::makeSolvingMenu(std::list<AbstractCommand*>* commandList)
 	{
-		if (this->solvingMenu)
-		{
-			delete this->solvingMenu;
-			this->solvingMenu = nullptr;
-		}
+		solvingMenu.clear();
 		
 		std::list<AbstractCommand*>* commands = this->getSolver()->getTree()->getCommandSequence();
-		
-		this->solvingMenu = new std::vector<std::pair<std::string, bool>>();
 		
 		this->currentTreeNode = this->getSolver()->getTree();
 		
@@ -273,7 +269,7 @@ namespace chess_solver
 				selected = true;
 			}
 			
-			this->solvingMenu->push_back(std::pair<std::string, bool>(CommandParser::makeStringCommand(reinterpret_cast<Command*>(command)), selected));
+			this->solvingMenu.push_back(std::pair<std::string, bool>(CommandParser::makeStringCommand(reinterpret_cast<Command*>(command)), selected));
 		}
 	}
 	
