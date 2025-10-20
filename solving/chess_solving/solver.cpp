@@ -24,7 +24,7 @@ namespace chess_solver
 		
 		ChessSituationMaker* situationMaker = reinterpret_cast<ChessSituationMaker*>(getSituationMaker());
 		
-		situationMaker->prepareStartSituationMoves(situation);
+//		situationMaker->prepareStartSituationMoves(situation);
 		
 //		std::cout << "*Debug* tree inited...\n";
 	}
@@ -43,7 +43,7 @@ namespace chess_solver
 				result->increaseDepth();
 			}
 			
-			result->setCommand(previousSituation->getPotentialMoves()->front());
+//			result->setCommand(previousSituation->getPotentialMoves()->front());
 		}
 		else
 		{
@@ -56,15 +56,15 @@ namespace chess_solver
 
 	bool Solver::isTargetSituation(OptionTree* tree)
 	{
-		return isTargetSituation(reinterpret_cast<Situation*>(tree->getSituation()));
+		return isTargetSituation(reinterpret_cast<Situation*>(tree->getSituation()), tree->getCommands());
 	}
 	
 	bool Solver::isDeadlock(OptionTree* tree, int maximalDepth)
 	{
-		return isDeadlock(reinterpret_cast<Situation*>(tree->getSituation()), maximalDepth, tree->getDepth());
+		return isDeadlock(reinterpret_cast<Situation*>(tree->getSituation()), tree->getCommands(), maximalDepth, tree->getDepth());
 	}
 
-	bool Solver::isTargetSituation(Situation* situation)
+	bool Solver::isTargetSituation(Situation* situation, std::list<AbstractCommand*>* potentialMoves)
 	{
 		std::list<Figure*>* figures = &situation->getWhiteFigures();
 		std::list<Figure*>* secondPlayerFigures = &situation->getBlackFigures();
@@ -76,21 +76,21 @@ namespace chess_solver
 		
 		Coordinates* kingCoordinates;
 		
-		return situation->getCurrentPlayer() != situation->getTargetPlayer() && situation->getPotentialMoves()->empty() &&
+		return situation->getCurrentPlayer() != situation->getTargetPlayer() &&
 			MovingValidator::hasCheck(situation->getBoard(), *kingCoordinates, *secondPlayerFigures);
 	}
 		
-	bool Solver::isDeadlock(Situation* situation, short maximalDepth, short currentDepth)
+	bool Solver::isDeadlock(Situation* situation, std::list<AbstractCommand*>* potentialMoves, short maximalDepth, short currentDepth)
 	{
 		bool result = false;
 		
 		if (situation->getTargetPlayer() == situation->getCurrentPlayer())
 		{
-			result = situation->getPotentialMoves()->empty();
+			result = potentialMoves->empty();
 		}
 		else
 		{
-			result = !situation->getPotentialMoves()->empty() && maximalDepth == currentDepth;
+			result = !potentialMoves->empty() && maximalDepth == currentDepth;
 		}
 		
 		return result;
@@ -114,11 +114,13 @@ namespace chess_solver
 			
 			OptionTree* child = nullptr;
 			
-			std::list<Command*>* moves = reinterpret_cast<Situation*>(tree->getSituation())->getPotentialMoves();
+			std::list<AbstractCommand*>* moves = tree->getCommands();
 			
 			while (areAllChildrenTarget && !moves->empty())
 			{
 				child = createChild(tree);
+				moves->pop_front();
+				child->setPotentialMoves(reinterpret_cast<ChessSituationMaker*>(this->getSituationMaker())->getAllSituationMoves(*reinterpret_cast<Situation*>(child->getSituation())));
 				
 				areAllChildrenTarget = deepSearch(child, maximalDepth);
 				
@@ -133,6 +135,13 @@ namespace chess_solver
 			}
 			
 			result = areAllChildrenTarget;
+		}
+		
+		if (!result)
+		{
+			delete tree;
+			
+			tree = nullptr;
 		}
 		
 		return result;

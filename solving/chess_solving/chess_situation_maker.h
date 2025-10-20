@@ -17,16 +17,18 @@ namespace chess_solver
 	class ChessSituationMaker : public AbstractSituationMaker
 	{
 	public:
-		void prepareStartSituationMoves(Situation* startSituation);
+//		void prepareStartSituationMoves(Situation* startSituation);
 		
-		AbstractSituation* getNextSituation(AbstractSituation* abstractSituation);
+		std::list<AbstractCommand*>* getAllSituationMoves(Situation& situation);
+		
+		AbstractSituation* getNextSituation(AbstractSituation* abstractSituation, AbstractCommand* command) override;
 		
 	private:
 		ChessCommandExecutor executor;
 		
-		std::list<Command*>* getFigurePotentialMoves(Board& board, Figure* figure, const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures);
+		std::list<AbstractCommand*>* getFigurePotentialMoves(Board& board, Figure* figure, const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures);
 
-		std::list<Command*>* getAllSituationMoves(Situation& situation);
+		
 		
 		Figure* getKingFromList(std::list<Figure*>* figures);
 		
@@ -34,7 +36,7 @@ namespace chess_solver
 			const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures);
 		
 		bool createValidTransformationCommands(Figure* figure, Board& board, const Coordinates& finishCoordinates, CommandType type,
-			const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures, std::list<Command*>* commands);
+			const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures, std::list<AbstractCommand*>* commands);
 		
 	};
 }

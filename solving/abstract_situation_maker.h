@@ -1,8 +1,9 @@
 #ifndef ABSTRACT_SITUATION_MAKER
 #define ABSTRACT_SITUATION_MAKER
 
-//#include <iostream>
+#include <list>
 
+#include "../utilities/abstract_command.h"
 #include "abstract_situation.h"
 
 namespace chess_solver
@@ -12,7 +13,7 @@ namespace chess_solver
 	public:
 		virtual ~AbstractSituationMaker(){ /*std::cout << "*Debug* abs sit maker d-tor...\n";*/ }
 		
-		virtual AbstractSituation* getNextSituation(AbstractSituation* abstractSituation) = 0;
+		virtual AbstractSituation* getNextSituation(AbstractSituation* abstractSituation, AbstractCommand* command) = 0;
 	};
 }
 

@@ -24,9 +24,6 @@ namespace chess_solver
 		static const std::set<char> COMMAND_POSITION_BEAT_SEPARATORS;
 		
 		static const char COMMAND_TRANSFORMATION_CHAR = '=';
-		
-		
-			
 	};
 }
 

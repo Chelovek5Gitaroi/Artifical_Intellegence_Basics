@@ -79,9 +79,6 @@ namespace chess_solver
 		this->menuTop.X = this->MENU_LEFT_IDENT;
 		this->menuTop.Y = this->consoleScreenArea.Bottom + MENU_TOP_IDENT;
 		
-		this->commandCurrentCursorPosition.X = commandTop.X;
-		this->commandCurrentCursorPosition.Y = commandTop.Y;
-		
 		this->currentCursorPosition.X = 0;
 		this->currentCursorPosition.Y = 0;
 	}
@@ -120,10 +117,10 @@ namespace chess_solver
 		this->commandCurrentCursorPosition.Y++;
 	}
 	
-	void Visualizer::showMenu(std::vector<std::pair<std::string, bool>>& menuStrings)
+	void Visualizer::showMenu(std::vector<std::pair<std::string, bool>>& menuStrings, COORD top)
 	{
-		this->currentCursorPosition.X = this->menuTop.X;
-		this->currentCursorPosition.Y = this->menuTop.Y;
+		this->currentCursorPosition.X = top.X;
+		this->currentCursorPosition.Y = top.Y;
 		
 		for (auto iter = menuStrings.begin(); iter != menuStrings.end(); iter++)
 		{

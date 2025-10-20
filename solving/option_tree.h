@@ -30,9 +30,17 @@ namespace chess_solver
 		void insertChild(OptionTree* child) { this->children.push_back(child); }
 		
 		void removeChild(OptionTree* child) { this->children.remove(child); }
+	
+		std::list<AbstractCommand*>* getCommandSequence();
+		
+		void setPotentialMoves(std::list<AbstractCommand*>* commands) { this->potentialMoves = commands; }
+		
+		std::list<AbstractCommand*>* getCommands() { return this->potentialMoves; }
 		
 	private:
 		short depth;
+
+		std::list<AbstractCommand*>* potentialMoves;
 
 		AbstractSituation* situation;
 		AbstractCommand* previousCommand;

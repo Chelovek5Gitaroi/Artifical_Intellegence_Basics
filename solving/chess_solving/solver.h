@@ -31,9 +31,9 @@ namespace chess_solver
 	
 	private:
 		
-		bool isTargetSituation(Situation* situation);
+		bool isTargetSituation(Situation* situation, std::list<AbstractCommand*>* potentialMoves);
 		
-		bool isDeadlock(Situation* situation, short maximalDepth, short currentDepth);
+		bool isDeadlock(Situation* situation, std::list<AbstractCommand*>* potentialMoves, short maximalDepth, short currentDepth);
 		
 		bool deepSearch(OptionTree* tree, short maximalDepth);
 		

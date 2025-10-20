@@ -40,10 +40,17 @@ namespace chess_solver
 	
 	OptionTree* AbstractSolver::createChild(OptionTree* tree)
 	{
-		AbstractSituation* situation = tree->getSituation();
+		std::list<AbstractCommand*>* commands = tree->getCommands();
 		
-		AbstractSituation* nextSituation = situationMaker->getNextSituation(situation);
+		OptionTree* result = nullptr;
 		
-		return new OptionTree(nextSituation, nullptr, tree, tree->getDepth());
+		if (!commands->empty())
+		{
+			AbstractSituation* nextSituation = situationMaker->getNextSituation(tree->getSituation(), commands->front());
+			
+			result = new OptionTree(nextSituation, nullptr, tree, tree->getDepth());
+		}
+		
+		return result;
 	}
 }

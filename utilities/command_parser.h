@@ -5,7 +5,7 @@
 #include <string>
 
 
-//#include ""
+#include "chess_chars.h"
 #include "..\\chess_entities\\board.h"
 #include "figure_creator.h"
 #include "../exceptions/invalid_command_exception.h"
@@ -20,6 +20,8 @@ namespace chess_solver
 		
 		static Command* parseCommand(std::string& command);
 		
+		static std::string makeStringCommand(Command* command);
+		
 		CommandParser() = delete;
 		~CommandParser() = delete;
 	private:
@@ -31,6 +33,8 @@ namespace chess_solver
 		static FigureType getTransormedFigureType(std::string::iterator& iter, std::string& command);
 		
 		static bool isColumnNameChar(char ch) { return ChessChars::FIRST_ENGLISH_LETTER <= ch && ch <= ChessChars::LAST_ENGLISH_LETTER; }
+
+		static char getFigureChar(FigureType figureType);
 		
 		template<typename T>
 		static bool hasItemInSet(const std::set<T>& items, T& item)

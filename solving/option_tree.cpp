@@ -6,8 +6,6 @@ namespace chess_solver
 {
 	OptionTree::OptionTree(AbstractSituation* situation, AbstractCommand* previousCommand, OptionTree* parent, short depth)
 	{
-//		std::cout << "*Debug* option tree ñ-tor...\n";
-		
 		this->situation = situation;
 		
 		this->previousCommand = previousCommand;
@@ -16,14 +14,10 @@ namespace chess_solver
 		this->depth = depth;
 		
 		this->currentChild = this->children.begin();
-		
-//		std::cout << "*Debug* option tree ñ-tor end...\n";
 	}
 	
 	OptionTree::~OptionTree()
 	{
-//		std::cout << "*Debug* option tree d-tor...\n children: " << this->children.size() << "\n";
-		
 		for (auto iter = this->children.begin(); iter != children.end(); iter++)
 		{
 			delete *iter;
@@ -63,5 +57,25 @@ namespace chess_solver
 		
 		return *currentChild;
 	}
+	
+	std::list<AbstractCommand*>* OptionTree::getCommandSequence()
+	{
+		std::list<AbstractCommand*>* result = nullptr;
 		
+		if (this->children.empty())
+		{
+			std::list<AbstractCommand*>* result = new std::list<AbstractCommand*>();
+		}
+		else
+		{
+			result = this->children.front()->getCommandSequence();
+		}
+		
+//		if (this->previousCommand)
+//		{
+		result->push_front(this->previousCommand);	
+//		}
+		
+		return result;
+	}	
 }

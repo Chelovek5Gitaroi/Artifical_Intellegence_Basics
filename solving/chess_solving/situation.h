@@ -32,9 +32,9 @@ namespace chess_solver
 		
 		void setCurrentPlayer(FigureColor currentPlayer) { this->currentPlayer = currentPlayer; }
 		
-		std::list<Command*>* getPotentialMoves() { return potentialMoves; }
+//		std::list<Command*>* getPotentialMoves() { return potentialMoves; }
 		
-		void setPotentialMoves(std::list<Command*>* potentialMoves);
+//		void setPotentialMoves(std::list<Command*>* potentialMoves);
 		
 	private:
 		std::list<Figure*> whiteFigures;
@@ -44,13 +44,13 @@ namespace chess_solver
 		FigureColor currentPlayer;
 		Board board;
 		
-		std::list<Command*>* potentialMoves;
+//		std::list<Command*>* potentialMoves;
 		
 		void insertListItemsToOtherList(std::list<Figure*>& sourceList, std::list<Figure*>& destList);
 		
 		Figure* getFigureFormList(const Coordinates& coordinates, std::list<Figure*>& figures);
 		
-		void clearPotentialMoves();
+//		void clearPotentialMoves();
 		
 	};	
 }

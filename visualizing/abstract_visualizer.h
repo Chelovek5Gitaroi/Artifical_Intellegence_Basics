@@ -16,11 +16,6 @@ namespace chess_solver
 		
 		virtual void showCommand(AbstractCommand* abstractCommand) = 0;
 		
-		virtual void showMenu(std::vector<std::pair<std::string, bool>>& menuStrings) = 0;
-		
-		
-		
-		
 	private:
 	};
 }

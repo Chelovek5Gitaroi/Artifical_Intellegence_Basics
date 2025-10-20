@@ -4,6 +4,9 @@
 #include <Windows.h>
 #include <WinUser.h>
 
+#include <thread>
+#include <chrono>
+
 #include "../abstract_controller.h"
 
 #include <map>
@@ -14,6 +17,7 @@
 #include "..\\utilities/figure_creator.h"
 #include "../utilities/command_parser.h"
 #include "../solving/chess_solving/solver.h"
+#include "../visualizing/chess_visualizing/visualizer.h"
 
 namespace chess_solver
 {
@@ -38,11 +42,13 @@ namespace chess_solver
 		enum class MenuItem
 		{
 			DEEP_SEARCH = 1,
+			SELECT_SITUATION,
 			EXIT
 		};
 		
 		static const std::string MENU_TIILE;
 		static const std::string MENU_ITEM_DEEP_SEARCH;
+		static const std::string MENU_ITEM_SELECT_SITUATION;
 		static const std::string MENU_ITEM_EXIT;
 
 		static const unsigned short CONTROLLER_STATE_RUNNING = 1 << 7;
@@ -63,6 +69,8 @@ namespace chess_solver
 		
 		Solver* initSolver();
 		
+		OptionTree* currentTreeNode;
+		
 		MenuItem selectedMenuItem;
 		
 		void enterSelectedItem();
@@ -70,6 +78,8 @@ namespace chess_solver
 		std::vector<std::pair<std::string, bool>> menuStrings;
 		
 		void makeMenuStrings(const std::string& title);
+		
+		std::vector<std::pair<std::string, bool>>* solvingMenu;
 		
 		void selectItem(MenuItem item);
 		
@@ -84,6 +94,14 @@ namespace chess_solver
 		void processKeyUp();
 		
 		void processKeyDown();
+		
+		void selectNextSituation();
+		
+		void selectPreviousSituation();
+		
+		void selectSituation(OptionTree* tree);
+		
+		void makeSolvingMenu(std::list<AbstractCommand*>* commandList);
 	};
 }
 

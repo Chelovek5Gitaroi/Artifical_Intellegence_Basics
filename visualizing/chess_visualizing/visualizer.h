@@ -25,7 +25,10 @@ namespace chess_solver
 		
 		void showCommand(AbstractCommand* abstractCommand) override;
 		
-		void showMenu(std::vector<std::pair<std::string, bool>>& menuStrings) override;
+		void showMenu(std::vector<std::pair<std::string, bool>>& menuStrings, COORD top);
+			
+		COORD getMenuTop() { return this->menuTop; }
+		COORD getCommandsTop() { return this->commandTop; }
 			
 	private:
 		HANDLE consoleFile;
@@ -70,7 +73,7 @@ namespace chess_solver
 	
 		static const unsigned short BACKGROUND_COLOR_INTENSIFIED = 0X0080;
 	
-		static const unsigned short FIGURE_COLOR_BACKGROUND = /*0x0010 | 0x0020 | 0x0040 |*/ 0x0080;
+		static const unsigned short FIGURE_COLOR_BACKGROUND = 0x0080;
 	
 		static const unsigned short TILE_COLOR_WHITE =  0x0010 | 0x0020 | 0x0040 | 0x0080;
 		
