@@ -36,6 +36,8 @@ namespace chess_solver
 		
 //		void setPotentialMoves(std::list<Command*>* potentialMoves);
 		
+		std::string toString();
+		
 	private:
 		std::list<Figure*> whiteFigures;
 		std::list<Figure*> blackFigures;

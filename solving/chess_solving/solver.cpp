@@ -222,7 +222,9 @@ namespace chess_solver
 		
 		this->getOptionTreeRoot()->setPotentialMoves(getAllSituationMoves(*situation));
 		
-		return deepSearch(getOptionTreeRoot(), maximalDepth);
+		std::ofstream fout("log.txt");
+		
+		return deepSearch(getOptionTreeRoot(), maximalDepth, fout);
 	}
 
 	void Solver::initTree(AbstractSituation* startSituation)
@@ -299,33 +301,63 @@ namespace chess_solver
 		return result;
 	}
 
-	bool Solver::deepSearch(OptionTree* tree, short maximalDepth)
+	bool Solver::deepSearch(OptionTree* tree, short maximalDepth, std::ofstream& fout)
 	{
 		bool result = false;
 		
+		Situation* sit = reinterpret_cast<Situation*>(tree->getSituation()) ;
+		
+		fout << "Depth: " << tree->getDepth() << "\n" << sit->toString() << "\n";
+		
+		fout.close();
+		
 		if (isDeadlock(tree, maximalDepth))
 		{
+			fout << "Deadlock!\n";
+			fout.close();
 			result = false;
 		}
 		else if (isTargetSituation(tree))
 		{
+			fout << "Target!\n";
+			fout.close();
 			result = true;
 		}
 		else
 		{
 			bool areAllChildrenTarget = true;
-			
+		
 			OptionTree* child = nullptr;
 			
 			std::list<AbstractCommand*>* moves = tree->getCommands();
+		
+			fout.open("log.txt");
+		
+			fout << "Moves:\n";
+			
+			for (auto iter = moves->begin(); iter != moves->end(); iter++)
+			{
+				Command* cmd = reinterpret_cast<Command*>(*iter);
+				
+				fout << cmd->toString() << "\n";
+			}
+		
+			fout << "\n";
+			fout.close();
 			
 			while (areAllChildrenTarget && !moves->empty())
 			{
 				child = createChild(tree);
+				
+				fout.open("log.txt");
+				fout << " ";
+				
 				moves->pop_front();
 				child->setPotentialMoves(getAllSituationMoves(*reinterpret_cast<Situation*>(child->getSituation())));
 				
-				areAllChildrenTarget = deepSearch(child, maximalDepth);
+				fout.close();
+				
+				areAllChildrenTarget = deepSearch(child, maximalDepth, fout);
 				
 				if (areAllChildrenTarget)
 				{
@@ -349,6 +381,4 @@ namespace chess_solver
 		
 		return result;
 	}
-
-		
 }

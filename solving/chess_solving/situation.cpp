@@ -97,6 +97,51 @@ namespace chess_solver
 		return result;
 	}
 
+	std::string Situation::toString()
+	{
+		std::string result;
+		
+		result += "Current player: ";
+		
+		if (this->currentPlayer == FigureColor::WHITE)
+		{
+			result += "white\n";
+		}
+		else
+		{
+			result += "black\n";
+		}
+		
+		result += "Target player: ";
+		
+		if (this->targetPlayer == FigureColor::WHITE)
+		{
+			result += "white\n";
+		}
+		else
+		{
+			result += "black\n";
+		}
+		
+		result += "White figures: ";
+		
+		for (auto iter = this->whiteFigures.begin(); iter != this->whiteFigures.end(); iter++)
+		{
+			result += (*iter)->toString() + " ";
+		}
+		
+		result += "\nBlack figures: ";
+		
+		for (auto iter = this->blackFigures.begin(); iter != this->blackFigures.end(); iter++)
+		{
+			result += (*iter)->toString() + " ";
+		}
+		
+		result += "\n";
+		
+		return result;
+	}
+
 //	void Situation::clearPotentialMoves()
 //	{
 //		for (auto iter = this->potentialMoves->begin(); iter != this->potentialMoves->end(); iter++)

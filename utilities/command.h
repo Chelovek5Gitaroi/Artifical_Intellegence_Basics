@@ -24,6 +24,34 @@ namespace chess_solver
 		Figure* getFigure() { return figure; }
 		CommandType getType() { return this->type; }
 		
+		virtual std::string toString()
+		{
+			std::string result;
+			
+			switch (type)
+			{
+			case CommandType::MOVE:
+				result += "Move ";
+				break;
+				
+			case CommandType::BEAT:
+				result += "Beat ";
+				break;
+				
+			case CommandType::TRANSFORMATION:
+				result += "Transform ";
+				break;
+				
+			case CommandType::BEAT_TRANSFORMATION:
+				result += "Beat transform ";
+				break;
+			}
+			
+			result += figure->toString() + "-" + finishCoordinates.toString();
+			
+			return result;
+		}
+		
 	private:
 		Coordinates finishCoordinates;
 		CommandType type;
@@ -47,6 +75,40 @@ namespace chess_solver
 			Command(figure, finishCoordinates, commandType), newFigureType(newFigureType) {}
 		
 		FigureType getNewFigureType() { return newFigureType; }
+		
+		std::string toString() override
+		{
+			std::string result = Command::toString() + " = ";
+			
+			switch (newFigureType)
+			{
+			case FigureType::PAWN:
+				result += "pawn";
+				break;
+				
+			case FigureType::KNIGHT:
+				result += "knight";
+				break;
+				
+			case FigureType::BISHOP:
+				result += "bishop";
+				break;
+				
+			case FigureType::ROCK:
+				result += "rock";
+				break;
+				
+			case FigureType::QUEEN:
+				result += "queen";
+				break;
+				
+			case FigureType::KING:
+				result += "king";
+				break;
+			}
+			
+			return result;
+		}
 		
 	private:
 		FigureType newFigureType;

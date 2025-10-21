@@ -9,6 +9,9 @@
 #include "../../chess_engine/moving_preparator.h"
 #include "../../chess_engine/moving_validator.h"
 
+#include <fstream>
+#include <exception>
+
 //#include "chess_situation_maker.h"
 
 namespace chess_solver
@@ -56,7 +59,7 @@ namespace chess_solver
 		
 		bool isDeadlock(Situation* situation, std::list<AbstractCommand*>* potentialMoves, short maximalDepth, short currentDepth);
 		
-		bool deepSearch(OptionTree* tree, short maximalDepth);
+		bool deepSearch(OptionTree* tree, short maximalDepth, std::ofstream& fout);
 		
 	};
 }
