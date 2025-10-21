@@ -33,31 +33,31 @@ namespace chess_solver
 	
 		OptionTree* createChild(OptionTree* tree) override;
 	
-		bool isTargetSituation(OptionTree* tree) override;
+		bool isTargetSituation(OptionTree* tree, std::ofstream& fout) override;
 	
-		bool isDeadlock(OptionTree* tree, int maximalDepth) override;
+		bool isDeadlock(OptionTree* tree, int maximalDepth, std::ofstream& fout) override;
 	
 //		void addNewChild(OptionTree* tree);
 	
 	private:
-		std::list<AbstractCommand*>* getAllSituationMoves(Situation& situation);
+		std::list<AbstractCommand*>* getAllSituationMoves(Situation& situation, std::ofstream& fout);
 		
 		ChessCommandExecutor executor;
 		
-		std::list<AbstractCommand*>* getFigurePotentialMoves(Board& board, Figure* figure, const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures);
+		std::list<AbstractCommand*>* getFigurePotentialMoves(Board& board, Figure* figure, const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures, std::ofstream& fout);
 		
-		Figure* getKingFromList(std::list<Figure*>* figures);
+		Figure* getKingFromList(std::list<Figure*>* figures, std::ofstream& fout);
 		
 		Command* createValidCommand(Figure* figure, Board& board, const Coordinates& finishCoordinates, CommandType type,
-			const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures);
+			const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures, std::ofstream& fout);
 		
 		bool createValidTransformationCommands(Figure* figure, Board& board, const Coordinates& finishCoordinates, CommandType type,
-			const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures, std::list<AbstractCommand*>* commands);
+			const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures, std::list<AbstractCommand*>* commands, std::ofstream& fout);
 		
 		
-		bool isTargetSituation(Situation* situation, std::list<AbstractCommand*>* potentialMoves);
+		bool isTargetSituation(Situation* situation, std::list<AbstractCommand*>* potentialMoves, std::ofstream& fout);
 		
-		bool isDeadlock(Situation* situation, std::list<AbstractCommand*>* potentialMoves, short maximalDepth, short currentDepth);
+		bool isDeadlock(Situation* situation, std::list<AbstractCommand*>* potentialMoves, short maximalDepth, short currentDepth, std::ofstream& fout);
 		
 		bool deepSearch(OptionTree* tree, short maximalDepth, std::ofstream& fout);
 		

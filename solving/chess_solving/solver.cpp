@@ -36,17 +36,17 @@ namespace chess_solver
 	}
 	
 	Command* Solver::createValidCommand(Figure* figure, Board& board, const Coordinates& finishCoordinates, CommandType type,
-		const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures)
+		const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures, std::ofstream& fout)
 	{
-//		std::cout << "*Debug* creating valid command...\n";
+//		fout << "Start creating valid command\n";
 		
 		Command* result = new Command(figure, finishCoordinates, type);
 		
-		bool isValid = MovingValidator::isMoveValid(result, *otherFigures, board);
+		bool isValid = MovingValidator::isMoveValid(result, *otherFigures, board, fout);
 		
 		if (isValid)
 		{
-			isValid = !MovingValidator::hasCheck(result, board, kingCoordinates, *otherFigures);
+			isValid = !MovingValidator::hasCheck(result, board, kingCoordinates, *otherFigures, fout);
 			
 			if (!isValid)
 			{
@@ -60,32 +60,30 @@ namespace chess_solver
 			result = nullptr;
 		}
 		
-//		std::cout << "*Debug* end valid command creating... ";
-//		
 //		if (result)
 //		{
-//			std::cout << "valid command...\n";
+//			fout << "valid command...\n";
 //		}
 //		else
 //		{
-//			std::cout << "no command...\n";
+//			fout << "no command...\n";
 //		}
 		
 		return result;
 	}
 	
 	bool Solver::createValidTransformationCommands(Figure* figure, Board& board, const Coordinates& finishCoordinates, CommandType type,
-		const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures, std::list<AbstractCommand*>* commands)
+		const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures, std::list<AbstractCommand*>* commands, std::ofstream& fout)
 	{
-//		std::cout << "*Debug* creating valid transformation commands...\n";
+//		fout << "Start creating valid transformation commands\nFigure: " << figure->toString() << ", finish: " << finishCoordinates.toString() << "\n";
 		
 		Command* command = new CommandTransformation(figure, finishCoordinates, FigureType::BISHOP, type);
 		
-		bool isValid = MovingValidator::isMoveValid(command, *otherFigures, board);
+		bool isValid = MovingValidator::isMoveValid(command, *otherFigures, board, fout);
 		
 		if (isValid)
 		{
-			isValid = !MovingValidator::hasCheck(command, board, kingCoordinates, *otherFigures);
+			isValid = !MovingValidator::hasCheck(command, board, kingCoordinates, *otherFigures, fout);
 			
 			if (isValid)
 			{
@@ -104,23 +102,21 @@ namespace chess_solver
 			delete command;
 		}
 		
-//		std::cout << "end creating valid trans commands... ";
-//		
 //		if (isValid)
 //		{
-//			std::cout << "valid\n";
+//			fout << "valid transformation commands\n";
 //		}
 //		else
 //		{
-//			std::cout << "non valid\n";
+//			fout << "non valid transformation commands\n";
 //		}
 		
 		return isValid;
 	}
 	
-	std::list<AbstractCommand*>* Solver::getFigurePotentialMoves(Board& board, Figure* figure, const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures)
+	std::list<AbstractCommand*>* Solver::getFigurePotentialMoves(Board& board, Figure* figure, const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures, std::ofstream& fout)
 	{
-//		std::cout << "*Debug* preparing figure moves figure type: " << (int)figure->getType() << "\n";
+//		fout << "*Debug* preparing figure moves figure type: " << (int)figure->getType() << "\n";
 		
 		std::list<AbstractCommand*>* result = new std::list<AbstractCommand*>();
 		
@@ -134,7 +130,7 @@ namespace chess_solver
 		
 		for (auto iter = coordinates->begin(); iter != coordinates->end(); iter++)
 		{
-			command = createValidCommand(figure, board, *iter, CommandType::MOVE, kingCoordinates, figures, otherFigures);
+			command = createValidCommand(figure, board, *iter, CommandType::MOVE, kingCoordinates, figures, otherFigures, fout);
 			
 			if (command)
 			{
@@ -142,7 +138,7 @@ namespace chess_solver
 			}
 			else
 			{
-				command = createValidCommand(figure, board, *iter, CommandType::BEAT, kingCoordinates, figures, otherFigures);
+				command = createValidCommand(figure, board, *iter, CommandType::BEAT, kingCoordinates, figures, otherFigures, fout);
 				
 				if (command)
 				{
@@ -150,24 +146,24 @@ namespace chess_solver
 				}
 				else if (figure->getType() == FigureType::PAWN)
 				{
-					wasCreated = createValidTransformationCommands(figure, board, *iter, CommandType::TRANSFORMATION, kingCoordinates, figures, otherFigures, result);
+					wasCreated = createValidTransformationCommands(figure, board, *iter, CommandType::TRANSFORMATION, kingCoordinates, figures, otherFigures, result, fout);
 					
 					if (!wasCreated)
 					{
-						createValidTransformationCommands(figure, board, *iter, CommandType::BEAT_TRANSFORMATION, kingCoordinates, figures, otherFigures, result);
+						createValidTransformationCommands(figure, board, *iter, CommandType::BEAT_TRANSFORMATION, kingCoordinates, figures, otherFigures, result, fout);
 					}
 				}
 			}
 		}
 		
-//		std::cout << "*Debug* figure moves prepared...\n";
+//		fout << "*Debug* figure moves prepared...\n";
 		
 		return result;
 	}
 	
-	std::list<AbstractCommand*>* Solver::getAllSituationMoves(Situation& situation)
+	std::list<AbstractCommand*>* Solver::getAllSituationMoves(Situation& situation, std::ofstream& fout)
 	{
-//		std::cout << "*Debug* making situation moves\n";
+//		fout << "Making situation moves\n";
 		
 		std::list<AbstractCommand*>* result = new std::list<AbstractCommand*>();
 		
@@ -180,15 +176,15 @@ namespace chess_solver
 			otherFigures = &situation.getWhiteFigures();
 		}
 		
-//		std::cout << "*Debug* getting king coordinates...\n";
+//		fout << "Getting king coordinates...\n";
 		
-		const Coordinates& kingCoordinates = getKingFromList(figures)->getCoordinates();
+		const Coordinates& kingCoordinates = getKingFromList(figures, fout)->getCoordinates();
 		
-//		std::cout << "*Debug* preparing figures moves\n";
+//		fout << "Preparing figures moves\n";
 		
 		for (auto iter = figures->begin(); iter != figures->end(); iter++)
 		{
-			std::list<AbstractCommand*>* moves = getFigurePotentialMoves(situation.getBoard(), *iter, kingCoordinates, figures, otherFigures);
+			std::list<AbstractCommand*>* moves = getFigurePotentialMoves(situation.getBoard(), *iter, kingCoordinates, figures, otherFigures, fout);
 			
 			for (auto cmdIter = moves->begin(); cmdIter != moves->end(); cmdIter++)
 			{
@@ -198,12 +194,12 @@ namespace chess_solver
 			delete moves;
 		}
 		
-//		std::cout << "*Debug* situation moves prepared...\n";
+//		fout << "Situation moves prepared\n";
 		
 		return result;
 	}
 
-	Figure* Solver::getKingFromList(std::list<Figure*>* figures)
+	Figure* Solver::getKingFromList(std::list<Figure*>* figures, std::ofstream& fout)
 	{
 		for (auto iter = figures->begin(); iter != figures->end(); iter++)
 		{
@@ -220,11 +216,15 @@ namespace chess_solver
 	{
 		Situation* situation = reinterpret_cast<Situation*>(this->getOptionTreeRoot()->getSituation());
 		
-		this->getOptionTreeRoot()->setPotentialMoves(getAllSituationMoves(*situation));
-		
 		std::ofstream fout("log.txt");
 		
-		return deepSearch(getOptionTreeRoot(), maximalDepth, fout);
+		this->getOptionTreeRoot()->setPotentialMoves(getAllSituationMoves(*situation, fout));
+		
+		bool result = deepSearch(getOptionTreeRoot(), maximalDepth, fout);
+		
+		fout.close();
+		
+		return result;
 	}
 
 	void Solver::initTree(AbstractSituation* startSituation)
@@ -259,17 +259,17 @@ namespace chess_solver
 		return result;
 	}
 
-	bool Solver::isTargetSituation(OptionTree* tree)
+	bool Solver::isTargetSituation(OptionTree* tree, std::ofstream& fout)
 	{
-		return isTargetSituation(reinterpret_cast<Situation*>(tree->getSituation()), tree->getCommands());
+		return isTargetSituation(reinterpret_cast<Situation*>(tree->getSituation()), tree->getCommands(), fout);
 	}
 	
-	bool Solver::isDeadlock(OptionTree* tree, int maximalDepth)
+	bool Solver::isDeadlock(OptionTree* tree, int maximalDepth, std::ofstream& fout)
 	{
-		return isDeadlock(reinterpret_cast<Situation*>(tree->getSituation()), tree->getCommands(), maximalDepth, tree->getDepth());
+		return isDeadlock(reinterpret_cast<Situation*>(tree->getSituation()), tree->getCommands(), maximalDepth, tree->getDepth(), fout);
 	}
 
-	bool Solver::isTargetSituation(Situation* situation, std::list<AbstractCommand*>* potentialMoves)
+	bool Solver::isTargetSituation(Situation* situation, std::list<AbstractCommand*>* potentialMoves, std::ofstream& fout)
 	{
 		std::list<Figure*>* figures = &situation->getWhiteFigures();
 		std::list<Figure*>* secondPlayerFigures = &situation->getBlackFigures();
@@ -282,10 +282,10 @@ namespace chess_solver
 		Coordinates* kingCoordinates;
 		
 		return situation->getCurrentPlayer() != situation->getTargetPlayer() &&
-			MovingValidator::hasCheck(situation->getBoard(), *kingCoordinates, *secondPlayerFigures);
+			MovingValidator::hasCheck(situation->getBoard(), *kingCoordinates, *secondPlayerFigures, fout);
 	}
 		
-	bool Solver::isDeadlock(Situation* situation, std::list<AbstractCommand*>* potentialMoves, short maximalDepth, short currentDepth)
+	bool Solver::isDeadlock(Situation* situation, std::list<AbstractCommand*>* potentialMoves, short maximalDepth, short currentDepth, std::ofstream& fout)
 	{
 		bool result = false;
 		
@@ -309,18 +309,18 @@ namespace chess_solver
 		
 		fout << "Depth: " << tree->getDepth() << "\n" << sit->toString() << "\n";
 		
-		fout.close();
+//		fout.close();
 		
-		if (isDeadlock(tree, maximalDepth))
+		if (isDeadlock(tree, maximalDepth, fout))
 		{
 			fout << "Deadlock!\n";
-			fout.close();
+//			fout.close();
 			result = false;
 		}
-		else if (isTargetSituation(tree))
+		else if (isTargetSituation(tree, fout))
 		{
 			fout << "Target!\n";
-			fout.close();
+//			fout.close();
 			result = true;
 		}
 		else
@@ -331,7 +331,7 @@ namespace chess_solver
 			
 			std::list<AbstractCommand*>* moves = tree->getCommands();
 		
-			fout.open("log.txt");
+//			fout.open("log.txt");
 		
 			fout << "Moves:\n";
 			
@@ -343,19 +343,21 @@ namespace chess_solver
 			}
 		
 			fout << "\n";
-			fout.close();
+//			fout.close();
 			
 			while (areAllChildrenTarget && !moves->empty())
 			{
 				child = createChild(tree);
 				
-				fout.open("log.txt");
+//				fout.open("log.txt");
 				fout << " ";
 				
 				moves->pop_front();
-				child->setPotentialMoves(getAllSituationMoves(*reinterpret_cast<Situation*>(child->getSituation())));
+				child->setPotentialMoves(getAllSituationMoves(*reinterpret_cast<Situation*>(child->getSituation()), fout));
 				
-				fout.close();
+//				fout.close();
+				
+//				fout.open("log.txt");
 				
 				areAllChildrenTarget = deepSearch(child, maximalDepth, fout);
 				

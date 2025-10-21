@@ -3,6 +3,8 @@
 
 #include "option_tree.h"
 
+#include <fstream>
+
 //#include "abstract_situation_maker.h"
 
 namespace chess_solver
@@ -30,9 +32,9 @@ namespace chess_solver
 		
 		virtual OptionTree* createChild(OptionTree* tree);
 		
-		virtual bool isTargetSituation(OptionTree* tree) = 0;
+		virtual bool isTargetSituation(OptionTree* tree, std::ofstream& fout) = 0;
 		
-		virtual bool isDeadlock(OptionTree* tree, int maximalDepth) = 0;
+		virtual bool isDeadlock(OptionTree* tree, int maximalDepth, std::ofstream& fout) = 0;
 		
 //		AbstractSituationMaker* getSituationMaker() { return situationMaker; }
 		
