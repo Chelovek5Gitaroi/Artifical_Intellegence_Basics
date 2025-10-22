@@ -19,6 +19,8 @@ namespace chess_solver
 		AbstractCommand* getPreviousCommand() { return previousCommand; }
 		void setCommand(AbstractCommand* command) { this->previousCommand = command; }
 		
+		std::size_t getChildrenNumber() { return this->children.size(); }
+		
 		short getDepth() { return this->depth; }
 		void increaseDepth() { this->depth++; }
 		
@@ -27,7 +29,7 @@ namespace chess_solver
 		OptionTree* getCurrentChild();
 		OptionTree* getNextChild();
 		
-		void insertChild(OptionTree* child) { this->children.push_back(child); }
+		void insertChild(OptionTree* child);
 		
 		void removeChild(OptionTree* child) { this->children.remove(child); }
 	

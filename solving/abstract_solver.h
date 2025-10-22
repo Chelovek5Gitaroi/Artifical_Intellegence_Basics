@@ -17,7 +17,7 @@ namespace chess_solver
 		
 		virtual ~AbstractSolver() = 0;
 		
-		virtual bool useDeepSearch(short maximalDepth) = 0;
+		virtual bool useDeepSearch(short maximalDepth);
 	
 		virtual void initTree(AbstractSituation* startSituation);
 	
@@ -27,6 +27,8 @@ namespace chess_solver
 		
 	protected:
 		OptionTree* getOptionTreeRoot() { return tree; }
+		
+		virtual bool deepSearch(OptionTree* tree, short maximalDepth, std::ofstream& fout);
 		
 		virtual AbstractSituation* getNextSituation(AbstractSituation* abstractSituation, AbstractCommand* command) = 0;
 		

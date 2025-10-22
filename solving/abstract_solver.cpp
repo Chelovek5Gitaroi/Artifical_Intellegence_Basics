@@ -36,12 +36,63 @@ namespace chess_solver
 			clearTree();
 		}
 		
-		this->tree = new OptionTree(startSituation, nullptr, nullptr, 0);
+		this->tree = new OptionTree(startSituation, nullptr, nullptr, 1);
+	}
+	
+	bool AbstractSolver::useDeepSearch(short maximalDepth)
+	{
+		std::ofstream fout("log.txt", std::ios::app);
+		
+		return deepSearch(this->tree, maximalDepth, fout);
+	}
+	
+	bool AbstractSolver::deepSearch(OptionTree* tree, short maximalDepth, std::ofstream& fout)
+	{
+		fout << "Using base deep search\n";
+		fout.flush();
+		
+		
+		
+		if (isDeadlock(tree, maximalDepth, fout))
+		{
+			return false;
+		}
+		else if (isTargetSituation(tree, fout))
+		{
+			return true;
+		}
+		else
+		{
+			bool result = false;
+			
+			OptionTree* child = nullptr;
+		
+			while (!result && !tree->getCommands()->empty())
+			{
+				child = createChild(tree, fout);
+				
+				result = deepSearch(child, maximalDepth, fout);
+				
+				if (!result)
+				{
+//					tree->removeChild(child);
+					delete child;
+					child = nullptr;
+				}
+				else
+				{
+					tree->insertChild(child);
+				}
+			}
+			
+			return result;
+		}
 	}
 	
 	OptionTree* AbstractSolver::createChild(OptionTree* tree, std::ofstream& fout)
 	{
 		fout << "Base creating child\n";
+		fout.flush();
 		
 		std::list<AbstractCommand*>* commands = tree->getCommands();
 		
@@ -50,8 +101,11 @@ namespace chess_solver
 		if (!commands->empty())
 		{
 			fout << "Creating next situation\n";
+			fout.flush();
 			
 			AbstractSituation* nextSituation = getNextSituation(tree->getSituation(), commands->front());
+			
+			commands->pop_front();
 			
 			result = new OptionTree(nextSituation, nullptr, tree, tree->getDepth());
 		}
@@ -62,7 +116,7 @@ namespace chess_solver
 		}
 		else
 		{
-			fout << "Failed to create child\n";
+			fout << "Failed to base create child\n";
 		}
 		
 		fout.flush();

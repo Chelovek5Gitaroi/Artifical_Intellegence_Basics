@@ -36,7 +36,7 @@ namespace chess_solver
 		
 //		void setPotentialMoves(std::list<Command*>* potentialMoves);
 		
-		std::string toString();
+		std::string toString() override;
 		
 	private:
 		std::list<Figure*> whiteFigures;

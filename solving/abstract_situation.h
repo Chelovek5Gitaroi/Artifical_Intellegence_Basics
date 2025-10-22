@@ -1,6 +1,8 @@
 #ifndef ABSTRACT_SITUATION
 #define ABSTRACT_SITUATION
 
+#include <string>
+
 namespace chess_solver
 {
 	class AbstractSituation
@@ -8,6 +10,7 @@ namespace chess_solver
 	public:
 		virtual ~AbstractSituation() = 0;
 		
+		virtual std::string toString() = 0;
 	};
 }
 

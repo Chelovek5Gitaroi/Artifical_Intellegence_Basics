@@ -23,10 +23,10 @@ namespace chess_solver
 			delete *iter;
 		}
 		
-		if (this->parent)
-		{
-			this->parent->removeChild(this);
-		}
+//		if (this->parent)
+//		{
+//			this->parent->removeChild(this);
+//		}
 		
 		if (this->previousCommand)
 		{
@@ -34,6 +34,18 @@ namespace chess_solver
 		}
 		
 		delete this->situation;
+	}
+	
+	void OptionTree::insertChild(OptionTree* child)
+	{
+		bool hasChildren = !this->children.empty();
+		
+		this->children.push_back(child);
+		
+		if (!hasChildren)
+		{
+			this->currentChild = this->children.begin();
+		}
 	}
 	
 	OptionTree* OptionTree::OptionTree::getNextChild()

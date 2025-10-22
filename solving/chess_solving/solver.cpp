@@ -227,20 +227,20 @@ namespace chess_solver
 		return nullptr;
 	}
 	
-	bool Solver::useDeepSearch(short maximalDepth)
-	{
-		Situation* situation = reinterpret_cast<Situation*>(this->getOptionTreeRoot()->getSituation());
-		
-		std::ofstream fout("log.txt", std::ios::app);
-		
-		this->getOptionTreeRoot()->setPotentialMoves(getAllSituationMoves(*situation, fout));
-		
-		bool result = deepSearch(getOptionTreeRoot(), maximalDepth, fout);
-		
-		fout.close();
-		
-		return result;
-	}
+//	bool Solver::useDeepSearch(short maximalDepth)
+//	{
+//		Situation* situation = reinterpret_cast<Situation*>(this->getOptionTreeRoot()->getSituation());
+//		
+//		std::ofstream fout("log.txt", std::ios::app);
+//		
+//		this->getOptionTreeRoot()->setPotentialMoves(getAllSituationMoves(*situation, fout));
+//		
+//		bool result = deepSearch(getOptionTreeRoot(), maximalDepth, fout);
+//		
+//		fout.close();
+//		
+//		return result;
+//	}
 
 	void Solver::initTree(AbstractSituation* startSituation)
 	{
@@ -260,23 +260,23 @@ namespace chess_solver
 		Situation* situation = reinterpret_cast<Situation*>(result->getSituation());
 //		Situation* previousSituation = reinterpret_cast<Situation*>(tree->getParent()->getSituation());
 		
-		if (situation)
-		{
+//		if (situation)
+//		{
 			if (situation->getCurrentPlayer() == situation->getTargetPlayer())
 			{
 				result->increaseDepth();
 			}
 			
 			fout << "Derived child created\n";
-		}
-		else
-		{
-			delete result;
-			result = nullptr;
-			
-			fout << "Failed to derived create child\n";
-		}
-		
+//		}
+//		else
+//		{
+//			delete result;
+//			result = nullptr;
+//			
+//			fout << "Failed to derived create child\n";
+//		}
+//		
 		fout.flush();
 		
 		return result;
@@ -284,16 +284,40 @@ namespace chess_solver
 
 	bool Solver::isTargetSituation(OptionTree* tree, std::ofstream& fout)
 	{
+		fout << "Derived override target situation check\n";
+		fout.flush();
 		return isTargetSituation(reinterpret_cast<Situation*>(tree->getSituation()), tree->getCommands(), fout);
+//		if (tree->getChildrenNumber() == 0)
+//		{
+//			return isTargetSituation(reinterpret_cast<Situation*>(tree->getSituation()), tree->getCommands(), fout);
+//		}
+//		else
+//		{
+//			bool areAllChildrenTarget = true;
+//			
+//			OptionTree* currentChild = tree->getCurrentChild();
+//			
+//			while (currentChild && areAllChildrenTarget)
+//			{
+//				areAllChildrenTarget = isTargetSituation(currentChild, fout);
+//				
+//				currentChild = tree->getNextChild();
+//			}
+//		}
 	}
 	
 	bool Solver::isDeadlock(OptionTree* tree, int maximalDepth, std::ofstream& fout)
 	{
+		fout << "Derived override deadlock check\n";
+		fout.flush();
 		return isDeadlock(reinterpret_cast<Situation*>(tree->getSituation()), tree->getCommands(), maximalDepth, tree->getDepth(), fout);
 	}
 
 	bool Solver::isTargetSituation(Situation* situation, std::list<AbstractCommand*>* potentialMoves, std::ofstream& fout)
 	{
+		fout << "cpecific target check\n";
+		fout.flush();
+		
 		std::list<Figure*>* figures = &situation->getWhiteFigures();
 		std::list<Figure*>* secondPlayerFigures = &situation->getBlackFigures();
 		
@@ -304,12 +328,17 @@ namespace chess_solver
 		
 		Coordinates* kingCoordinates;
 		
+		fout << "cpecific target check returning\n";
+		
 		return situation->getCurrentPlayer() != situation->getTargetPlayer() &&
 			MovingValidator::hasCheck(situation->getBoard(), *kingCoordinates, *secondPlayerFigures, fout);
 	}
 		
 	bool Solver::isDeadlock(Situation* situation, std::list<AbstractCommand*>* potentialMoves, short maximalDepth, short currentDepth, std::ofstream& fout)
 	{
+		fout << "cpecific deadlock check\n";
+		fout.flush();
+		
 		bool result = false;
 		
 		if (situation->getTargetPlayer() == situation->getCurrentPlayer())
@@ -321,124 +350,161 @@ namespace chess_solver
 			result = !potentialMoves->empty() && maximalDepth == currentDepth;
 		}
 		
+		fout << "cpecific deadlock check\n";
+		
 		return result;
 	}
 
 	bool Solver::deepSearch(OptionTree* tree, short maximalDepth, std::ofstream& fout)
 	{
-		bool result = false;
-		
-		Situation* sit = reinterpret_cast<Situation*>(tree->getSituation()) ;
-		
-		fout << "Depth: " << tree->getDepth() << "\n" << sit->toString() << "\n";
-		
+		fout << "derived deep search\n";
 		fout.flush();
 		
-		if (isDeadlock(tree, maximalDepth, fout))
-		{
-			fout << "Deadlock!\n";
-			fout.flush();
-			result = false;
-		}
-		else if (isTargetSituation(tree, fout))
-		{
-			fout << "Target!\n";
-			fout.flush();
-			result = true;
-		}
-		else
-		{
-			bool areAllChildrenTarget = true;
-		
-			OptionTree* child = nullptr;
-			
-			std::list<AbstractCommand*>* moves = tree->getCommands();
-		
-//			fout << "Moves:\n";
-//			
-//			for (auto iter = moves->begin(); iter != moves->end(); iter++)
-//			{
-//				Command* cmd = reinterpret_cast<Command*>(*iter);
-//				
-//				fout << cmd->toString() << "\n";
-//			}
-//		
-//			fout << "\n";
-//			fout.flush();
-			
-			while (areAllChildrenTarget && !moves->empty())
-			{
-				child = createChild(tree, fout);
-				
-				moves->pop_front();
+		bool result = AbstractSolver::deepSearch(tree, maximalDepth, fout);
 
-				fout << " ";
+		if (result)
+		{
+			fout << "derived check next child\n";
+			fout.flush();
+			
+			OptionTree* nextChild = createChild(tree, fout);
+			
+			if (nextChild)
+			{
+				fout << "has next child\n";
 				fout.flush();
 				
-//				if (!child)
-//				{
-//					fout << "Child not found!\n";
-//				}
-//				else
-//				{
-//					fout << "Child\n";
-//				}
+//				tree->insertChild(nextChild);
+			
+				result = AbstractSolver::deepSearch(nextChild, maximalDepth, fout);
+				
+				if (!result)
+				{
+					fout << "no solve\n";
+//					tree->removeChild(child);
+					delete nextChild;
+					nextChild = nullptr;
+				}
+				else
+				{
+					fout << "maybe solve\n";
+					tree->insertChild(nextChild);
+				}
+				fout.flush();
+			}
+		}
+
+//		Situation* sit = reinterpret_cast<Situation*>(tree->getSituation()) ;
+//		
+//		fout << "Depth: " << tree->getDepth() << "\n" << sit->toString() << "\n";
+//		
+//		fout.flush();
+//		
+//		if (isDeadlock(tree, maximalDepth, fout))
+//		{
+//			fout << "Deadlock!\n";
+//			fout.flush();
+//			result = false;
+//		}
+//		else if (isTargetSituation(tree, fout))
+//		{
+//			fout << "Target!\n";
+//			fout.flush();
+//			result = true;
+//		}
+//		else
+//		{
+//			bool areAllChildrenTarget = true;
+//		
+//			OptionTree* child = nullptr;
+//			
+//			std::list<AbstractCommand*>* moves = tree->getCommands();
+//		
+////			fout << "Moves:\n";
+////			
+////			for (auto iter = moves->begin(); iter != moves->end(); iter++)
+////			{
+////				Command* cmd = reinterpret_cast<Command*>(*iter);
+////				
+////				fout << cmd->toString() << "\n";
+////			}
+////		
+////			fout << "\n";
+////			fout.flush();
+//			
+//			while (areAllChildrenTarget && !moves->empty())
+//			{
+//				child = createChild(tree, fout);
+//				
+//				moves->pop_front();
 //
-//				fout << "getting moves...\n";
-//				fout.flush();
-				
-//				AbstractSituation* sit = child->getSituation();
-				
-//				fout << "*****\n";
+//				fout << " ";
 //				fout.flush();
 //				
-//				if (sit)
+////				if (!child)
+////				{
+////					fout << "Child not found!\n";
+////				}
+////				else
+////				{
+////					fout << "Child\n";
+////				}
+////
+////				fout << "getting moves...\n";
+////				fout.flush();
+//				
+////				AbstractSituation* sit = child->getSituation();
+//				
+////				fout << "*****\n";
+////				fout.flush();
+////				
+////				if (sit)
+////				{
+////					fout << "situation\n";
+////				}
+////				else
+////				{
+////					fout << "non valid situation\n";
+////				}
+//				
+//				fout.flush();
+//				
+//				std::list<AbstractCommand*>* cmds = getAllSituationMoves(*reinterpret_cast<Situation*>(child->getSituation()), fout);
+//				
+//				if (cmds)
 //				{
-//					fout << "situation\n";
+//					fout << "moves list\n";
 //				}
 //				else
 //				{
-//					fout << "non valid situation\n";
+//					fout << "invalid moves list\n";
 //				}
-				
-				fout.flush();
-				
-				std::list<AbstractCommand*>* cmds = getAllSituationMoves(*reinterpret_cast<Situation*>(child->getSituation()), fout);
-				
-				if (cmds)
-				{
-					fout << "moves list\n";
-				}
-				else
-				{
-					fout << "invalid moves list\n";
-				}
-				
-				fout.flush();
-				
-				child->setPotentialMoves(cmds);
-				
-				areAllChildrenTarget = deepSearch(child, maximalDepth, fout);
-				
-				if (areAllChildrenTarget)
-				{
-					tree->insertChild(child);
-				}
-				else
-				{
-					delete child;
-				}
-			}
-			
-			result = areAllChildrenTarget;
-		}
-		
-		if (!result)
-		{
-			delete tree;
-			
-			tree = nullptr;
-		}
+//				
+//				fout.flush();
+//				
+//				child->setPotentialMoves(cmds);
+//				
+//				areAllChildrenTarget = deepSearch(child, maximalDepth, fout);
+//				
+//				if (areAllChildrenTarget)
+//				{
+//					tree->insertChild(child);
+//				}
+//				else
+//				{
+//					delete child;
+//				}
+//			}
+//			
+//			result = areAllChildrenTarget;
+//		}
+//		
+//		if (!result)
+//		{
+//			delete tree;
+//			
+//			tree = nullptr;
+//		}
 		
 		return result;
 	}
