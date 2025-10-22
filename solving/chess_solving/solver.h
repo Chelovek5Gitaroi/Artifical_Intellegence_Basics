@@ -31,7 +31,7 @@ namespace chess_solver
 	
 		AbstractSituation* getNextSituation(AbstractSituation* abstractSituation, AbstractCommand* command) override;
 	
-		OptionTree* createChild(OptionTree* tree) override;
+		OptionTree* createChild(OptionTree* tree, std::ofstream& fout) override;
 	
 		bool isTargetSituation(OptionTree* tree, std::ofstream& fout) override;
 	

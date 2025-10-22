@@ -123,14 +123,12 @@ namespace chess_solver
 			result += "black\n";
 		}
 		
-		result += "White figures: ";
-		
 		for (auto iter = this->whiteFigures.begin(); iter != this->whiteFigures.end(); iter++)
 		{
 			result += (*iter)->toString() + " ";
 		}
 		
-		result += "\nBlack figures: ";
+		result += "\n";
 		
 		for (auto iter = this->blackFigures.begin(); iter != this->blackFigures.end(); iter++)
 		{

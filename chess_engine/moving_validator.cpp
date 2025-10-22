@@ -37,6 +37,10 @@ namespace chess_solver
 	bool MovingValidator::isMoveValid(Figure& figure, const Coordinates& finish, const Board& board, std::ofstream& fout)
 	{
 //		fout << " validating simple move... ";
+//		fout.flush();
+//		
+//		fout << figure.toString() << " - " << finish << " ";
+//		fout.flush();
 		
 		bool result = !board.getTileOccupancyByCoordinates(finish);
 		
@@ -67,6 +71,7 @@ namespace chess_solver
 		}
 		
 //		fout << " simple move validated... ";
+//		fout.flush();
 		
 		return result;
 	}
@@ -75,6 +80,7 @@ namespace chess_solver
 		bool isBeatTransformation, const Board& board, std::ofstream& fout)
 	{
 //		fout << " validating transform... ";
+//		fout.flush();
 		
 		bool result = figure.getType() == FigureType::PAWN && newFigureType != FigureType::PAWN && newFigureType != FigureType::KING;
 		
@@ -102,6 +108,7 @@ namespace chess_solver
 		}
 		
 //		fout << " transform validated... ";
+//		fout.flush();
 		
 		return result;
 	}
@@ -109,6 +116,7 @@ namespace chess_solver
 	bool MovingValidator::isTakingValid(Figure& figure, const Coordinates& finish, std::list<Figure*>& secondPlayerFigures, const Board& board, std::ofstream& fout)
 	{
 //		fout << " validate taking... ";
+//		fout.flush();
 		
 		bool result = false;
 		
@@ -150,6 +158,7 @@ namespace chess_solver
 		}
 		
 //		fout << " taking validated... ";
+//		fout.flush();
 		
 		return result;
 	}
@@ -159,6 +168,7 @@ namespace chess_solver
 //		fout << " validate line emptyness " << start << "-" << finish << " ";
 		
 //		fout << "\n" << board.toString() << "\n";
+//		fout.flush();
 		
 		bool result = false;
 		
@@ -185,6 +195,8 @@ namespace chess_solver
 //		{
 //			fout << "non empty\n";
 //		}
+//		
+//		fout.flush();
 		
 		return result;
 	}
@@ -203,7 +215,10 @@ namespace chess_solver
 			column--;
 			step = -1;
 		}
-				
+		
+//		fout << "*Debug* horisontal check " << start << "-" << finish << "\n";
+//		fout.flush();
+			
 		if (start.getRow() != finish.getRow())
 		{
 			return false;
@@ -211,11 +226,20 @@ namespace chess_solver
 				
 		for (column; column != finish.getColumn(); column += step)
 		{
+//			fout << column << (short)start.getRow() << " " << board.getTileOccupancyByCoordinates(column, finish.getRow()) << " ";
+//			fout.flush();
+			
 			if (board.getTileOccupancyByCoordinates(column, start.getRow()))
 			{
+//				fout << "\n";
+//				fout.flush();
+				
 				return false;
 			}
 		}
+		
+//		fout << "\n";
+//		fout.flush();
 		
 		return true;
 	}
@@ -235,7 +259,8 @@ namespace chess_solver
 			step = -1;
 		}
 		
-//		fout << "*Debug* " << start << "-" << finish << "\n";
+//		fout << "*Debug* vertical check " << start << "-" << finish << "\n";
+//		fout.flush();
 		
 		if (start.getColumn() != finish.getColumn())
 		{
@@ -244,14 +269,19 @@ namespace chess_solver
 		
 		for (row; row != finish.getRow(); row += step)
 		{
-//			fout << start.getColumn() << (short)row << " " << board.getTileOccupancyByCoordinates(start.getColumn(), row) << "\n";
+//			fout << start.getColumn() << (short)row << " " << board.getTileOccupancyByCoordinates(start.getColumn(), row) << " ";
+//			fout.flush();
 			
 			if (board.getTileOccupancyByCoordinates(start.getColumn(), row))
 			{
+//				fout << "\n";
+//				fout.flush();
 				return false;
 			}
 		}
 		
+//		fout << "\n";
+//		fout.flush();
 		return true;
 	}
 	
@@ -292,7 +322,7 @@ namespace chess_solver
 		
 		while (row != finish.getRow() && column != finish.getColumn())
 		{
-			fout << column << (short)row << " " << board.getTileOccupancyByCoordinates(column, row) << "\n";
+//			fout << column << (short)row << " " << board.getTileOccupancyByCoordinates(column, row) << "\n";
 			
 			if (board.getTileOccupancyByCoordinates(column, row))
 			{

@@ -15,7 +15,7 @@ namespace chess_solver
 //		AbstractSolver(AbstractSituationMaker* situationMaker);
 		AbstractSolver();
 		
-		virtual ~AbstractSolver();
+		virtual ~AbstractSolver() = 0;
 		
 		virtual bool useDeepSearch(short maximalDepth) = 0;
 	
@@ -30,7 +30,7 @@ namespace chess_solver
 		
 		virtual AbstractSituation* getNextSituation(AbstractSituation* abstractSituation, AbstractCommand* command) = 0;
 		
-		virtual OptionTree* createChild(OptionTree* tree);
+		virtual OptionTree* createChild(OptionTree* tree, std::ofstream& fout);
 		
 		virtual bool isTargetSituation(OptionTree* tree, std::ofstream& fout) = 0;
 		

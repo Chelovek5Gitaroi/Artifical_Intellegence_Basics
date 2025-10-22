@@ -39,6 +39,7 @@ namespace chess_solver
 		const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures, std::ofstream& fout)
 	{
 //		fout << "Start creating valid command\n";
+//		fout.flush();
 		
 		Command* result = new Command(figure, finishCoordinates, type);
 		
@@ -68,6 +69,8 @@ namespace chess_solver
 //		{
 //			fout << "no command...\n";
 //		}
+//		
+//		fout.flush();
 		
 		return result;
 	}
@@ -116,13 +119,17 @@ namespace chess_solver
 	
 	std::list<AbstractCommand*>* Solver::getFigurePotentialMoves(Board& board, Figure* figure, const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures, std::ofstream& fout)
 	{
-//		fout << "*Debug* preparing figure moves figure type: " << (int)figure->getType() << "\n";
+//		fout << "*Debug* preparing moves " << figure->toString() << "\n";
+//		fout.flush();
 		
 		std::list<AbstractCommand*>* result = new std::list<AbstractCommand*>();
 		
 		Coordinates startCoordinates = figure->getCoordinates();
 		
 		std::list<Coordinates>* coordinates = MovingPreparator::getPotentialPossibleCoordinates(startCoordinates, figure->getType(), figure->getColor(), board.getBoardSize());
+		
+//		fout << "potential coordinates created\n";
+//		fout.flush();
 		
 		Command* command = nullptr;
 		
@@ -157,14 +164,14 @@ namespace chess_solver
 		}
 		
 //		fout << "*Debug* figure moves prepared...\n";
-		
+//		fout.flush();
 		return result;
 	}
 	
 	std::list<AbstractCommand*>* Solver::getAllSituationMoves(Situation& situation, std::ofstream& fout)
 	{
 //		fout << "Making situation moves\n";
-		
+//		fout.flush();
 		std::list<AbstractCommand*>* result = new std::list<AbstractCommand*>();
 		
 		std::list<Figure*>* figures = &situation.getWhiteFigures();
@@ -172,16 +179,18 @@ namespace chess_solver
 		
 		if (situation.getCurrentPlayer() == FigureColor::BLACK)
 		{
+//			fout << "curr color - black\n";
+			
 			figures = &situation.getBlackFigures();
 			otherFigures = &situation.getWhiteFigures();
 		}
 		
 //		fout << "Getting king coordinates...\n";
-		
+//		fout.flush();
 		const Coordinates& kingCoordinates = getKingFromList(figures, fout)->getCoordinates();
 		
 //		fout << "Preparing figures moves\n";
-		
+//		fout.flush();
 		for (auto iter = figures->begin(); iter != figures->end(); iter++)
 		{
 			std::list<AbstractCommand*>* moves = getFigurePotentialMoves(situation.getBoard(), *iter, kingCoordinates, figures, otherFigures, fout);
@@ -195,6 +204,7 @@ namespace chess_solver
 		}
 		
 //		fout << "Situation moves prepared\n";
+//		fout.flush();
 		
 		return result;
 	}
@@ -203,8 +213,13 @@ namespace chess_solver
 	{
 		for (auto iter = figures->begin(); iter != figures->end(); iter++)
 		{
+//			fout << (*iter)->toString() << "\n";
+//			fout.flush();
+			
 			if ((*iter)->getType() == FigureType::KING)
 			{
+//				fout << "found!\n";
+//				fout.flush();
 				return *iter;
 			}
 		}
@@ -216,7 +231,7 @@ namespace chess_solver
 	{
 		Situation* situation = reinterpret_cast<Situation*>(this->getOptionTreeRoot()->getSituation());
 		
-		std::ofstream fout("log.txt");
+		std::ofstream fout("log.txt", std::ios::app);
 		
 		this->getOptionTreeRoot()->setPotentialMoves(getAllSituationMoves(*situation, fout));
 		
@@ -236,12 +251,14 @@ namespace chess_solver
 //		std::cout << "*Debug* tree inited...\n";
 	}
 
-	OptionTree* Solver::createChild(OptionTree* tree)
+	OptionTree* Solver::createChild(OptionTree* tree, std::ofstream& fout)
 	{
-		OptionTree* result = AbstractSolver::createChild(tree);
+		fout << "Derived child creating\n";
+		
+		OptionTree* result = AbstractSolver::createChild(tree, fout);
 		
 		Situation* situation = reinterpret_cast<Situation*>(result->getSituation());
-		Situation* previousSituation = reinterpret_cast<Situation*>(tree->getParent()->getSituation());
+//		Situation* previousSituation = reinterpret_cast<Situation*>(tree->getParent()->getSituation());
 		
 		if (situation)
 		{
@@ -249,12 +266,18 @@ namespace chess_solver
 			{
 				result->increaseDepth();
 			}
+			
+			fout << "Derived child created\n";
 		}
 		else
 		{
 			delete result;
 			result = nullptr;
+			
+			fout << "Failed to derived create child\n";
 		}
+		
+		fout.flush();
 		
 		return result;
 	}
@@ -309,18 +332,18 @@ namespace chess_solver
 		
 		fout << "Depth: " << tree->getDepth() << "\n" << sit->toString() << "\n";
 		
-//		fout.close();
+		fout.flush();
 		
 		if (isDeadlock(tree, maximalDepth, fout))
 		{
 			fout << "Deadlock!\n";
-//			fout.close();
+			fout.flush();
 			result = false;
 		}
 		else if (isTargetSituation(tree, fout))
 		{
 			fout << "Target!\n";
-//			fout.close();
+			fout.flush();
 			result = true;
 		}
 		else
@@ -331,33 +354,69 @@ namespace chess_solver
 			
 			std::list<AbstractCommand*>* moves = tree->getCommands();
 		
-//			fout.open("log.txt");
-		
-			fout << "Moves:\n";
-			
-			for (auto iter = moves->begin(); iter != moves->end(); iter++)
-			{
-				Command* cmd = reinterpret_cast<Command*>(*iter);
-				
-				fout << cmd->toString() << "\n";
-			}
-		
-			fout << "\n";
-//			fout.close();
+//			fout << "Moves:\n";
+//			
+//			for (auto iter = moves->begin(); iter != moves->end(); iter++)
+//			{
+//				Command* cmd = reinterpret_cast<Command*>(*iter);
+//				
+//				fout << cmd->toString() << "\n";
+//			}
+//		
+//			fout << "\n";
+//			fout.flush();
 			
 			while (areAllChildrenTarget && !moves->empty())
 			{
-				child = createChild(tree);
-				
-//				fout.open("log.txt");
-				fout << " ";
+				child = createChild(tree, fout);
 				
 				moves->pop_front();
-				child->setPotentialMoves(getAllSituationMoves(*reinterpret_cast<Situation*>(child->getSituation()), fout));
+
+				fout << " ";
+				fout.flush();
 				
-//				fout.close();
+//				if (!child)
+//				{
+//					fout << "Child not found!\n";
+//				}
+//				else
+//				{
+//					fout << "Child\n";
+//				}
+//
+//				fout << "getting moves...\n";
+//				fout.flush();
 				
-//				fout.open("log.txt");
+//				AbstractSituation* sit = child->getSituation();
+				
+//				fout << "*****\n";
+//				fout.flush();
+//				
+//				if (sit)
+//				{
+//					fout << "situation\n";
+//				}
+//				else
+//				{
+//					fout << "non valid situation\n";
+//				}
+				
+				fout.flush();
+				
+				std::list<AbstractCommand*>* cmds = getAllSituationMoves(*reinterpret_cast<Situation*>(child->getSituation()), fout);
+				
+				if (cmds)
+				{
+					fout << "moves list\n";
+				}
+				else
+				{
+					fout << "invalid moves list\n";
+				}
+				
+				fout.flush();
+				
+				child->setPotentialMoves(cmds);
 				
 				areAllChildrenTarget = deepSearch(child, maximalDepth, fout);
 				

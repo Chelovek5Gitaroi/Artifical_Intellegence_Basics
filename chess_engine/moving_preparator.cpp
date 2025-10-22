@@ -174,7 +174,7 @@ namespace chess_solver
 			addColumnTilesToList(result, coordinates.getColumn(), coordinates.getRow() - 1, 1);
 		}
 		
-		if (coordinates.getRow() < ChessChars::FIRST_ENGLISH_LETTER + boardSize - 1)
+		if (coordinates.getRow() < boardSize)
 		{
 			addColumnTilesToList(result, coordinates.getColumn(), coordinates.getRow() + 1, boardSize);
 		}

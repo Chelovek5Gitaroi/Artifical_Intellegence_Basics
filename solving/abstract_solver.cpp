@@ -39,18 +39,33 @@ namespace chess_solver
 		this->tree = new OptionTree(startSituation, nullptr, nullptr, 0);
 	}
 	
-	OptionTree* AbstractSolver::createChild(OptionTree* tree)
+	OptionTree* AbstractSolver::createChild(OptionTree* tree, std::ofstream& fout)
 	{
+		fout << "Base creating child\n";
+		
 		std::list<AbstractCommand*>* commands = tree->getCommands();
 		
 		OptionTree* result = nullptr;
 		
 		if (!commands->empty())
 		{
+			fout << "Creating next situation\n";
+			
 			AbstractSituation* nextSituation = getNextSituation(tree->getSituation(), commands->front());
 			
 			result = new OptionTree(nextSituation, nullptr, tree, tree->getDepth());
 		}
+		
+		if (result)
+		{
+			fout << "Base child created\n";
+		}
+		else
+		{
+			fout << "Failed to create child\n";
+		}
+		
+		fout.flush();
 		
 		return result;
 	}
