@@ -18,11 +18,11 @@ namespace chess_solver
 	public:
 		MovingValidator() = delete;
 		
-		static bool isMoveValid(Command* command, std::list<Figure*>& secondPlayerFigures, Board& board, std::ofstream& fout);
+		static bool isMoveValid(Command* command, std::list<Figure*>& firstPlayerFigures, std::list<Figure*>& secondPlayerFigures, Board& board, std::ofstream& fout);
 		
-		static bool hasCheck(Command* command, Board& board, const Coordinates& kingCoordinates, std::list<Figure*>& secondPlayerFigures, std::ofstream& fout);
+		static bool hasCheck(Command* command, Board& board, const Coordinates& kingCoordinates, std::list<Figure*>& firstPlayerFigures, std::list<Figure*>& secondPlayerFigures, std::ofstream& fout);
 		
-		static bool hasCheck(Board& board, const Coordinates& kingCoordinates, std::list<Figure*>& secondPlayerFigures, std::ofstream& fout);
+		static bool hasCheck(Board& board, const Coordinates& kingCoordinates, std::list<Figure*>& firstPlayerFigures, std::list<Figure*>& secondPlayerFigures, std::ofstream& fout);
 		
 	private:
 		static bool isMoveValid(Figure& figure, const Coordinates& finish, const Board& board, std::ofstream& fout);

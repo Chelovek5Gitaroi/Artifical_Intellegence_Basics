@@ -18,27 +18,29 @@ namespace chess_solver
 		Figure* figureToTake = getFigureFromList(command->getFinishCoordinates(), otherFigures);
 		CommandTransformation* transCommand = nullptr;
 		
+		Figure* figure = getFigureFromList(command->getStartCoordinates(), figures);
+		
 		switch (command->getType())
 		{
 		case CommandType::MOVE:
-			executeMove(board, command->getFigure(), command->getFinishCoordinates());
+			executeMove(board, figure, command->getFinishCoordinates());
 			break;
 			
 		case CommandType::BEAT:
 //			this->takenFigurePosition = getFigurePosition(command->getFinishCoordinates(), otherFigures);
-			executeTake(board, command->getFigure(), figureToTake, otherFigures);
+			executeTake(board, figure, figureToTake, otherFigures);
 			break;
 			
 		case CommandType::TRANSFORMATION:
 			transCommand = reinterpret_cast<CommandTransformation*>(command);
-			executeTransformation(board, command->getFigure(), command->getFinishCoordinates(), transCommand->getNewFigureType(), figures);
+			executeTransformation(board, figure, command->getFinishCoordinates(), transCommand->getNewFigureType(), figures);
 			break;
 			
 		case CommandType::BEAT_TRANSFORMATION:
 			transCommand = reinterpret_cast<CommandTransformation*>(command);
 //			this->takenFigurePosition = getFigurePosition(command->getFinishCoordinates(), otherFigures);
 			
-			executeBeatTransformation(board, command->getFigure(), figureToTake, transCommand->getNewFigureType(), figures, otherFigures);
+			executeBeatTransformation(board, figure, figureToTake, transCommand->getNewFigureType(), figures, otherFigures);
 			
 			break;
 		}

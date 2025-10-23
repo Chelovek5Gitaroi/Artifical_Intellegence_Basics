@@ -104,7 +104,9 @@ namespace chess_solver
 		SetConsoleCursorPosition(this->consoleFile, this->commandCurrentCursorPosition);
 		Command* command = reinterpret_cast<Command*>(abstractCommand);
 		
-		std::cout << getFigureChar(*command->getFigure()) << command->getFigure()->getCoordinates();
+		std::cout << getFigureChar(command->getFigureType()) << command->getStartCoordinates();
+		
+//		std::cout << getFigureChar(*command->getFigure()) << command->getFigure()->getCoordinates();
 		
 		CommandType type = command->getType();
 		

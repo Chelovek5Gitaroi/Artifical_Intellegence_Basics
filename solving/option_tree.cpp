@@ -39,8 +39,15 @@ namespace chess_solver
 	std::string OptionTree::toString()
 	{
 		std::string result;
+
+		result += "Depth: " + std::to_string(this->depth) + "\nCommand: ";
+
+		if (this->previousCommand)
+		{
+			result += previousCommand->toString();
+		}
 		
-		result += "Depth: " + std::to_string(this->depth) + "\n";
+		result += "\n";
 		
 		if (this->situation)
 		{

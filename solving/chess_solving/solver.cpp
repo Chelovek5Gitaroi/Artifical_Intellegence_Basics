@@ -41,13 +41,13 @@ namespace chess_solver
 		fout << "Start creating valid command ";
 		fout.flush();
 		
-		Command* result = new Command(figure, finishCoordinates, type);
+		Command* result = new Command(figure->getType(), figure->getCoordinates(), finishCoordinates, type);
 		
-		bool isValid = MovingValidator::isMoveValid(result, *otherFigures, board, fout);
+		bool isValid = MovingValidator::isMoveValid(result, *figures, *otherFigures, board, fout);
 		
 		if (isValid)
 		{
-			isValid = !MovingValidator::hasCheck(result, board, kingCoordinates, *otherFigures, fout);
+			isValid = !MovingValidator::hasCheck(result, board, kingCoordinates, *figures, *otherFigures, fout);
 			
 			if (!isValid)
 			{
@@ -80,20 +80,20 @@ namespace chess_solver
 	{
 //		fout << "Start creating valid transformation commands\nFigure: " << figure->toString() << ", finish: " << finishCoordinates.toString() << "\n";
 		
-		Command* command = new CommandTransformation(figure, finishCoordinates, FigureType::BISHOP, type);
+		Command* command = new CommandTransformation(figure->getType(), figure->getCoordinates(), finishCoordinates, FigureType::BISHOP, type);
 		
-		bool isValid = MovingValidator::isMoveValid(command, *otherFigures, board, fout);
+		bool isValid = MovingValidator::isMoveValid(command, *figures, *otherFigures, board, fout);
 		
 		if (isValid)
 		{
-			isValid = !MovingValidator::hasCheck(command, board, kingCoordinates, *otherFigures, fout);
+			isValid = !MovingValidator::hasCheck(command, board, kingCoordinates, *figures, *otherFigures, fout);
 			
 			if (isValid)
 			{
 				commands->push_back(command);
-				commands->push_back(new CommandTransformation(figure, finishCoordinates, FigureType::KNIGHT, type));
-				commands->push_back(new CommandTransformation(figure, finishCoordinates, FigureType::ROCK, type));
-				commands->push_back(new CommandTransformation(figure, finishCoordinates, FigureType::QUEEN, type));
+				commands->push_back(new CommandTransformation(figure->getType(), figure->getCoordinates(), finishCoordinates, FigureType::KNIGHT, type));
+				commands->push_back(new CommandTransformation(figure->getType(), figure->getCoordinates(), finishCoordinates, FigureType::ROCK, type));
+				commands->push_back(new CommandTransformation(figure->getType(), figure->getCoordinates(), finishCoordinates, FigureType::QUEEN, type));
 			}
 			else
 			{
@@ -339,7 +339,7 @@ namespace chess_solver
 		fout << "cpecific target check returning\n";
 		
 		return situation->getCurrentPlayer() != situation->getTargetPlayer() &&
-			MovingValidator::hasCheck(situation->getBoard(), *kingCoordinates, *secondPlayerFigures, fout);
+			MovingValidator::hasCheck(situation->getBoard(), *kingCoordinates, *figures, *secondPlayerFigures, fout);
 	}
 		
 	bool Solver::isDeadlock(Situation* situation, std::list<AbstractCommand*>* potentialMoves, short maximalDepth, short currentDepth, std::ofstream& fout)

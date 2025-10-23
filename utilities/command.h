@@ -2,6 +2,7 @@
 #define COMMAND
 
 #include "abstract_command.h"
+#include "chess_chars.h"
 #include "../chess_entities/figure.h"
 
 namespace chess_solver
@@ -17,11 +18,15 @@ namespace chess_solver
 	class Command : public AbstractCommand
 	{
 	public:
-		Command(Figure* figure, const Coordinates& finishCoordinates, CommandType commandType) : figure(figure), finishCoordinates(finishCoordinates), type(commandType) {}
+		Command(FigureType figureType, const Coordinates& start, const Coordinates& finish, CommandType commandType) :
+			figureType(figureType), startCoordinates(start), finishCoordinates(finish), type(commandType) {}
+//		Command(Figure* figure, const Coordinates& finishCoordinates, CommandType commandType) : figure(figure), finishCoordinates(finishCoordinates), type(commandType) {}
 		~Command(){}
 		
+		FigureType getFigureType() { return this->figureType; }
+		Coordinates& getStartCoordinates() { return this->startCoordinates; }
 		Coordinates& getFinishCoordinates() { return this->finishCoordinates; }
-		Figure* getFigure() { return figure; }
+//		Figure* getFigure() { return figure; }
 		CommandType getType() { return this->type; }
 		
 		std::string toString() override
@@ -47,15 +52,17 @@ namespace chess_solver
 				break;
 			}
 			
-			result += figure->toString() + "-" + finishCoordinates.toString();
+			result += startCoordinates.toString() + "-" + finishCoordinates.toString();
 			
 			return result;
 		}
 		
 	private:
+		FigureType figureType;
+		Coordinates startCoordinates;
 		Coordinates finishCoordinates;
 		CommandType type;
-		Figure* figure;
+//		Figure* figure;
 	};
 	
 //	class CommandBeat : public Command
@@ -71,8 +78,11 @@ namespace chess_solver
 	class CommandTransformation : public Command
 	{
 	public:
-		CommandTransformation(Figure* figure, const Coordinates& finishCoordinates, FigureType newFigureType, CommandType commandType = CommandType::TRANSFORMATION) :
-			Command(figure, finishCoordinates, commandType), newFigureType(newFigureType) {}
+//		CommandTransformation(Figure* figure, const Coordinates& finishCoordinates, FigureType newFigureType, CommandType commandType = CommandType::TRANSFORMATION) :
+//			Command(figure, finishCoordinates, commandType), newFigureType(newFigureType) {}
+		
+		CommandTransformation(FigureType figureType, const Coordinates& start, const Coordinates& finish, FigureType newFigureType, CommandType commandType = CommandType::TRANSFORMATION) :
+			Command(figureType, start, finish, commandType), newFigureType(newFigureType) {}
 		
 		FigureType getNewFigureType() { return newFigureType; }
 		

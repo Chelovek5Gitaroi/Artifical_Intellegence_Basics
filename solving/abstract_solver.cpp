@@ -106,9 +106,9 @@ namespace chess_solver
 			
 			AbstractSituation* nextSituation = getNextSituation(tree->getSituation(), commands->front());
 			
-			commands->pop_front();
+			result = new OptionTree(nextSituation, commands->front(), tree, tree->getDepth());
 			
-			result = new OptionTree(nextSituation, nullptr, tree, tree->getDepth());
+			commands->pop_front();
 		}
 		
 		if (result)

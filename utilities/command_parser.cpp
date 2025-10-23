@@ -139,9 +139,9 @@ namespace chess_solver
 		
 		if (command)
 		{
-			result += getFigureChar(command->getFigure()->getType());
+//			result += getFigureChar(command->getFigure()->getType());
 		
-			result += command->getFigure()->getCoordinates().toString();
+			result += command->getStartCoordinates().toString();
 		
 			CommandType commandType = command->getType();
 		

@@ -2,11 +2,13 @@
 
 namespace chess_solver
 {
-	bool MovingValidator::isMoveValid(Command* command, std::list<Figure*>& secondPlayerFigures, Board& board, std::ofstream& fout)
+	bool MovingValidator::isMoveValid(Command* command, std::list<Figure*>& firstPlayerFigures, std::list<Figure*>& secondPlayerFigures, Board& board, std::ofstream& fout)
 	{
 		bool result = false;
 		
-		Figure* figure = command->getFigure();
+		Figure* figure = getFigureFromListByCoordinates(command->getStartCoordinates(), firstPlayerFigures, fout);
+		
+//		Figure* figure = command->getFigure();
 		
 		fout << command->toString() << " ";
 		
@@ -394,11 +396,13 @@ namespace chess_solver
 	}
 	
 	
-	bool MovingValidator::hasCheck(Command* command, Board& board, const Coordinates& kingCoordinates, std::list<Figure*>& secondPlayerFigures, std::ofstream& fout)
+	bool MovingValidator::hasCheck(Command* command, Board& board, const Coordinates& kingCoordinates, std::list<Figure*>& firstPlayerFigures, std::list<Figure*>& secondPlayerFigures, std::ofstream& fout)
 	{
 //		fout << "Checking check\n";
 		
 		bool result = false;
+
+		Figure* figure = getFigureFromListByCoordinates(command->getStartCoordinates(), firstPlayerFigures, fout);
 		
 		Figure* takenFigure = nullptr;
 		
@@ -411,14 +415,14 @@ namespace chess_solver
 		
 		const Coordinates* coords = &kingCoordinates;
 		
-		if (command->getFigure()->getType() == FigureType::KING)
+		if (figure->getType() == FigureType::KING)
 		{
 			coords = &command->getFinishCoordinates();
 		}
 		
 //		std::cout << "\nBoard:\n" << board.toString();
 		
-		board.setOccupancyByCoordinates(command->getFigure()->getCoordinates(), false);
+		board.setOccupancyByCoordinates(figure->getCoordinates(), false);
 		board.setOccupancyByCoordinates(command->getFinishCoordinates(), true);
 		
 //		std::cout << "\nBoard:\n" << board.toString();
@@ -477,7 +481,7 @@ namespace chess_solver
 			}
 		}
 		
-		board.setOccupancyByCoordinates(command->getFigure()->getCoordinates(), true);
+		board.setOccupancyByCoordinates(figure->getCoordinates(), true);
 		
 		if (commandType != CommandType::BEAT && commandType != CommandType::BEAT_TRANSFORMATION)
 		{
@@ -488,7 +492,7 @@ namespace chess_solver
 		return result;
 	}
 	
-	bool MovingValidator::hasCheck(Board& board, const Coordinates& kingCoordinates, std::list<Figure*>& secondPlayerFigures, std::ofstream& fout)
+	bool MovingValidator::hasCheck(Board& board, const Coordinates& kingCoordinates, std::list<Figure*>& firstPlayerFigures, std::list<Figure*>& secondPlayerFigures, std::ofstream& fout)
 	{
 		bool result = false;
 		
