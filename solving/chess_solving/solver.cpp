@@ -38,8 +38,8 @@ namespace chess_solver
 	Command* Solver::createValidCommand(Figure* figure, Board& board, const Coordinates& finishCoordinates, CommandType type,
 		const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures, std::ofstream& fout)
 	{
-//		fout << "Start creating valid command\n";
-//		fout.flush();
+		fout << "Start creating valid command ";
+		fout.flush();
 		
 		Command* result = new Command(figure, finishCoordinates, type);
 		
@@ -61,16 +61,16 @@ namespace chess_solver
 			result = nullptr;
 		}
 		
-//		if (result)
-//		{
-//			fout << "valid command...\n";
-//		}
-//		else
-//		{
-//			fout << "no command...\n";
-//		}
-//		
-//		fout.flush();
+		if (result)
+		{
+			fout << "valid command...\n";
+		}
+		else
+		{
+			fout << "no command...\n";
+		}
+		
+		fout.flush();
 		
 		return result;
 	}
@@ -248,6 +248,12 @@ namespace chess_solver
 		
 		AbstractSolver::initTree(startSituation);
 		
+		std::ofstream fout("log.txt", std::ios::app);
+		
+		this->getTree()->setPotentialMoves(getAllSituationMoves(*reinterpret_cast<Situation*>(this->getTree()->getSituation()), fout));
+		
+		fout.close();
+		
 //		std::cout << "*Debug* tree inited...\n";
 	}
 
@@ -259,6 +265,8 @@ namespace chess_solver
 		
 		Situation* situation = reinterpret_cast<Situation*>(result->getSituation());
 //		Situation* previousSituation = reinterpret_cast<Situation*>(tree->getParent()->getSituation());
+		
+		result->setPotentialMoves(getAllSituationMoves(*situation, fout));
 		
 //		if (situation)
 //		{
@@ -350,7 +358,7 @@ namespace chess_solver
 			result = !potentialMoves->empty() && maximalDepth == currentDepth;
 		}
 		
-		fout << "cpecific deadlock check\n";
+		fout << "cpecific deadlock check returning\n";
 		
 		return result;
 	}

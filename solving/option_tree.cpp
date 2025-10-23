@@ -36,6 +36,32 @@ namespace chess_solver
 		delete this->situation;
 	}
 	
+	std::string OptionTree::toString()
+	{
+		std::string result;
+		
+		result += "Depth: " + std::to_string(this->depth) + "\n";
+		
+		if (this->situation)
+		{
+			result += this->situation->toString();
+		}
+		
+		result += "Moves:\n";
+		
+		if (this->potentialMoves)
+		{
+			for (AbstractCommand* cmd : *this->potentialMoves)
+			{
+				result += cmd->toString() + "\n";
+			}
+			
+			result += "\n";
+		}
+		
+		return result;
+	}
+	
 	void OptionTree::insertChild(OptionTree* child)
 	{
 		bool hasChildren = !this->children.empty();

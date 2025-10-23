@@ -24,7 +24,7 @@ namespace chess_solver
 		Figure* getFigure() { return figure; }
 		CommandType getType() { return this->type; }
 		
-		virtual std::string toString()
+		std::string toString() override
 		{
 			std::string result;
 			

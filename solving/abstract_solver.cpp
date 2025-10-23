@@ -51,7 +51,8 @@ namespace chess_solver
 		fout << "Using base deep search\n";
 		fout.flush();
 		
-		
+		fout << tree->toString();
+		fout.flush();
 		
 		if (isDeadlock(tree, maximalDepth, fout))
 		{

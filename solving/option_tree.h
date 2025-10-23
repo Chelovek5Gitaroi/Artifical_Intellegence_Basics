@@ -2,6 +2,7 @@
 #define OPTION_TREE
 
 #include <list>
+#include <string>
 
 #include "abstract_situation.h"
 #include "../utilities/abstract_command.h"
@@ -38,6 +39,8 @@ namespace chess_solver
 		void setPotentialMoves(std::list<AbstractCommand*>* commands) { this->potentialMoves = commands; }
 		
 		std::list<AbstractCommand*>* getCommands() { return this->potentialMoves; }
+		
+		std::string toString();
 		
 	private:
 		short depth;

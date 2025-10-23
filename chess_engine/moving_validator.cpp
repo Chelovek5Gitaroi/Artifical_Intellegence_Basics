@@ -8,7 +8,7 @@ namespace chess_solver
 		
 		Figure* figure = command->getFigure();
 		
-//		fout << command->toString() << "\n";
+		fout << command->toString() << " ";
 		
 //		fout << "*Debug* validating move figure: " << figure->toString() << ", finish: " << command->getFinishCoordinates() << "... ";
 		
@@ -166,7 +166,7 @@ namespace chess_solver
 	bool MovingValidator::isLineEmpty(const Coordinates& start, const Coordinates& finish, const Board& board, std::ofstream& fout)
 	{
 //		fout << " validate line emptyness " << start << "-" << finish << " ";
-		
+//		
 //		fout << "\n" << board.toString() << "\n";
 //		fout.flush();
 		
