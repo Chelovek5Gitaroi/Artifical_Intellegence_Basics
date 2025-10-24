@@ -78,7 +78,7 @@ namespace chess_solver
 	bool Solver::createValidTransformationCommands(Figure* figure, Board& board, const Coordinates& finishCoordinates, CommandType type,
 		const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures, std::list<AbstractCommand*>* commands, std::ofstream& fout)
 	{
-//		fout << "Start creating valid transformation commands\nFigure: " << figure->toString() << ", finish: " << finishCoordinates.toString() << "\n";
+		fout << "Start creating valid transformation commands\nFigure: " << figure->toString() << ", finish: " << finishCoordinates.toString() << "\n";
 		
 		Command* command = new CommandTransformation(figure->getType(), figure->getCoordinates(), finishCoordinates, FigureType::BISHOP, type);
 		
@@ -105,14 +105,15 @@ namespace chess_solver
 			delete command;
 		}
 		
-//		if (isValid)
-//		{
-//			fout << "valid transformation commands\n";
-//		}
-//		else
-//		{
-//			fout << "non valid transformation commands\n";
-//		}
+		if (isValid)
+		{
+			fout << "valid transformation commands\n";
+		}
+		else
+		{
+			fout << "non valid transformation commands\n";
+		}
+		fout.flush();
 		
 		return isValid;
 	}

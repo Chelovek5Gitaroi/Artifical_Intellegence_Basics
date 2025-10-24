@@ -175,7 +175,7 @@ namespace chess_solver
 
 			this->solvingMenu.clear();
 			
-//			fout.flush();
+			fout.flush();
 			
 			switch (this->selectedMenuItem)
 			{
