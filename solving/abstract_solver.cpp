@@ -56,10 +56,16 @@ namespace chess_solver
 		
 		if (isDeadlock(tree, maximalDepth, fout))
 		{
+			fout << "Deadlock!\n";
+			fout.flush();
+			
 			return false;
 		}
 		else if (isTargetSituation(tree, fout))
 		{
+			fout << "Target!\n";
+			fout.flush();
+			
 			return true;
 		}
 		else

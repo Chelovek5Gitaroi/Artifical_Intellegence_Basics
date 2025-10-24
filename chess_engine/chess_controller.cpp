@@ -169,24 +169,25 @@ namespace chess_solver
 		{
 			bool isSolved = false;
 			
-			std::ofstream fout("log.txt");
+//			std::ofstream fout("log.txt");
 			
-			fout << "Enter pressed\n";
+//			fout << "Enter pressed\n";
 
 			this->solvingMenu.clear();
 			
-			fout.flush();
+//			fout.flush();
 			
 			switch (this->selectedMenuItem)
 			{
 			case MenuItem::DEEP_SEARCH:
-				fout << "Initing solver\n";
-				fout.flush();
+//				fout << "Initing solver\n";
+//				fout.flush();
 				this->initSolver();
-				fout << "using deep search\n";
-				fout.flush();
-				fout.close();
-				isSolved = reinterpret_cast<Solver*>(this->getSolver())->useDeepSearch(this->getMaximalDepth());
+//				fout << "using deep search\n";
+//				fout.flush();
+//				fout.close();
+				isSolved = this->getSolver()->useDeepSearch(this->getMaximalDepth());
+//				isSolved = reinterpret_cast<Solver*>(this->getSolver())->useDeepSearch(this->getMaximalDepth());
 				break;
 				
 			case MenuItem::EXIT:

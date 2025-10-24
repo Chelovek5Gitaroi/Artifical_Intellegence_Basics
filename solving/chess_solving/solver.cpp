@@ -38,8 +38,8 @@ namespace chess_solver
 	Command* Solver::createValidCommand(Figure* figure, Board& board, const Coordinates& finishCoordinates, CommandType type,
 		const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures, std::ofstream& fout)
 	{
-		fout << "Start creating valid command ";
-		fout.flush();
+//		fout << "Start creating valid command ";
+//		fout.flush();
 		
 		Command* result = new Command(figure->getType(), figure->getCoordinates(), finishCoordinates, type);
 		
@@ -61,16 +61,16 @@ namespace chess_solver
 			result = nullptr;
 		}
 		
-		if (result)
-		{
-			fout << "valid command...\n";
-		}
-		else
-		{
-			fout << "no command...\n";
-		}
-		
-		fout.flush();
+//		if (result)
+//		{
+//			fout << "valid command...\n";
+//		}
+//		else
+//		{
+//			fout << "no command...\n";
+//		}
+//		
+//		fout.flush();
 		
 		return result;
 	}
@@ -78,7 +78,7 @@ namespace chess_solver
 	bool Solver::createValidTransformationCommands(Figure* figure, Board& board, const Coordinates& finishCoordinates, CommandType type,
 		const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures, std::list<AbstractCommand*>* commands, std::ofstream& fout)
 	{
-		fout << "Start creating valid transformation commands\nFigure: " << figure->toString() << ", finish: " << finishCoordinates.toString() << "\n";
+//		fout << "Start creating valid transformation commands\nFigure: " << figure->toString() << ", finish: " << finishCoordinates.toString() << "\n";
 		
 		Command* command = new CommandTransformation(figure->getType(), figure->getCoordinates(), finishCoordinates, FigureType::BISHOP, type);
 		
@@ -105,15 +105,15 @@ namespace chess_solver
 			delete command;
 		}
 		
-		if (isValid)
-		{
-			fout << "valid transformation commands\n";
-		}
-		else
-		{
-			fout << "non valid transformation commands\n";
-		}
-		fout.flush();
+//		if (isValid)
+//		{
+//			fout << "valid transformation commands\n";
+//		}
+//		else
+//		{
+//			fout << "non valid transformation commands\n";
+//		}
+//		fout.flush();
 		
 		return isValid;
 	}
@@ -335,11 +335,11 @@ namespace chess_solver
 			std::swap(figures, secondPlayerFigures);
 		}
 		
-		Coordinates* kingCoordinates;
+		Coordinates* kingCoordinates = &getKingFromList(figures, fout)->getCoordinates();
 		
 		fout << "cpecific target check returning\n";
 		
-		return situation->getCurrentPlayer() != situation->getTargetPlayer() &&
+		return situation->getCurrentPlayer() != situation->getTargetPlayer() && potentialMoves->empty() &&
 			MovingValidator::hasCheck(situation->getBoard(), *kingCoordinates, *figures, *secondPlayerFigures, fout);
 	}
 		
@@ -371,36 +371,48 @@ namespace chess_solver
 		
 		bool result = AbstractSolver::deepSearch(tree, maximalDepth, fout);
 
+		Situation* situation = reinterpret_cast<Situation*>(tree->getSituation());
+
 		if (result)
 		{
-			fout << "derived check next child\n";
-			fout.flush();
-			
-			OptionTree* nextChild = createChild(tree, fout);
-			
-			if (nextChild)
+			if (situation->getCurrentPlayer() != situation->getTargetPlayer())
 			{
-				fout << "has next child\n";
+				fout << "derived check next child\n";
 				fout.flush();
+			
+				OptionTree* nextChild = createChild(tree, fout);
+			
+				if (nextChild)
+				{
+					fout << "has next child\n";
+					fout.flush();
 				
 //				tree->insertChild(nextChild);
 			
-				result = AbstractSolver::deepSearch(nextChild, maximalDepth, fout);
+					result = AbstractSolver::deepSearch(nextChild, maximalDepth, fout);
 				
-				if (!result)
-				{
-					fout << "no solve\n";
+					if (!result)
+					{
+						fout << "no solve\n";
 //					tree->removeChild(child);
-					delete nextChild;
-					nextChild = nullptr;
+						delete nextChild;
+						nextChild = nullptr;
+					}
+					else
+					{
+						fout << "maybe solve\n";
+						tree->insertChild(nextChild);
+					}
+					fout.flush();
 				}
 				else
 				{
-					fout << "maybe solve\n";
-					tree->insertChild(nextChild);
+					fout << "No more children\n";
+					fout.flush();
 				}
-				fout.flush();
 			}
+			
+			
 		}
 
 //		Situation* sit = reinterpret_cast<Situation*>(tree->getSituation()) ;
