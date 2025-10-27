@@ -4,6 +4,8 @@
 #include <list>
 #include <string>
 
+#include <fstream>
+
 #include "abstract_situation.h"
 #include "../utilities/abstract_command.h"
 
@@ -29,10 +31,11 @@ namespace chess_solver
 		
 		OptionTree* getCurrentChild();
 		OptionTree* getNextChild();
+		OptionTree* getFirstChild();
 		
 		void insertChild(OptionTree* child);
 		
-		void removeChild(OptionTree* child) { this->children.remove(child); }
+		void removeChild(OptionTree* child);// { this->children.remove(child); }
 	
 		std::list<AbstractCommand*>* getCommandSequence();
 		

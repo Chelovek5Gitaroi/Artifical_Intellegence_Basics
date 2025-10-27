@@ -62,6 +62,29 @@ namespace chess_solver
 		return nullptr;
 	}
 	
+	Figure* Situation::getFigure(const Coordinates& coordinates)
+	{
+		Figure* result = nullptr;
+		
+		for (auto iter = whiteFigures.begin(); iter != whiteFigures.end() && !result; iter++)
+		{
+			if ((*iter)->getCoordinates() == coordinates)
+			{
+				result = *iter;
+			}
+		}
+		
+		for (auto iter = blackFigures.begin(); iter != blackFigures.end() && !result; iter++)
+		{
+			if ((*iter)->getCoordinates() == coordinates)
+			{
+				result = *iter;
+			}
+		}
+		
+		return result;
+	}
+	
 //	void Situation::setPotentialMoves(std::list<Command*>* potentialMoves)
 //	{
 //		if (this->potentialMoves)

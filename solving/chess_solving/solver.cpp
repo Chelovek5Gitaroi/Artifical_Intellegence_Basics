@@ -375,7 +375,7 @@ namespace chess_solver
 
 		if (result)
 		{
-			if (situation->getCurrentPlayer() != situation->getTargetPlayer())
+			if (situation->getCurrentPlayer() != situation->getTargetPlayer() && tree->getDepth() < maximalDepth)
 			{
 				fout << "derived check next child\n";
 				fout.flush();

@@ -46,10 +46,15 @@ namespace chess_solver
 			EXIT
 		};
 		
+//		std::ofstream cfout;
+		
 		static const std::string MENU_TIILE;
 		static const std::string MENU_ITEM_DEEP_SEARCH;
 		static const std::string MENU_ITEM_SELECT_SITUATION;
 		static const std::string MENU_ITEM_EXIT;
+		
+		static const std::string MESSAGE_NO_SOLVE;
+		static const std::string MESSAGE_SOLVE;
 
 		static const unsigned short CONTROLLER_STATE_RUNNING = 1 << 7;
 		static const unsigned short CONTROLLER_STATE_MENU_SELECT_SOLVING_METHOD = 1 << 6;
@@ -95,9 +100,7 @@ namespace chess_solver
 		
 		void processKeyDown();
 		
-		void selectNextSituation();
-		
-		void selectPreviousSituation();
+		void processKeyEscape();
 		
 		void selectSituation(OptionTree* tree);
 		

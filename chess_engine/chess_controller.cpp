@@ -10,6 +10,9 @@ namespace chess_solver
 	const std::string ChessController::MENU_ITEM_SELECT_SITUATION = "Просматривать ситуации";
 	const std::string ChessController::MENU_ITEM_EXIT = "Выйти";
 
+	const std::string ChessController::MESSAGE_NO_SOLVE = "Решение не найдено!";
+	const std::string ChessController::MESSAGE_SOLVE = "Найденное решение: ";
+
 	const std::map<ChessController::MenuItem, std::string> ChessController::menu = {{ MenuItem::DEEP_SEARCH, MENU_ITEM_DEEP_SEARCH },
 																					{ MenuItem::SELECT_SITUATION, MENU_ITEM_SELECT_SITUATION },
 																					{ MenuItem::EXIT, MENU_ITEM_EXIT }};
@@ -29,6 +32,8 @@ namespace chess_solver
 	
 	void ChessController::init(const std::string& figureDescriptionFileName)
 	{
+//		cfout.open("controller_log.txt", std::ios::app);
+		
 		this->reader.readFigureFile(figureDescriptionFileName);
 		
 		this->game.setCurrentPlayer(this->reader.getMovingPlayerColor());
@@ -71,7 +76,7 @@ namespace chess_solver
 		
 		bool wasPressed = false;
 		
-		this->setMaximalDepth(1);
+		this->setMaximalDepth(2);
 		
 		while (this->controllerState & CONTROLLER_STATE_RUNNING)
 		{
@@ -101,6 +106,7 @@ namespace chess_solver
 			
 			if (GetKeyState(VK_ESCAPE) & 0x8000)
 			{
+				processKeyEscape();
 				wasPressed = true;
 			}
 		}
@@ -111,6 +117,8 @@ namespace chess_solver
 		Solver* solver = reinterpret_cast<Solver*>(this->getSolver());
 		
 		solver->clearTree();
+		
+		this->currentTreeNode = nullptr;
 		
 		Situation* startSituation = new Situation(this->game.getFirstPlayer()->getAllFigures(), this->game.getSecondPlayer()->getAllFigures(), *this->game.getBoard(), this->game.getCurrentPlayer(), this->game.getCurrentPlayer());
 		
@@ -165,92 +173,130 @@ namespace chess_solver
 	
 	void ChessController::processKeyEnter()
 	{
+//		cfout << "Enter pressed\n";
+//		cfout.flush();
+		
+		Visualizer* visualizer = reinterpret_cast<Visualizer*>(this->getVisualizer());
+		
 		if (controllerState & CONTROLLER_STATE_MENU_SELECT_SOLVING_METHOD)
 		{
 			bool isSolved = false;
-			
-//			std::ofstream fout("log.txt");
-			
-//			fout << "Enter pressed\n";
 
-			this->solvingMenu.clear();
-			
-//			fout.flush();
+//			cfout << "Entering menu item\n";
 			
 			switch (this->selectedMenuItem)
 			{
 			case MenuItem::DEEP_SEARCH:
-//				fout << "Initing solver\n";
-//				fout.flush();
 				this->initSolver();
-//				fout << "using deep search\n";
-//				fout.flush();
-//				fout.close();
+				this->solvingMenu.clear();
+				visualizer->clearMenu(this->solvingMenu, visualizer->getCommandsTop());
+			
+				visualizer->showMessage(std::string(MESSAGE_NO_SOLVE.size(), ' '), visualizer->getCommandsTop());
+
 				isSolved = this->getSolver()->useDeepSearch(this->getMaximalDepth());
-//				isSolved = reinterpret_cast<Solver*>(this->getSolver())->useDeepSearch(this->getMaximalDepth());
+
+				if (isSolved)
+				{
+					COORD messageTop = visualizer->getCommandsTop();
+					messageTop.Y -= 1;
+					
+					visualizer->showMessage(MESSAGE_SOLVE, messageTop);
+					
+					this->currentTreeNode = this->getSolver()->getTree();
+					makeSolvingMenu(this->getSolver()->getTree()->getCommandSequence());
+					visualizer->showMenu(this->solvingMenu, visualizer->getCommandsTop());
+				}
+				else
+				{
+					visualizer->showMessage(MESSAGE_NO_SOLVE, visualizer->getCommandsTop());
+				}
+				break;
+			
+			case MenuItem::SELECT_SITUATION:
+				if (this->currentTreeNode)
+				{
+					this->controllerState &= ~CONTROLLER_STATE_MENU_SELECT_SOLVING_METHOD;
+					this->controllerState |= CONTROLLER_STATE_SELECTING_SITUATION;
+				}
 				break;
 				
 			case MenuItem::EXIT:
 				this->controllerState &= ~CONTROLLER_STATE_RUNNING;
 				break;
 			}
-			
-			if (isSolved)
+		}
+		else if (this->controllerState & CONTROLLER_STATE_SELECTING_SITUATION)
+		{
+			if (this->currentTreeNode)
 			{
-				makeSolvingMenu(this->getSolver()->getTree()->getCommandSequence());
-				Visualizer* visualizer = reinterpret_cast<Visualizer*>(this->getVisualizer());
-				visualizer->showMenu(this->solvingMenu, visualizer->getCommandsTop());
+				visualizer->showSituation(this->currentTreeNode->getSituation());
 			}
 		}
 	}
 	
 	void ChessController::processKeyUp()
 	{
+		Visualizer* visualizer = reinterpret_cast<Visualizer*>(this->getVisualizer());
+		
 		if (controllerState & CONTROLLER_STATE_MENU_SELECT_SOLVING_METHOD)
 		{
 			selectPreviousItem();
 			
-			Visualizer* visualizer = reinterpret_cast<Visualizer*>(this->getVisualizer());
-			
 			visualizer->showMenu(this->menuStrings, visualizer->getMenuTop());
+		}
+		else if (controllerState & CONTROLLER_STATE_SELECTING_SITUATION)
+		{
+			if (this->currentTreeNode->getParent())
+			{
+				this->currentTreeNode = this->currentTreeNode->getParent();
+			
+				selectSituation(this->currentTreeNode);
+				
+				visualizer->showMenu(this->solvingMenu, visualizer->getCommandsTop());
+			}
 		}
 	}
 		
 	void ChessController::processKeyDown()
 	{
+		Visualizer* visualizer = reinterpret_cast<Visualizer*>(this->getVisualizer());
+		
 		if (controllerState & CONTROLLER_STATE_MENU_SELECT_SOLVING_METHOD)
 		{
 			selectNextItem();
 			
-			Visualizer* visualizer = reinterpret_cast<Visualizer*>(this->getVisualizer());
-			
 			visualizer->showMenu(this->menuStrings, visualizer->getMenuTop());
+		}
+		else if (controllerState & CONTROLLER_STATE_SELECTING_SITUATION)
+		{
+			if (this->currentTreeNode->getCurrentChild())
+			{
+				this->currentTreeNode = this->currentTreeNode->getFirstChild();
+				
+				selectSituation(this->currentTreeNode);
+				visualizer->showMenu(this->solvingMenu, visualizer->getCommandsTop());
+			}
 		}
 	}
 
-	void ChessController::selectNextSituation()
+	void ChessController::processKeyEscape()
 	{
-		if (this->currentTreeNode->getParent())
+		if (this->controllerState & CONTROLLER_STATE_SELECTING_SITUATION)
 		{
-			this->currentTreeNode = this->currentTreeNode->getParent();
+			this->controllerState &= ~CONTROLLER_STATE_SELECTING_SITUATION;
 			
-			selectSituation(this->currentTreeNode);
+			this->controllerState |= CONTROLLER_STATE_MENU_SELECT_SOLVING_METHOD;
 		}
-	}
 		
-	void ChessController::selectPreviousSituation()
-	{
-		if (this->currentTreeNode->getCurrentChild())
-		{
-			this->currentTreeNode = this->currentTreeNode->getCurrentChild();
-			
-			selectSituation(this->currentTreeNode);
-		}
 	}
 	
 	void ChessController::selectSituation(OptionTree* tree)
 	{
-		std::string cmd = CommandParser::makeStringCommand(reinterpret_cast<Command*>(tree->getPreviousCommand()));
+		Figure* figure = nullptr;
+		
+		Command* command = reinterpret_cast<Command*>(tree->getPreviousCommand());
+		
+		std::string cmd = CommandParser::makeStringCommand(command);
 		
 		for (auto iter = this->solvingMenu.begin(); iter != this->solvingMenu.end(); iter++)
 		{
@@ -275,6 +321,7 @@ namespace chess_solver
 		
 		for (AbstractCommand* command : *commandList)
 		{
+			
 			bool selected = false;
 			
 			if (command == currentTreeNode->getPreviousCommand())

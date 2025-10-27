@@ -153,6 +153,16 @@ namespace chess_solver
 		}
 	}
 	
+	void Visualizer::showMessage(const std::string& message, COORD top)
+	{
+		this->currentCursorPosition.X = top.X;
+		this->currentCursorPosition.Y = top.Y;
+				
+		SetConsoleCursorPosition(this->consoleFile, this->currentCursorPosition);
+		
+		std::cout << message;
+	}
+	
 	char Visualizer::getFigureChar(Figure& figure)
 	{
 		return getFigureChar(figure.getType());
@@ -190,6 +200,20 @@ namespace chess_solver
 		}
 			
 		return figureChar;
+	}
+	
+	void Visualizer::clearMenu(std::vector<std::pair<std::string, bool>>& menu, COORD top)
+	{
+		this->currentCursorPosition.X = top.X;
+		this->currentCursorPosition.Y = top.Y;
+		
+		SetConsoleCursorPosition(this->consoleFile, this->currentCursorPosition);
+		
+		for (auto iter = menu.begin(); iter != menu.end(); iter++)
+		{
+			std::cout << std::string(iter->first.size() + 4, ' ');
+			this->currentCursorPosition.Y++;
+		}
 	}
 	
 	void Visualizer::prepareClearBoardBuffer()

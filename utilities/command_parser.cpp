@@ -140,6 +140,10 @@ namespace chess_solver
 		if (command)
 		{
 //			result += getFigureChar(command->getFigure()->getType());
+					
+//			result += getFigureChar(figure->getType());
+		
+			result += getFigureChar(command->getFigureType());
 		
 			result += command->getStartCoordinates().toString();
 		
@@ -147,6 +151,7 @@ namespace chess_solver
 		
 			if (commandType == CommandType::MOVE || commandType == CommandType::TRANSFORMATION)
 			{
+//				std::cout << '\a';
 				result += *ChessChars::COMMAND_POSITION_MOVE_SEPARATORS.begin();
 			}
 			else if (commandType == CommandType::BEAT || commandType == CommandType::BEAT_TRANSFORMATION)

@@ -71,11 +71,11 @@ namespace chess_solver
 	
 	void OptionTree::insertChild(OptionTree* child)
 	{
-		bool hasChildren = !this->children.empty();
+//		bool hasChildren = !;
 		
 		this->children.push_back(child);
 		
-		if (!hasChildren)
+		if (this->children.empty())
 		{
 			this->currentChild = this->children.begin();
 		}
@@ -95,30 +95,81 @@ namespace chess_solver
 	
 	OptionTree* OptionTree::getCurrentChild()
 	{
-		if (this->currentChild == this->children.end())
+		if (this->children.empty())
 		{
 			return nullptr;
 		}
 		
+		if (this->currentChild == this->children.end())
+		{
+			return children.back();
+		}
+
 		return *currentChild;
+	}
+	
+	OptionTree* OptionTree::getFirstChild()
+	{
+		if (this->children.empty())
+		{
+			return nullptr;
+		}
+		
+		this->currentChild = children.begin();
+		
+		return *currentChild;
+	}
+	
+	void OptionTree::removeChild(OptionTree* child)
+	{
+		this->currentChild = children.begin();
+		
+		this->children.remove(child);
 	}
 	
 	std::list<AbstractCommand*>* OptionTree::getCommandSequence()
 	{
 		std::list<AbstractCommand*>* result = nullptr;
 		
+		std::ofstream fout("tree_log.txt", std::ios::app);
+		
+		fout << this->toString();
+		
 		if (this->children.empty())
 		{
-			std::list<AbstractCommand*>* result = new std::list<AbstractCommand*>();
+			fout << "creating empty list\n";
+			fout.flush();
+			fout.close();
+			
+			result = new std::list<AbstractCommand*>();
 		}
 		else
 		{
+			fout << "getting child command\n";
+			fout.flush();
+			fout.close();
+			
 			result = this->children.front()->getCommandSequence();
 		}
 		
+		fout.open("tree_log.txt", std::ios::app);
+		
+		if (result)
+		{
+			fout << "pushing command\n";
+			result->push_front(this->previousCommand);
+		}
+		else
+		{
+			fout << "no list!\n";
+		}
+		
+		fout.flush();
+		fout.close();
+		
 //		if (this->previousCommand)
 //		{
-		result->push_front(this->previousCommand);	
+			
 //		}
 		
 		return result;

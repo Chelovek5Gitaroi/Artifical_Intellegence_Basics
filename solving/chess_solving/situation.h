@@ -32,6 +32,8 @@ namespace chess_solver
 		
 		void setCurrentPlayer(FigureColor currentPlayer) { this->currentPlayer = currentPlayer; }
 		
+		Figure* getFigure(const Coordinates& coordinates);
+		
 //		std::list<Command*>* getPotentialMoves() { return potentialMoves; }
 		
 //		void setPotentialMoves(std::list<Command*>* potentialMoves);

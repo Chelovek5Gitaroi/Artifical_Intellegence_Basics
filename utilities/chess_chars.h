@@ -15,7 +15,7 @@ namespace chess_solver
 		static const char FIGURE_CHAR_KNIGHT = 'N';
 		static const char FIGURE_CHAR_BISHOP = 'B';
 		static const char FIGURE_CHAR_ROCK = 'R';
-		static const char FIGURE_CHAR_PAWN = 'P';
+		static const char FIGURE_CHAR_PAWN = 'p';
 		
 		static const char FIRST_ENGLISH_LETTER = 'a';
 		static const char LAST_ENGLISH_LETTER = 'z';

@@ -29,7 +29,11 @@ namespace chess_solver
 			
 		COORD getMenuTop() { return this->menuTop; }
 		COORD getCommandsTop() { return this->commandTop; }
-			
+		
+		void clearMenu(std::vector<std::pair<std::string, bool>>& menu, COORD top);
+		
+		void showMessage(const std::string& message, COORD top);
+		
 	private:
 		HANDLE consoleFile;
 		
