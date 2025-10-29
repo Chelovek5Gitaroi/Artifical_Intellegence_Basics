@@ -136,6 +136,7 @@ namespace chess_solver
 		figures->remove(figure);
 		
 		board.setOccupancyByCoordinates(figure->getCoordinates(), false);
+		board.setOccupancyByCoordinates(finishCoordinates, true);
 	}
 	
 //	void ChessCommandExecutor::undoTransformation(Board& board, Figure* figure, const Coordinates& finishCoordinates, std::list<Figure*>* figures)
@@ -171,6 +172,7 @@ namespace chess_solver
 		
 //		std::cout << " board marking... ";
 		board.setOccupancyByCoordinates(figure->getCoordinates(), false);
+//		board.setOccupancyByCoordinates(figureToTake->getCoordinates(), true);
 		
 //		std::cout << " clearing start coords... ";
 //		clearStartCoordinates();

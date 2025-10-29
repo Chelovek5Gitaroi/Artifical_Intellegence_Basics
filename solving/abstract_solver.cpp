@@ -78,17 +78,20 @@ namespace chess_solver
 			{
 				child = createChild(tree, fout);
 				
-				result = deepSearch(child, maximalDepth, fout);
+				if (child)
+				{
+					result = deepSearch(child, maximalDepth, fout);
 				
-				if (!result)
-				{
-//					tree->removeChild(child);
-					delete child;
-					child = nullptr;
-				}
-				else
-				{
-					tree->insertChild(child);
+					if (!result)
+					{
+	//					tree->removeChild(child);
+						delete child;
+						child = nullptr;
+					}
+					else
+					{
+						tree->insertChild(child);
+					}
 				}
 			}
 			
