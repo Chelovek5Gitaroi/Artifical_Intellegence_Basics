@@ -47,7 +47,7 @@ namespace chess_solver
 			result += previousCommand->toString();
 		}
 		
-		result += "\n";
+		result += "\nAddress: " + std::to_string((long long)this) + "\n";
 		
 		if (this->situation)
 		{

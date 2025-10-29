@@ -43,6 +43,8 @@ namespace chess_solver
 	{
 		std::ofstream fout("log.txt", std::ios::app);
 		
+		fout << std::boolalpha;
+		
 		return deepSearch(this->tree, maximalDepth, fout);
 	}
 	
@@ -54,23 +56,25 @@ namespace chess_solver
 		fout << tree->toString();
 		fout.flush();
 		
+		bool result = false;
+		
 		if (isDeadlock(tree, maximalDepth, fout))
 		{
 			fout << "Deadlock!\n";
 			fout.flush();
 			
-			return false;
+			result = false;
 		}
 		else if (isTargetSituation(tree, fout))
 		{
 			fout << "Target!\n";
 			fout.flush();
 			
-			return true;
+			result = true;
 		}
 		else
 		{
-			bool result = false;
+			result = false;
 			
 			OptionTree* child = nullptr;
 		
@@ -84,7 +88,6 @@ namespace chess_solver
 				
 					if (!result)
 					{
-	//					tree->removeChild(child);
 						delete child;
 						child = nullptr;
 					}
@@ -94,9 +97,12 @@ namespace chess_solver
 					}
 				}
 			}
-			
-			return result;
 		}
+		
+		fout << "Base returning " << result << ". depth = " << tree->getDepth() << "\n";
+		fout.flush();
+		
+		return result;
 	}
 	
 	OptionTree* AbstractSolver::createChild(OptionTree* tree, std::ofstream& fout)
