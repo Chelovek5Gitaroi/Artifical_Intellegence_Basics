@@ -24,8 +24,6 @@ namespace chess_solver
 	
 	void AbstractSolver::initTree(AbstractSituation* startSituation)
 	{
-//		std::cout << "*Debug* base init tree...\n";
-		
 		if (tree)
 		{
 			clearTree();
@@ -36,35 +34,19 @@ namespace chess_solver
 	
 	bool AbstractSolver::useDeepSearch(short maximalDepth)
 	{
-		std::ofstream fout("log.txt", std::ios::app);
-		
-		fout << std::boolalpha;
-		
-		return deepSearch(this->tree, maximalDepth, fout);
+		return deepSearch(this->tree, maximalDepth);
 	}
 	
-	bool AbstractSolver::deepSearch(OptionTree* tree, short maximalDepth, std::ofstream& fout)
+	bool AbstractSolver::deepSearch(OptionTree* tree, short maximalDepth)
 	{
-		fout << "Using base deep search\n";
-		fout.flush();
-		
-		fout << tree->toString();
-		fout.flush();
-		
 		bool result = false;
 		
-		if (isDeadlock(tree, maximalDepth, fout))
+		if (isDeadlock(tree, maximalDepth))
 		{
-			fout << "Deadlock!\n";
-			fout.flush();
-			
 			result = false;
 		}
-		else if (isTargetSituation(tree, fout))
+		else if (isTargetSituation(tree))
 		{
-			fout << "Target!\n";
-			fout.flush();
-			
 			result = true;
 		}
 		else
@@ -75,11 +57,11 @@ namespace chess_solver
 		
 			while (!result && !tree->getCommands()->empty())
 			{
-				child = createChild(tree, fout);
+				child = createChild(tree);
 				
 				if (child)
 				{
-					result = deepSearch(child, maximalDepth, fout);
+					result = deepSearch(child, maximalDepth);
 				
 					if (!result)
 					{
@@ -92,51 +74,25 @@ namespace chess_solver
 					}
 				}
 			}
-			
-			if (tree->getCommands()->empty())
-			{
-				fout << "Base no more children!";
-				fout.flush();
-			}
 		}
-		
-		fout << "Base returning " << result << ". depth = " << tree->getDepth() << "\n";
-		fout.flush();
 		
 		return result;
 	}
 	
-	OptionTree* AbstractSolver::createChild(OptionTree* tree, std::ofstream& fout)
+	OptionTree* AbstractSolver::createChild(OptionTree* tree)
 	{
-		fout << "Base creating child\n";
-		fout.flush();
-		
 		std::list<AbstractCommand*>* commands = tree->getCommands();
 		
 		OptionTree* result = nullptr;
 		
 		if (!commands->empty())
 		{
-			fout << "Creating next situation\n";
-			fout.flush();
-			
 			AbstractSituation* nextSituation = getNextSituation(tree->getSituation(), commands->front());
 			
 			result = new OptionTree(nextSituation, commands->front(), tree, tree->getDepth());
 			
 			commands->pop_front();
 		}
-		
-		if (result)
-		{
-			fout << "Base child created\n";
-		}
-		else
-		{
-			fout << "Failed to base create child\n";
-		}
-		
-		fout.flush();
 		
 		return result;
 	}

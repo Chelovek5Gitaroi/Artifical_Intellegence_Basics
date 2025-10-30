@@ -3,8 +3,6 @@
 
 #include "option_tree.h"
 
-#include <fstream>
-
 namespace chess_solver
 {
 	//
@@ -37,7 +35,7 @@ namespace chess_solver
 		// Метод, реализующий поиск в глубину
 		// OptionTree* tree - рассматриваемый узел дерева
 		// short maximalDepth - максимально допустимая глубина поиска
-		virtual bool deepSearch(OptionTree* tree, short maximalDepth, std::ofstream& fout);
+		virtual bool deepSearch(OptionTree* tree, short maximalDepth);
 		
 		// Абстрактная порождающая процедура
 		// AbstractSituation* abstractSituation - указатель на рассматриваемую ситуацию
@@ -46,15 +44,15 @@ namespace chess_solver
 		
 		// Виртуальный метод, создающий дочерний узел дерева вариантов
 		// OptionTree* tree - указатель на рассматриваемый узел дерева
-		virtual OptionTree* createChild(OptionTree* tree, std::ofstream& fout);
+		virtual OptionTree* createChild(OptionTree* tree);
 		
 		// Абстрактный метод, проверяющий, является ли ситуация в рассматриваемом узле дерева целевой
 		// OptionTree* tree - указатель на рассматриваемый узел дерева вариантов
-		virtual bool isTargetSituation(OptionTree* tree, std::ofstream& fout) = 0;
+		virtual bool isTargetSituation(OptionTree* tree) = 0;
 		
 		// Абстрактный метод, проверяющий, является ли ситуация в рассматриваемом узле дерева тупиковой
 		// OptionTree* tree - указатель на рассматриваемый узел дерева вариантов
-		virtual bool isDeadlock(OptionTree* tree, int maximalDepth, std::ofstream& fout) = 0;
+		virtual bool isDeadlock(OptionTree* tree, int maximalDepth) = 0;
 	private:
 		// Указатель на корневой узел дерева вариантов
 		OptionTree* tree;

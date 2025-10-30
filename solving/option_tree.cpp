@@ -129,7 +129,7 @@ namespace chess_solver
 		if (this->children.empty())
 		{
 			fout << "creating empty list\n";
-			fout.flush();
+			
 			fout.close();
 			
 			result = new std::list<AbstractCommand*>();
@@ -137,7 +137,7 @@ namespace chess_solver
 		else
 		{
 			fout << "getting child command\n";
-			fout.flush();
+			
 			fout.close();
 			
 			result = this->children.front()->getCommandSequence();
@@ -155,7 +155,7 @@ namespace chess_solver
 			fout << "no list!\n";
 		}
 		
-		fout.flush();
+		
 		fout.close();
 		
 		return result;

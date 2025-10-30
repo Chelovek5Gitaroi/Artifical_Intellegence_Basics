@@ -177,7 +177,7 @@ namespace chess_solver
 	void ChessController::processKeyEnter()
 	{
 //		cfout << "Enter pressed\n";
-//		cfout.flush();
+//		c
 		
 		Visualizer* visualizer = reinterpret_cast<Visualizer*>(this->getVisualizer());
 		
