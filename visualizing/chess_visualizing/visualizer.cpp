@@ -80,11 +80,14 @@ namespace chess_solver
 		this->currentCursorPosition.X = 0;
 		this->currentCursorPosition.Y = 0;
 		
-		this->screenSize.X = 100;
-		this->screenSize.Y = 35;
+		this->greetingTop.X = GREETING_MESSAGE_LEFT;
+		this->greetingTop.Y = GREETING_MESSAGE_TOP;
 		
-		this->windowPosition.Left = 10;
-		this->windowPosition.Top = 10;
+		this->screenSize.X = 100;
+		this->screenSize.Y = 40;
+		
+		this->windowPosition.Left = 5;
+		this->windowPosition.Top = 5;
 		this->windowPosition.Right = this->windowPosition.Left + screenSize.X - 1;
 		this->windowPosition.Bottom = this->windowPosition.Top + screenSize.Y - 1;
 		

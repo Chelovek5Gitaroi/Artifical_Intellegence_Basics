@@ -2,10 +2,11 @@
 
 namespace chess_solver
 {
+	const std::string ChessController::GREETING_MESSAGE = "Поиск мата не более, чем за два хода";
 	
 	const std::string ChessController::DEFAULT_FIGURE_DESCRIPTION_NAME = "figures.txt";
 	
-	const std::string ChessController::MENU_TIILE = "Выберите способ решения:";
+	const std::string ChessController::MENU_TIILE = "Выберите действие:";
 	const std::string ChessController::MENU_ITEM_DEEP_SEARCH = "Поиск в глубину";
 	const std::string ChessController::MENU_ITEM_SELECT_SITUATION = "Просматривать ситуации";
 	const std::string ChessController::MENU_ITEM_EXIT = "Выйти";
@@ -69,6 +70,8 @@ namespace chess_solver
 		this->getVisualizer()->showSituation(this->getSolver()->getTree()->getSituation());
 		
 		Visualizer* visualizer = reinterpret_cast<Visualizer*>(this->getVisualizer());
+			
+		visualizer->showMessage(GREETING_MESSAGE, visualizer->getGreetingTop());
 			
 		visualizer->showMenu(this->menuStrings, visualizer->getMenuTop());
 		

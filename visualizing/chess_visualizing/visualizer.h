@@ -28,6 +28,7 @@ namespace chess_solver
 			
 		COORD getMenuTop() { return this->menuTop; }
 		COORD getCommandsTop() { return this->commandTop; }
+		COORD getGreetingTop() { return this->greetingTop; }
 		
 		void clearMenu(std::vector<std::pair<std::string, bool>>& menu, COORD top);
 		
@@ -44,6 +45,7 @@ namespace chess_solver
 		COORD menuTop;
 
 		COORD screenSize;
+		COORD greetingTop;
 		
 		SMALL_RECT windowPosition;
 
@@ -58,8 +60,11 @@ namespace chess_solver
 		
 		char boardSize;
 		
+		static const short GREETING_MESSAGE_TOP = 1;
+		static const short GREETING_MESSAGE_LEFT = 1;
+				
 		static const short LEFT_BOARD_IDENT = 4;
-		static const short TOP_BOARD_IDENT = 3;
+		static const short TOP_BOARD_IDENT = 5;
 		static const short SIDE_COMMANDS_IDENT = 3;
 		static const short TOP_COMMAND_IDENT = 4;
 		

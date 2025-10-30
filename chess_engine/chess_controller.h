@@ -47,6 +47,8 @@ namespace chess_solver
 		};
 		
 //		std::ofstream cfout;
+
+		static const std::string GREETING_MESSAGE;
 		
 		static const std::string MENU_TIILE;
 		static const std::string MENU_ITEM_DEEP_SEARCH;
