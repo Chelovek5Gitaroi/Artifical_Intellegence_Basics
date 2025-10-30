@@ -5,11 +5,16 @@
 
 namespace chess_solver
 {
+	//
+	// Класс, описывающий абстрактную ситуацию
+	//
 	class AbstractSituation
 	{
 	public:
+		// Виртуальный деструктор
 		virtual ~AbstractSituation() = 0;
 		
+		// Абстрактный метод, возвращающий строковое представление объекта
 		virtual std::string toString() = 0;
 	};
 }
