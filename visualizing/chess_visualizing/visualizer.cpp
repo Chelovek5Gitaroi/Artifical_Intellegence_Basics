@@ -90,7 +90,6 @@ namespace chess_solver
 		
 		SetConsoleScreenBufferSize(this->consoleFile, screenSize);
 		SetConsoleWindowInfo(this->consoleFile, TRUE, &windowPosition);
-		
 	}
 	
 	Visualizer::~Visualizer()
@@ -105,8 +104,6 @@ namespace chess_solver
 		Command* command = reinterpret_cast<Command*>(abstractCommand);
 		
 		std::cout << getFigureChar(command->getFigureType()) << command->getStartCoordinates();
-		
-//		std::cout << getFigureChar(*command->getFigure()) << command->getFigure()->getCoordinates();
 		
 		CommandType type = command->getType();
 		

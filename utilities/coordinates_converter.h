@@ -3,13 +3,12 @@
 
 #include "../chess_entities/coordinates.h"
 #include "chess_chars.h"
+
 namespace chess_solver
 {
 	class CoordinatesConverter
 	{
 	public:
-//		static const char MINIMAL_COLUMN_NAME = 'a';
-		
 		// Метод, возвращающий индекс горизонтали в массиве
 		// row - обозначение горизонтали в шахматной нотации
 		static char getRowIndexFromCoordinate(char row, char boardSize) { return boardSize - row; }

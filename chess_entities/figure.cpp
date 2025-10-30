@@ -7,38 +7,6 @@ namespace chess_solver
 	Figure::~Figure()
 	{
 //		std::cout << "*debug* deleting figure: ";
-		
-//		if (color == FigureColor::WHITE)
-//		{
-//			std::cout << "white ";
-//		}
-//		else
-//		{
-//			std::cout << "black ";
-//		}
-//		
-//		switch (type)
-//		{
-//		case FigureType::PAWN:
-//			std::cout << "pawn";
-//			break;
-//		case FigureType::BISHOP:
-//			std::cout << "bishop";
-//			break;
-//		case FigureType::KNIGHT:
-//			std::cout << "knight";
-//			break;
-//		case FigureType::ROCK:
-//			std::cout << "rock";
-//			break;
-//		case FigureType::QUEEN:
-//			std::cout << "queen";
-//			break;
-//		case FigureType::KING:
-//			std::cout << "king";
-//			break;
-//		}
-//		
 //		std::cout << " " << coordinates << "\n";
 	}
 	
@@ -105,8 +73,5 @@ namespace chess_solver
 		
 		return result;
 	}
-//	std::ostream& operator<<(std::ostream& os, Figure& figure)
-//	{
-//		
-//	}
+
 }

@@ -485,7 +485,6 @@ namespace chess_solver
 		if (commandType != CommandType::BEAT && commandType != CommandType::BEAT_TRANSFORMATION)
 		{
 			board.setOccupancyByCoordinates(command->getFinishCoordinates(), false);
-//			takenFigure = getFigureFromListByCoordinates(command->getFinishCoordinates(), secondPlayerFigures);
 		}
 	
 		return result;

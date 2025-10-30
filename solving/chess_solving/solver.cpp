@@ -18,19 +18,9 @@ namespace chess_solver
 			currentColor = FigureColor::WHITE;
 		}
 
-//		if (!commands->empty())
-//		{
 		executor.executeCommand(reinterpret_cast<Command*>(command), result->getBoard(), figures, otherFigures);
 			
-//			commands->pop_front();
-			
 		result->setCurrentPlayer(currentColor);
-//		}
-//		else
-//		{
-//			delete result;
-//			result = nullptr;
-//		}
 
 		return result;
 	}
@@ -329,16 +319,25 @@ namespace chess_solver
 		fout << "derived deep search\n";
 		fout.flush();
 		
-		bool result = AbstractSolver::deepSearch(tree, maximalDepth, fout);
-
-		if (tree->getDepth() < maximalDepth)
+		Situation* situation = reinterpret_cast<Situation*>(tree->getSituation());
+		
+		bool result = false;
+		
+		if (situation->getTargetPlayer() == situation->getCurrentPlayer())
 		{
-			fout << "maybe solve\n";
+			fout << "Target player moves\n";
 			fout.flush();
-			Situation* situation = reinterpret_cast<Situation*>(tree->getSituation());
-			
-			if (situation->getCurrentPlayer() != situation->getTargetPlayer() /*&& tree->getDepth() < maximalDepth*/)
+			result = AbstractSolver::deepSearch(tree, maximalDepth, fout);
+		}
+		else
+		{
+			if (tree->getDepth() < maximalDepth)
 			{
+				result = true;
+				
+				fout << "Not maximal depth\n";
+				fout.flush();
+				
 				while (result && !tree->getCommands()->empty())
 				{
 					OptionTree* nextChild = createChild(tree, fout);
@@ -364,14 +363,29 @@ namespace chess_solver
 						{
 							tree->insertChild(nextChild);
 						}
-						
 					}
 					else
 					{
 						fout << "No more children\n";
 						fout.flush();
 					}
+					
+//					fout << "All children target: " << areAllChildrenTarget << "\n";
+//					fout.flush();
 				}
+				
+				if (tree->getCommands()->empty())
+				{	
+					fout << "Derived no more children!";
+					fout.flush();
+				}
+			}
+			else
+			{
+				fout << "Maximal depth\n";
+				fout.flush();
+				
+				result = AbstractSolver::deepSearch(tree, maximalDepth, fout);
 			}
 		}
 

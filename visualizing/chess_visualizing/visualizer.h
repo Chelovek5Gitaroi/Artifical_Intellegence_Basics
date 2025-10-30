@@ -4,7 +4,6 @@
 #include <windows.h>
 #include <wincon.h>
 
-
 #include "../abstract_visualizer.h"
 #include "../../solving/chess_solving/situation.h"
 #include "../../utilities/chess_chars.h"

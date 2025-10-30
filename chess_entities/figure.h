@@ -3,7 +3,6 @@
 
 #include "coordinates.h"
 
-//#include <iostream>
 #include <string>
 
 namespace chess_solver
@@ -50,8 +49,6 @@ namespace chess_solver
 		
 		Coordinates coordinates;
 	};
-	
-//	std::ostream& operator<<(std::ostream& os, Figure& figure);
 }
 
 #endif

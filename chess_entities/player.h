@@ -17,7 +17,7 @@ namespace chess_solver
 		std::list<Figure*>& getAllFigures() { return figures; }
 		
 		Figure* getKing();
-		Figure* getFigureByCoordinates(Coordinates& coordinates);//const;
+		Figure* getFigureByCoordinates(Coordinates& coordinates);
 		void removeFigureByCoordinates(Coordinates& coordinates);
 				
 		bool hasFigure(Figure& figure);

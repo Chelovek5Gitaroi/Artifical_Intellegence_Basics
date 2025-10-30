@@ -20,11 +20,6 @@ namespace chess_solver
 	{
 	public:
 		
-//		Solver(AbstractSituationMaker* situationMaker);
-//		~Solver(){ std::cout << "*Debug* solver d-tor\n"; }
-				
-//		bool useDeepSearch(short maximalDepth) override;
-	
 		void initTree(AbstractSituation* startSituation) override;
 	
 	protected:
@@ -36,8 +31,6 @@ namespace chess_solver
 		bool isTargetSituation(OptionTree* tree, std::ofstream& fout) override;
 	
 		bool isDeadlock(OptionTree* tree, int maximalDepth, std::ofstream& fout) override;
-	
-//		void addNewChild(OptionTree* tree);
 	
 		bool deepSearch(OptionTree* tree, short maximalDepth, std::ofstream& fout) override;
 	
@@ -60,9 +53,6 @@ namespace chess_solver
 		bool isTargetSituation(Situation* situation, std::list<AbstractCommand*>* potentialMoves, std::ofstream& fout);
 		
 		bool isDeadlock(Situation* situation, std::list<AbstractCommand*>* potentialMoves, short maximalDepth, short currentDepth, std::ofstream& fout);
-		
-		
-		
 	};
 }
 

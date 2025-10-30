@@ -34,10 +34,6 @@ namespace chess_solver
 		
 		Figure* getFigure(const Coordinates& coordinates);
 		
-//		std::list<Command*>* getPotentialMoves() { return potentialMoves; }
-		
-//		void setPotentialMoves(std::list<Command*>* potentialMoves);
-		
 		std::string toString() override;
 		
 	private:
@@ -48,14 +44,9 @@ namespace chess_solver
 		FigureColor currentPlayer;
 		Board board;
 		
-//		std::list<Command*>* potentialMoves;
-		
 		void insertListItemsToOtherList(std::list<Figure*>& sourceList, std::list<Figure*>& destList);
 		
 		Figure* getFigureFormList(const Coordinates& coordinates, std::list<Figure*>& figures);
-		
-//		void clearPotentialMoves();
-		
 	};	
 }
 

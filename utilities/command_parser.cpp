@@ -1,39 +1,7 @@
 #include "command_parser.h"
 
-
 namespace chess_solver
 {
-	Command* CommandParser::parseCommand(std::string& command)
-	{
-//		std::string::iterator iter = command.begin();
-//		
-//		Coordinates start = getCoordinates(iter, command);
-//		
-//		CommandType commandType = getCommandType(iter, command);
-//		
-//		Coordinates finish = getCoordinates(iter, command);
-//	
-		Command* result = nullptr;	
-//
-//		if (iter != command.end())
-//		{
-//			if (checkTransformationCommand(iter, command))
-//			{
-//				commandType = CommandType::TRANSFORMATION;
-//				
-//				FigureType newFigureType = getTransormedFigureType(iter, command);
-//				
-//				result = new CommandTransformation(start, finish, newFigureType, commandType);
-//			}
-//		}
-//		else
-//		{
-//			result = new Command(start, finish, commandType);
-//		}
-		
-		return result;
-	}
-	
 	Coordinates CommandParser::getCoordinates(std::string::iterator& iter, std::string& command)
 	{
 		std::string columnString = "";
@@ -139,10 +107,6 @@ namespace chess_solver
 		
 		if (command)
 		{
-//			result += getFigureChar(command->getFigure()->getType());
-					
-//			result += getFigureChar(figure->getType());
-		
 			result += getFigureChar(command->getFigureType());
 		
 			result += command->getStartCoordinates().toString();
@@ -151,7 +115,6 @@ namespace chess_solver
 		
 			if (commandType == CommandType::MOVE || commandType == CommandType::TRANSFORMATION)
 			{
-//				std::cout << '\a';
 				result += *ChessChars::COMMAND_POSITION_MOVE_SEPARATORS.begin();
 			}
 			else if (commandType == CommandType::BEAT || commandType == CommandType::BEAT_TRANSFORMATION)

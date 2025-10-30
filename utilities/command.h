@@ -20,13 +20,11 @@ namespace chess_solver
 	public:
 		Command(FigureType figureType, const Coordinates& start, const Coordinates& finish, CommandType commandType) :
 			figureType(figureType), startCoordinates(start), finishCoordinates(finish), type(commandType) {}
-//		Command(Figure* figure, const Coordinates& finishCoordinates, CommandType commandType) : figure(figure), finishCoordinates(finishCoordinates), type(commandType) {}
 		~Command(){}
 		
 		FigureType getFigureType() { return this->figureType; }
 		Coordinates& getStartCoordinates() { return this->startCoordinates; }
 		Coordinates& getFinishCoordinates() { return this->finishCoordinates; }
-//		Figure* getFigure() { return figure; }
 		CommandType getType() { return this->type; }
 		
 		std::string toString() override
@@ -62,25 +60,11 @@ namespace chess_solver
 		Coordinates startCoordinates;
 		Coordinates finishCoordinates;
 		CommandType type;
-//		Figure* figure;
 	};
-	
-//	class CommandBeat : public Command
-//	{
-//	public:
-//		CommandBeat(Figure* figure, Figure* figureToTake) : Command(figure, figureToTake->getCoordinates(), CommandType::BEAT), figureToTake(figureToTake) {}
-//		
-//		Figure* getFigureToTake() { return figureToTake; }
-//	private:
-//		Figure* figureToTake;
-//	};
 	
 	class CommandTransformation : public Command
 	{
 	public:
-//		CommandTransformation(Figure* figure, const Coordinates& finishCoordinates, FigureType newFigureType, CommandType commandType = CommandType::TRANSFORMATION) :
-//			Command(figure, finishCoordinates, commandType), newFigureType(newFigureType) {}
-		
 		CommandTransformation(FigureType figureType, const Coordinates& start, const Coordinates& finish, FigureType newFigureType, CommandType commandType = CommandType::TRANSFORMATION) :
 			Command(figureType, start, finish, commandType), newFigureType(newFigureType) {}
 		
@@ -123,17 +107,6 @@ namespace chess_solver
 	private:
 		FigureType newFigureType;
 	};
-	
-//	class CommandBeatTransformation : public CommandTransformation
-//	{
-//	public:
-//		CommandBeatTransformation(Figure* figure, Figure* figureToTake, FigureType newFigureType) :
-//			Command(figure, figure->getCoordinates(), CommandType::BEAT_TRANSFORMATION), figureToTake(figureToTake) {}
-//		
-//		Figure* getFigureToTake() { return figureToTake; }
-//	private:
-//		Figure* figureToTake;	
-//	};
 }
 
 #endif

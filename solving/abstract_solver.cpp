@@ -4,16 +4,11 @@ namespace chess_solver
 {
 	AbstractSolver::~AbstractSolver()
 	{
-//		std::cout << "*Debug* abstract solver d-tor...\n";
-		
 		delete this->tree;
-//		delete this->situationMaker;
 	}
 	
 	AbstractSolver::AbstractSolver()
-//	AbstractSolver::AbstractSolver(AbstractSituationMaker* situationMaker)
 	{
-//		this->situationMaker = situationMaker;
 		this->tree = nullptr;
 	}
 	
@@ -96,6 +91,12 @@ namespace chess_solver
 						tree->insertChild(child);
 					}
 				}
+			}
+			
+			if (tree->getCommands()->empty())
+			{
+				fout << "Base no more children!";
+				fout.flush();
 			}
 		}
 		

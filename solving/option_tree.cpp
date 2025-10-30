@@ -1,7 +1,5 @@
 #include "option_tree.h"
 
-//#include <iostream>`
-
 namespace chess_solver
 {
 	OptionTree::OptionTree(AbstractSituation* situation, AbstractCommand* previousCommand, OptionTree* parent, short depth)
@@ -22,11 +20,6 @@ namespace chess_solver
 		{
 			delete *iter;
 		}
-		
-//		if (this->parent)
-//		{
-//			this->parent->removeChild(this);
-//		}
 		
 		if (this->previousCommand)
 		{
@@ -71,8 +64,6 @@ namespace chess_solver
 	
 	void OptionTree::insertChild(OptionTree* child)
 	{
-//		bool hasChildren = !;
-		
 		this->children.push_back(child);
 		
 		if (this->children.empty())
@@ -166,11 +157,6 @@ namespace chess_solver
 		
 		fout.flush();
 		fout.close();
-		
-//		if (this->previousCommand)
-//		{
-			
-//		}
 		
 		return result;
 	}	

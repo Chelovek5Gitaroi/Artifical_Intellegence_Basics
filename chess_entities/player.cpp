@@ -1,6 +1,5 @@
 #include "player.h"
 
-
 namespace chess_solver
 {
 	Player::~Player()
@@ -31,7 +30,7 @@ namespace chess_solver
 		this->figures.push_back(figure);
 	}
 		
-	Figure* Player::getFigureByCoordinates(Coordinates& coordinates) //const
+	Figure* Player::getFigureByCoordinates(Coordinates& coordinates)
 	{
 		Figure* result = nullptr;
 		

@@ -3,8 +3,6 @@
 
 #include <fstream>
 
-//#include <cstdlib>
-
 #include "..\\chess_entities\\board.h"
 #include "..\\chess_entities\\figure.h"
 #include "..\\chess_entities\\player.h"
