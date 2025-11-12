@@ -3,12 +3,9 @@
 
 #include "option_tree.h"
 
-<<<<<<< HEAD
-=======
 #include <fstream>
 #include <queue>
 
->>>>>>> aeb6af2a0c8779fa6b6573067eb71cb27eae1378
 namespace chess_solver
 {
 	//
@@ -26,7 +23,9 @@ namespace chess_solver
 		// Метод, применяющий обход в глубину к инициализированному дереву
 		// Возвращается наличие решения для заданной начальной ситуации
 		virtual bool useDeepSearch(short maximalDepth);
-	
+		
+		virtual OptionTree* useWideSearch(short maximalDepth, std::ofstream& fout);
+		
 		// Метод, выполняющий инициализацию дерева вариантов
 		// AbstractSituation* startSituation - начальная ситуация
 		virtual void initTree(AbstractSituation* startSituation);
@@ -45,7 +44,7 @@ namespace chess_solver
 		
 		std::queue<OptionTree*>* generateNextTreeLevel(std::queue<OptionTree*>* treeLevel, short maximalDepth, std::ofstream& fout);
 		
-		virtual bool wideSearch(std::queue<OptionTree*>* treeLevel,  short maximalDepth, std::ofstream& fout);
+		virtual OptionTree* wideSearch(std::queue<OptionTree*>* treeLevel, short maximalDepth, std::ofstream& fout);
 		
 		// Абстрактная порождающая процедура
 		// AbstractSituation* abstractSituation - указатель на рассматриваемую ситуацию
