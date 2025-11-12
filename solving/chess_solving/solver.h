@@ -29,7 +29,7 @@ namespace chess_solver
 	
 		bool isDeadlock(OptionTree* tree, int maximalDepth) override;
 	
-		bool deepSearch(OptionTree* tree, short maximalDepth) override;
+		OptionTree* deepSearch(OptionTree* tree, short maximalDepth) override;
 	
 	private:
 		std::list<AbstractCommand*>* getAllSituationMoves(Situation& situation);

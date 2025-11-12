@@ -20,6 +20,9 @@ namespace chess_solver
 	public:
 		Command(FigureType figureType, const Coordinates& start, const Coordinates& finish, CommandType commandType) :
 			figureType(figureType), startCoordinates(start), finishCoordinates(finish), type(commandType) {}
+		
+		Command(Command& other) : figureType(other.figureType), startCoordinates(other.startCoordinates), finishCoordinates(other.finishCoordinates), type(other.type) {}
+			
 		~Command(){}
 		
 		FigureType getFigureType() { return this->figureType; }
@@ -67,6 +70,8 @@ namespace chess_solver
 	public:
 		CommandTransformation(FigureType figureType, const Coordinates& start, const Coordinates& finish, FigureType newFigureType, CommandType commandType = CommandType::TRANSFORMATION) :
 			Command(figureType, start, finish, commandType), newFigureType(newFigureType) {}
+		
+		CommandTransformation(CommandTransformation& other) : Command(other.getFigureType(), other.getStartCoordinates(), other.getFinishCoordinates(), other.getType()), newFigureType(other.newFigureType) {}
 		
 		FigureType getNewFigureType() { return newFigureType; }
 		

@@ -120,6 +120,22 @@ namespace chess_solver
 	
 	std::list<AbstractCommand*>* OptionTree::getCommandSequence()
 	{
+		std::list<AbstractCommand*>* result = new std::list<AbstractCommand*>();
+		
+		OptionTree* node = this;
+		
+		while (node)
+		{
+			result->push_front(node->getPreviousCommand());
+			
+			node = node->parent;
+		}
+		
+		return result;
+	}
+	
+	std::list<AbstractCommand*>* OptionTree::getCommandSequenceFromRoot()
+	{
 		std::list<AbstractCommand*>* result = nullptr;
 		
 		std::ofstream fout("tree_log.txt", std::ios::app);
@@ -140,7 +156,7 @@ namespace chess_solver
 			
 			fout.close();
 			
-			result = this->children.front()->getCommandSequence();
+			result = this->children.front()->getCommandSequenceFromRoot();
 		}
 		
 		fout.open("tree_log.txt", std::ios::app);

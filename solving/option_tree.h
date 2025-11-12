@@ -26,6 +26,8 @@ namespace chess_solver
 		// short depth - глубина создаваемого узла
 		OptionTree(AbstractSituation* situation, AbstractCommand* previousCommand, OptionTree* parent, short depth);
 		
+		OptionTree(OptionTree* other);
+		
 		// Деструктор
 		~OptionTree();
 		
@@ -65,6 +67,8 @@ namespace chess_solver
 		void removeChild(OptionTree* child);
 	
 		// Метод, возвращающий список объектов, описывающих действия, выполнение которых привело к возникновению рассматриваемой ситуации
+		std::list<AbstractCommand*>* getCommandSequenceFromRoot();
+		
 		std::list<AbstractCommand*>* getCommandSequence();
 		
 		// Метод, записывающий указатель на список возможных ходов
@@ -77,6 +81,7 @@ namespace chess_solver
 		// Метод, возвращающий строковое представление объекта
 		std::string toString();
 		
+				
 	private:
 		// Глубина узла в дереве
 		short depth;

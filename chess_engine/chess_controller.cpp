@@ -29,6 +29,8 @@ namespace chess_solver
 		initSolver();
 		
 		this->currentTreeNode = nullptr;
+		this->solve = nullptr;
+		this->solveRoot = nullptr;
 	}
 	
 	void ChessController::init(const std::string& figureDescriptionFileName)
@@ -55,6 +57,11 @@ namespace chess_solver
 		{
 			this->game.getSecondPlayer()->addFigure(figure);
 			this->game.getBoard()->setOccupancyByCoordinates(figure->getCoordinates(), true);
+		}
+		
+		if (this->solve)
+		{
+			delete this->solve;
 		}
 		
 		delete blackFigures;
@@ -123,6 +130,11 @@ namespace chess_solver
 		
 		this->currentTreeNode = nullptr;
 		
+		if (this->solveRoot)
+		{
+			delete solveRoot;
+		}
+		
 		Situation* startSituation = new Situation(this->game.getFirstPlayer()->getAllFigures(), this->game.getSecondPlayer()->getAllFigures(), *this->game.getBoard(), this->game.getCurrentPlayer(), this->game.getCurrentPlayer());
 		
 		solver->initTree(startSituation);
@@ -183,7 +195,7 @@ namespace chess_solver
 		
 		if (controllerState & CONTROLLER_STATE_MENU_SELECT_SOLVING_METHOD)
 		{
-			bool isSolved = false;
+			OptionTree* target = nullptr;
 
 //			cfout << "Entering menu item\n";
 			
@@ -196,17 +208,23 @@ namespace chess_solver
 			
 				visualizer->showMessage(std::string(MESSAGE_NO_SOLVE.size(), ' '), visualizer->getCommandsTop());
 
-				isSolved = this->getSolver()->useDeepSearch(this->getMaximalDepth());
+				this->solve = this->getSolver()->useDeepSearch(this->getMaximalDepth());
 
-				if (isSolved)
+				if (target)
 				{
 					COORD messageTop = visualizer->getCommandsTop();
 					messageTop.Y -= 1;
 					
+					
+					
+//					this->solve = getSolveRoot(copySolveTree(target));
+					
 					visualizer->showMessage(MESSAGE_SOLVE, messageTop);
 					
-					this->currentTreeNode = this->getSolver()->getTree();
-					makeSolvingMenu(this->getSolver()->getTree()->getCommandSequence());
+					makeSolvingMenu(solve->getCommandSequence());
+					
+					this->currentTreeNode = getSolveRoot(this->solve);
+					
 					visualizer->showMenu(this->solvingMenu, visualizer->getCommandsTop());
 				}
 				else
@@ -318,13 +336,12 @@ namespace chess_solver
 	{
 		solvingMenu.clear();
 		
-		std::list<AbstractCommand*>* commands = this->getSolver()->getTree()->getCommandSequence();
+//		std::list<AbstractCommand*>* commands = this->getSolver()->getTree()->getCommandSequenceFromRoot();
 		
 		this->currentTreeNode = this->getSolver()->getTree();
 		
 		for (AbstractCommand* command : *commandList)
 		{
-			
 			bool selected = false;
 			
 			if (command == currentTreeNode->getPreviousCommand())
@@ -336,5 +353,39 @@ namespace chess_solver
 		}
 	}
 	
+	OptionTree* ChessController::copySolveTree(OptionTree* node)
+	{
+		Situation* situation = new Situation(*reinterpret_cast<Situation*>(node->getSituation()));
+		Command* command = new Command(*reinterpret_cast<Command*>(node->getPreviousCommand()));
+		
+		OptionTree* result = nullptr;
+		
+		OptionTree* parent = nullptr;
+		
+		if (node->getParent())
+		{
+			parent = copySolveTree(node->getParent());
+		}
+		
+		result = new OptionTree(situation, command, parent, node->getDepth());
+		
+		if (parent)
+		{
+			parent->insertChild(result);
+		}
+		
+		return result;
+	}
 	
+	OptionTree* ChessController::getSolveRoot(OptionTree* targetNode)
+	{
+		OptionTree* node = targetNode;
+		
+		while (node->getParent())
+		{
+			node = node->getParent();
+		}
+		
+		return node;
+	}
 }

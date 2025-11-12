@@ -78,6 +78,10 @@ namespace chess_solver
 		
 		OptionTree* currentTreeNode;
 		
+		OptionTree* solve;
+		
+		OptionTree* solveRoot;
+		
 		MenuItem selectedMenuItem;
 		
 		void enterSelectedItem();
@@ -107,6 +111,11 @@ namespace chess_solver
 		void selectSituation(OptionTree* tree);
 		
 		void makeSolvingMenu(std::list<AbstractCommand*>* commandList);
+		
+		OptionTree* copySolveTree(OptionTree* node);
+		
+		OptionTree* getSolveRoot(OptionTree* targetNode);
+		
 	};
 }
 

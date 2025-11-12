@@ -32,26 +32,22 @@ namespace chess_solver
 		this->tree = new OptionTree(startSituation, nullptr, nullptr, 1);
 	}
 	
-	bool AbstractSolver::useDeepSearch(short maximalDepth)
+	OptionTree* AbstractSolver::useDeepSearch(short maximalDepth)
 	{
 		return deepSearch(this->tree, maximalDepth);
 	}
 	
-	bool AbstractSolver::deepSearch(OptionTree* tree, short maximalDepth)
+	OptionTree* AbstractSolver::deepSearch(OptionTree* tree, short maximalDepth)
 	{
-		bool result = false;
+		OptionTree* result = nullptr;
 		
-		if (isDeadlock(tree, maximalDepth))
+		if (isTargetSituation(tree))
 		{
-			result = false;
+			result = tree;
 		}
-		else if (isTargetSituation(tree))
+		else if (!isDeadlock(tree, maximalDepth))
 		{
-			result = true;
-		}
-		else
-		{
-			result = false;
+			result = nullptr;
 			
 			OptionTree* child = nullptr;
 		
@@ -100,7 +96,7 @@ namespace chess_solver
 		{
 			OptionTree* tree = treeLevel->front();
 			
-			if (isTargetSituation(tree, fout))
+			if (isTargetSituation(tree))
 			{
 				result = tree;
 			}
@@ -130,7 +126,7 @@ namespace chess_solver
 		
 		while (!treeLevel->empty())
 		{
-			if (!isDeadlock(treeLevel->front(), maximalDepth, fout))
+			if (!isDeadlock(treeLevel->front(), maximalDepth))
 			{
 				createTreeChildren(treeLevel->front(), result, fout);
 			}
@@ -141,7 +137,7 @@ namespace chess_solver
 		return result;
 	}
 	
-	OptionTree* AbstractSolver::createChild(OptionTree* tree, std::ofstream& fout)
+	OptionTree* AbstractSolver::createChild(OptionTree* tree)
 	{
 		std::list<AbstractCommand*>* commands = tree->getCommands();
 		
@@ -163,7 +159,7 @@ namespace chess_solver
 	{
 		while (!tree->getCommands())
 		{
-			OptionTree* child = createChild(tree, fout);
+			OptionTree* child = createChild(tree);
 			
 			tree->insertChild(child);
 			children->push(child);

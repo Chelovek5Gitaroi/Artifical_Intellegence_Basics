@@ -236,11 +236,11 @@ namespace chess_solver
 		return result;
 	}
 
-	bool Solver::deepSearch(OptionTree* tree, short maximalDepth)
+	OptionTree* Solver::deepSearch(OptionTree* tree, short maximalDepth)
 	{
 		Situation* situation = reinterpret_cast<Situation*>(tree->getSituation());
 		
-		bool result = false;
+		OptionTree* result = nullptr;
 		
 		if (situation->getTargetPlayer() == situation->getCurrentPlayer())
 		{
@@ -250,7 +250,7 @@ namespace chess_solver
 		{
 			if (tree->getDepth() < maximalDepth)
 			{
-				result = true;
+				result = tree;
 				
 				while (result && !tree->getCommands()->empty())
 				{

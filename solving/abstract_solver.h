@@ -22,7 +22,7 @@ namespace chess_solver
 		
 		// Метод, применяющий обход в глубину к инициализированному дереву
 		// Возвращается наличие решения для заданной начальной ситуации
-		virtual bool useDeepSearch(short maximalDepth);
+		virtual OptionTree* useDeepSearch(short maximalDepth);
 		
 		virtual OptionTree* useWideSearch(short maximalDepth, std::ofstream& fout);
 		
@@ -40,7 +40,7 @@ namespace chess_solver
 		// Метод, реализующий поиск в глубину
 		// OptionTree* tree - рассматриваемый узел дерева
 		// short maximalDepth - максимально допустимая глубина поиска
-		virtual bool deepSearch(OptionTree* tree, short maximalDepth);
+		virtual OptionTree* deepSearch(OptionTree* tree, short maximalDepth);
 		
 		std::queue<OptionTree*>* generateNextTreeLevel(std::queue<OptionTree*>* treeLevel, short maximalDepth, std::ofstream& fout);
 		
