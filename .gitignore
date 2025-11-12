@@ -44,3 +44,8 @@
 # Other Files
 *.layout
 *.win
+
+# Text files
+*.txt
+*.doc
+*.docx

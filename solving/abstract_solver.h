@@ -3,6 +3,12 @@
 
 #include "option_tree.h"
 
+<<<<<<< HEAD
+=======
+#include <fstream>
+#include <queue>
+
+>>>>>>> aeb6af2a0c8779fa6b6573067eb71cb27eae1378
 namespace chess_solver
 {
 	//
@@ -37,6 +43,10 @@ namespace chess_solver
 		// short maximalDepth - максимально допустимая глубина поиска
 		virtual bool deepSearch(OptionTree* tree, short maximalDepth);
 		
+		std::queue<OptionTree*>* generateNextTreeLevel(std::queue<OptionTree*>* treeLevel, short maximalDepth, std::ofstream& fout);
+		
+		virtual bool wideSearch(std::queue<OptionTree*>* treeLevel,  short maximalDepth, std::ofstream& fout);
+		
 		// Абстрактная порождающая процедура
 		// AbstractSituation* abstractSituation - указатель на рассматриваемую ситуацию
 		// AbstractCommand* command - указатель на объект, описывающий действие, которое необходимо выполнить для создания новой ситуации
@@ -56,6 +66,8 @@ namespace chess_solver
 	private:
 		// Указатель на корневой узел дерева вариантов
 		OptionTree* tree;
+		
+		void createTreeChildren(OptionTree* tree, std::queue<OptionTree*>* children, std::ofstream& fout);
 	};
 }
 

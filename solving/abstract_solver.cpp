@@ -79,7 +79,56 @@ namespace chess_solver
 		return result;
 	}
 	
-	OptionTree* AbstractSolver::createChild(OptionTree* tree)
+//<<<<<<< HEAD
+//	OptionTree* AbstractSolver::createChild(OptionTree* tree)
+//=======
+	
+	bool AbstractSolver::wideSearch(std::queue<OptionTree*>* treeLevel, short maximalDepth, std::ofstream& fout)
+	{
+		bool result = false;
+		
+		std::queue<OptionTree*>* processedNodes = new std::queue<OptionTree*>();
+
+		while (!result && !treeLevel->empty())
+		{
+			OptionTree* tree = treeLevel->front();
+			
+			processedNodes->push(tree);
+			
+			if (isTargetSituation(tree, fout))
+			{
+				result = true;
+			}
+		}
+		
+		if (!result)
+		{
+//			result = 
+		}
+		
+		return result;
+	}
+	
+	
+	std::queue<OptionTree*>* AbstractSolver::generateNextTreeLevel(std::queue<OptionTree*>* treeLevel, short maximalDepth, std::ofstream& fout)
+	{
+		std::queue<OptionTree*>* result = new std::queue<OptionTree*>();
+		
+		while (!treeLevel->empty())
+		{
+			if (!isDeadlock(treeLevel->front(), maximalDepth, fout))
+			{
+				createTreeChildren(treeLevel->front(), result, fout);
+			}
+			
+			treeLevel->pop();
+		}
+		
+		return result;
+	}
+	
+	OptionTree* AbstractSolver::createChild(OptionTree* tree, std::ofstream& fout)
+//>>>>>>> aeb6af2a0c8779fa6b6573067eb71cb27eae1378
 	{
 		std::list<AbstractCommand*>* commands = tree->getCommands();
 		
@@ -96,4 +145,24 @@ namespace chess_solver
 		
 		return result;
 	}
+	
+	void AbstractSolver::createTreeChildren(OptionTree* tree, std::queue<OptionTree*>* children, std::ofstream& fout)
+	{
+		while (!tree->getCommands())
+		{
+			OptionTree* child = createChild(tree, fout);
+			
+			tree->insertChild(child);
+			children->push(child);
+		}
+	}
+	
+//	void AbstractSolver::insertFirstQueueIntoSecond(std::queue<OptionTree*>* first, std::queue<OptionTree*>* second)
+//	{
+//		while (!first->empty())
+//		{
+//			second->push(first->front());
+//			first->pop();
+//		}
+//	}
 }
