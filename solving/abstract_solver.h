@@ -21,9 +21,10 @@ namespace chess_solver
 		virtual ~AbstractSolver() = 0;
 		
 		// ћетод, примен€ющий обход в глубину к инициализированному дереву
-		// ¬озвращаетс€ наличие решени€ дл€ заданной начальной ситуации
+		// ¬озвращаетс€ вершина с целевой ситуацией, если така€ вершина существует, иначе возвращаетс€ nullptr
 		virtual OptionTree* useDeepSearch(short maximalDepth);
 		
+		// ћетод, примен€ющий обход в ширину к инициализированному дереву
 		virtual OptionTree* useWideSearch(short maximalDepth, std::ofstream& fout);
 		
 		// ћетод, выполн€ющий инициализацию дерева вариантов
@@ -54,6 +55,8 @@ namespace chess_solver
 		// ¬иртуальный метод, создающий дочерний узел дерева вариантов
 		// OptionTree* tree - указатель на рассматриваемый узел дерева
 		virtual OptionTree* createChild(OptionTree* tree);
+		
+		virtual std::list<AbstractCommand*>* getAllSituationMoves(AbstractSituation* abstractSituation) = 0;
 		
 		// јбстрактный метод, провер€ющий, €вл€етс€ ли ситуаци€ в рассматриваемом узле дерева целевой
 		// OptionTree* tree - указатель на рассматриваемый узел дерева вариантов

@@ -15,10 +15,6 @@ namespace chess_solver
 {
 	class Solver : public AbstractSolver
 	{
-	public:
-		
-		void initTree(AbstractSituation* startSituation) override;
-	
 	protected:
 	
 		AbstractSituation* getNextSituation(AbstractSituation* abstractSituation, AbstractCommand* command) override;
@@ -31,9 +27,11 @@ namespace chess_solver
 	
 		OptionTree* deepSearch(OptionTree* tree, short maximalDepth) override;
 	
+		OptionTree* wideSearch(std::queue<OptionTree*>* treeLevel, short maximalDepth, std::ofstream& fout) override;
+	
+		std::list<AbstractCommand*>* getAllSituationMoves(AbstractSituation* abstractSituation) override;
+	
 	private:
-		std::list<AbstractCommand*>* getAllSituationMoves(Situation& situation);
-		
 		ChessCommandExecutor executor;
 		
 		std::list<AbstractCommand*>* getFigurePotentialMoves(Board& board, Figure* figure, const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures);
@@ -46,10 +44,11 @@ namespace chess_solver
 		bool createValidTransformationCommands(Figure* figure, Board& board, const Coordinates& finishCoordinates, CommandType type,
 			const Coordinates& kingCoordinates, std::list<Figure*>* figures, std::list<Figure*>* otherFigures, std::list<AbstractCommand*>* commands);
 		
-		
 		bool isTargetSituation(Situation* situation, std::list<AbstractCommand*>* potentialMoves);
 		
 		bool isDeadlock(Situation* situation, std::list<AbstractCommand*>* potentialMoves, short maximalDepth, short currentDepth);
+		
+		bool areAllSiblingsTarget(OptionTree* node);
 	};
 }
 

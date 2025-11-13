@@ -67,8 +67,6 @@ namespace chess_solver
 		void removeChild(OptionTree* child);
 	
 		// Метод, возвращающий список объектов, описывающих действия, выполнение которых привело к возникновению рассматриваемой ситуации
-		std::list<AbstractCommand*>* getCommandSequenceFromRoot();
-		
 		std::list<AbstractCommand*>* getCommandSequence();
 		
 		// Метод, записывающий указатель на список возможных ходов

@@ -125,24 +125,26 @@ namespace chess_solver
 		return result;
 	}
 	
-	std::list<AbstractCommand*>* Solver::getAllSituationMoves(Situation& situation)
+	std::list<AbstractCommand*>* Solver::getAllSituationMoves(AbstractSituation* abstractSituation)
 	{
 		std::list<AbstractCommand*>* result = new std::list<AbstractCommand*>();
 		
-		std::list<Figure*>* figures = &situation.getWhiteFigures();
-		std::list<Figure*>* otherFigures = &situation.getBlackFigures();
+		Situation* situation = reinterpret_cast<Situation*>(abstractSituation);
 		
-		if (situation.getCurrentPlayer() == FigureColor::BLACK)
+		std::list<Figure*>* figures = &situation->getWhiteFigures();
+		std::list<Figure*>* otherFigures = &situation->getBlackFigures();
+		
+		if (situation->getCurrentPlayer() == FigureColor::BLACK)
 		{
-			figures = &situation.getBlackFigures();
-			otherFigures = &situation.getWhiteFigures();
+			figures = &situation->getBlackFigures();
+			otherFigures = &situation->getWhiteFigures();
 		}
 		
 		const Coordinates& kingCoordinates = getKingFromList(figures)->getCoordinates();
 		
 		for (auto iter = figures->begin(); iter != figures->end(); iter++)
 		{
-			std::list<AbstractCommand*>* moves = getFigurePotentialMoves(situation.getBoard(), *iter, kingCoordinates, figures, otherFigures);
+			std::list<AbstractCommand*>* moves = getFigurePotentialMoves(situation->getBoard(), *iter, kingCoordinates, figures, otherFigures);
 			
 			for (auto cmdIter = moves->begin(); cmdIter != moves->end(); cmdIter++)
 			{
@@ -168,13 +170,6 @@ namespace chess_solver
 		return nullptr;
 	}
 	
-	void Solver::initTree(AbstractSituation* startSituation)
-	{
-		AbstractSolver::initTree(startSituation);
-		
-		this->getTree()->setPotentialMoves(getAllSituationMoves(*reinterpret_cast<Situation*>(this->getTree()->getSituation())));
-	}
-
 	OptionTree* Solver::createChild(OptionTree* tree)
 	{
 		OptionTree* result = AbstractSolver::createChild(tree);
@@ -183,8 +178,6 @@ namespace chess_solver
 		{
 			Situation* situation = reinterpret_cast<Situation*>(result->getSituation());
 		
-			result->setPotentialMoves(getAllSituationMoves(*situation));
-			
 			if (situation->getCurrentPlayer() == situation->getTargetPlayer())
 			{
 				result->increaseDepth();
@@ -236,6 +229,29 @@ namespace chess_solver
 		return result;
 	}
 
+	OptionTree* Solver::wideSearch(std::queue<OptionTree*>* treeLevel, short maximalDepth, std::ofstream& fout)
+	{
+		OptionTree* result = AbstractSolver::wideSearch(treeLevel, maximalDepth, fout);
+		
+		if (result)
+		{
+			Situation* situation = reinterpret_cast<Situation*>(result->getSituation());	
+			
+			
+		}
+		
+//		if (situation->getTargetPlayer() == situation->getCurrentPlayer())
+//		{
+//			result = AbstractSolver::wideSearch(treeLevel, maximalDepth, fout);
+//		}
+//		else
+//		{
+//			
+//		}
+		
+		return result;
+	}
+
 	OptionTree* Solver::deepSearch(OptionTree* tree, short maximalDepth)
 	{
 		Situation* situation = reinterpret_cast<Situation*>(tree->getSituation());
@@ -280,4 +296,14 @@ namespace chess_solver
 
 		return result;
 	}
+	
+//	bool Solver::areAllSiblingsTarget(OptionTree* node)
+//	{
+//		OptionTree* parent = node->getParent()
+//		
+//		if ()
+//		{
+//			
+//		}
+//	}
 }

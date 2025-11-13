@@ -8,6 +8,7 @@ namespace chess_solver
 	
 	const std::string ChessController::MENU_TIILE = "Выберите действие:";
 	const std::string ChessController::MENU_ITEM_DEEP_SEARCH = "Поиск в глубину";
+	const std::string ChessController::MENU_ITEM_WIDE_SEARCH = "Поиск в ширину";
 	const std::string ChessController::MENU_ITEM_SELECT_SITUATION = "Просматривать ситуации";
 	const std::string ChessController::MENU_ITEM_EXIT = "Выйти";
 
@@ -15,11 +16,16 @@ namespace chess_solver
 	const std::string ChessController::MESSAGE_SOLVE = "Найденное решение: ";
 
 	const std::map<ChessController::MenuItem, std::string> ChessController::menu = {{ MenuItem::DEEP_SEARCH, MENU_ITEM_DEEP_SEARCH },
+																					{ MenuItem::WIDE_SEARCH, MENU_ITEM_WIDE_SEARCH },
 																					{ MenuItem::SELECT_SITUATION, MENU_ITEM_SELECT_SITUATION },
 																					{ MenuItem::EXIT, MENU_ITEM_EXIT }};
 	
 	ChessController::ChessController(AbstractSolver* solver, AbstractVisualizer* visualizer, char boardSize) : AbstractController(solver, visualizer), game(boardSize), figureCreator(boardSize)
 	{
+		this->currentTreeNode = nullptr;
+		this->solve = nullptr;
+		this->solveRoot = nullptr;
+		
 		init(DEFAULT_FIGURE_DESCRIPTION_NAME);
 		
 		this->selectedMenuItem = MenuItem::DEEP_SEARCH;
@@ -27,10 +33,6 @@ namespace chess_solver
 		this->controllerState |= CONTROLLER_STATE_RUNNING;
 		
 		initSolver();
-		
-		this->currentTreeNode = nullptr;
-		this->solve = nullptr;
-		this->solveRoot = nullptr;
 	}
 	
 	void ChessController::init(const std::string& figureDescriptionFileName)
@@ -62,6 +64,7 @@ namespace chess_solver
 		if (this->solve)
 		{
 			delete this->solve;
+			this->solve = nullptr;
 		}
 		
 		delete blackFigures;
@@ -139,6 +142,8 @@ namespace chess_solver
 		
 		solver->initTree(startSituation);
 		
+		this->getVisualizer()->showSituation(this->getSolver()->getTree()->getSituation());
+		
 		return solver;
 	}
 	
@@ -191,7 +196,7 @@ namespace chess_solver
 //		cfout << "Enter pressed\n";
 //		c
 		
-		Visualizer* visualizer = reinterpret_cast<Visualizer*>(this->getVisualizer());
+//		Visualizer* visualizer = reinterpret_cast<Visualizer*>(this->getVisualizer());
 		
 		if (controllerState & CONTROLLER_STATE_MENU_SELECT_SOLVING_METHOD)
 		{
@@ -199,38 +204,20 @@ namespace chess_solver
 
 //			cfout << "Entering menu item\n";
 			
+			std::ofstream fout("log.txt", std::ios::app);
+			
 			switch (this->selectedMenuItem)
 			{
 			case MenuItem::DEEP_SEARCH:
-				this->initSolver();
-				this->solvingMenu.clear();
-				visualizer->clearMenu(this->solvingMenu, visualizer->getCommandsTop());
+				prepareToUseSolvingMethod();
+				target = this->getSolver()->useDeepSearch(this->getMaximalDepth());
+				showSolvingResult(target);
+				break;
 			
-				visualizer->showMessage(std::string(MESSAGE_NO_SOLVE.size(), ' '), visualizer->getCommandsTop());
-
-				this->solve = this->getSolver()->useDeepSearch(this->getMaximalDepth());
-
-				if (target)
-				{
-					COORD messageTop = visualizer->getCommandsTop();
-					messageTop.Y -= 1;
-					
-					
-					
-//					this->solve = getSolveRoot(copySolveTree(target));
-					
-					visualizer->showMessage(MESSAGE_SOLVE, messageTop);
-					
-					makeSolvingMenu(solve->getCommandSequence());
-					
-					this->currentTreeNode = getSolveRoot(this->solve);
-					
-					visualizer->showMenu(this->solvingMenu, visualizer->getCommandsTop());
-				}
-				else
-				{
-					visualizer->showMessage(MESSAGE_NO_SOLVE, visualizer->getCommandsTop());
-				}
+			case MenuItem::WIDE_SEARCH:
+				prepareToUseSolvingMethod();
+				target = this->getSolver()->useWideSearch(this->getMaximalDepth(), fout);
+				showSolvingResult(target);
 				break;
 			
 			case MenuItem::SELECT_SITUATION:
@@ -245,11 +232,14 @@ namespace chess_solver
 				this->controllerState &= ~CONTROLLER_STATE_RUNNING;
 				break;
 			}
+			
+			fout.close();
 		}
 		else if (this->controllerState & CONTROLLER_STATE_SELECTING_SITUATION)
 		{
 			if (this->currentTreeNode)
 			{
+				Visualizer* visualizer = reinterpret_cast<Visualizer*>(this->getVisualizer());
 				visualizer->showSituation(this->currentTreeNode->getSituation());
 			}
 		}
@@ -336,9 +326,7 @@ namespace chess_solver
 	{
 		solvingMenu.clear();
 		
-//		std::list<AbstractCommand*>* commands = this->getSolver()->getTree()->getCommandSequenceFromRoot();
-		
-		this->currentTreeNode = this->getSolver()->getTree();
+//		this->currentTreeNode = this->getSolver()->getTree();
 		
 		for (AbstractCommand* command : *commandList)
 		{
@@ -356,7 +344,23 @@ namespace chess_solver
 	OptionTree* ChessController::copySolveTree(OptionTree* node)
 	{
 		Situation* situation = new Situation(*reinterpret_cast<Situation*>(node->getSituation()));
-		Command* command = new Command(*reinterpret_cast<Command*>(node->getPreviousCommand()));
+		
+		Command* command = nullptr;
+		Command* otherCommand = nullptr;
+		
+		if (node->getPreviousCommand())
+		{
+			otherCommand = reinterpret_cast<Command*>(node->getPreviousCommand());
+		
+			if (otherCommand->getType() == CommandType::MOVE || otherCommand->getType() == CommandType::BEAT)
+			{
+				command = new Command(*otherCommand);
+			}
+			else
+			{
+				command = new CommandTransformation(*reinterpret_cast<CommandTransformation*>(otherCommand));
+			}
+		}
 		
 		OptionTree* result = nullptr;
 		
@@ -387,5 +391,42 @@ namespace chess_solver
 		}
 		
 		return node;
+	}
+	
+	void ChessController::prepareToUseSolvingMethod()
+	{
+		Visualizer* visualizer = reinterpret_cast<Visualizer*>(this->getVisualizer());
+		
+		this->initSolver();
+		this->solvingMenu.clear();
+		visualizer->clearMenu(this->solvingMenu, visualizer->getCommandsTop());
+			
+		visualizer->showMessage(std::string(MESSAGE_NO_SOLVE.size(), ' '), visualizer->getCommandsTop());
+	}
+	
+	void ChessController::showSolvingResult(OptionTree* target)
+	{
+		Visualizer* visualizer = reinterpret_cast<Visualizer*>(this->getVisualizer());
+		
+		if (target)
+		{
+			COORD messageTop = visualizer->getCommandsTop();
+			messageTop.Y -= 1;
+				
+			this->solve = copySolveTree(target);
+			this->solveRoot = getSolveRoot(this->solve);
+				
+			this->currentTreeNode = this->solveRoot;
+			
+			visualizer->showMessage(MESSAGE_SOLVE, messageTop);
+				
+			makeSolvingMenu(solve->getCommandSequence());
+				
+			visualizer->showMenu(this->solvingMenu, visualizer->getCommandsTop());
+		}
+		else
+		{
+			visualizer->showMessage(MESSAGE_NO_SOLVE, visualizer->getCommandsTop());
+		}
 	}
 }

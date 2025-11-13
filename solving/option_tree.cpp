@@ -133,47 +133,4 @@ namespace chess_solver
 		
 		return result;
 	}
-	
-	std::list<AbstractCommand*>* OptionTree::getCommandSequenceFromRoot()
-	{
-		std::list<AbstractCommand*>* result = nullptr;
-		
-		std::ofstream fout("tree_log.txt", std::ios::app);
-		
-		fout << this->toString();
-		
-		if (this->children.empty())
-		{
-			fout << "creating empty list\n";
-			
-			fout.close();
-			
-			result = new std::list<AbstractCommand*>();
-		}
-		else
-		{
-			fout << "getting child command\n";
-			
-			fout.close();
-			
-			result = this->children.front()->getCommandSequenceFromRoot();
-		}
-		
-		fout.open("tree_log.txt", std::ios::app);
-		
-		if (result)
-		{
-			fout << "pushing command\n";
-			result->push_front(this->previousCommand);
-		}
-		else
-		{
-			fout << "no list!\n";
-		}
-		
-		
-		fout.close();
-		
-		return result;
-	}	
 }

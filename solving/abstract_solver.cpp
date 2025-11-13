@@ -30,6 +30,8 @@ namespace chess_solver
 		}
 		
 		this->tree = new OptionTree(startSituation, nullptr, nullptr, 1);
+		
+		this->tree->setPotentialMoves(getAllSituationMoves(startSituation));
 	}
 	
 	OptionTree* AbstractSolver::useDeepSearch(short maximalDepth)
@@ -83,6 +85,8 @@ namespace chess_solver
 		
 		OptionTree* result = wideSearch(rootQueue, maximalDepth, fout);
 		
+		delete rootQueue;
+		
 		return result;
 	}
 	
@@ -90,11 +94,15 @@ namespace chess_solver
 	{
 		OptionTree* result = nullptr;
 		
+		fout << "using wide search..." << std::endl << "source level nodes numbers: " << treeLevel->size() << std::endl;
+		
 		std::queue<OptionTree*>* processedNodes = new std::queue<OptionTree*>();
 
 		while (!result && !treeLevel->empty())
 		{
 			OptionTree* tree = treeLevel->front();
+			
+			treeLevel->pop();
 			
 			if (isTargetSituation(tree))
 			{
@@ -105,6 +113,8 @@ namespace chess_solver
 				processedNodes->push(tree);
 			}
 		}
+		
+		fout << "not deadlock number: " << processedNodes->size() << std::endl;
 		
 		if (!result && !processedNodes->empty())
 		{
@@ -124,12 +134,13 @@ namespace chess_solver
 	{
 		std::queue<OptionTree*>* result = new std::queue<OptionTree*>();
 		
+		fout << "Generating next level. tree level size: " << treeLevel->size() << std::endl;
+		
 		while (!treeLevel->empty())
 		{
-			if (!isDeadlock(treeLevel->front(), maximalDepth))
-			{
-				createTreeChildren(treeLevel->front(), result, fout);
-			}
+			createTreeChildren(treeLevel->front(), result, fout);
+			
+			fout << "next level size: " << result->size() << std::endl;
 			
 			treeLevel->pop();
 		}
@@ -149,6 +160,8 @@ namespace chess_solver
 			
 			result = new OptionTree(nextSituation, commands->front(), tree, tree->getDepth());
 			
+			result->setPotentialMoves(getAllSituationMoves(nextSituation));
+			
 			commands->pop_front();
 		}
 		
@@ -157,7 +170,9 @@ namespace chess_solver
 	
 	void AbstractSolver::createTreeChildren(OptionTree* tree, std::queue<OptionTree*>* children, std::ofstream& fout)
 	{
-		while (!tree->getCommands())
+		fout << "creating tree children" << std::endl;
+		
+		while (!tree->getCommands()->empty())
 		{
 			OptionTree* child = createChild(tree);
 			
@@ -166,12 +181,5 @@ namespace chess_solver
 		}
 	}
 	
-//	void AbstractSolver::insertFirstQueueIntoSecond(std::queue<OptionTree*>* first, std::queue<OptionTree*>* second)
-//	{
-//		while (!first->empty())
-//		{
-//			second->push(first->front());
-//			first->pop();
-//		}
-//	}
+	
 }

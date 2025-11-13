@@ -42,6 +42,7 @@ namespace chess_solver
 		enum class MenuItem
 		{
 			DEEP_SEARCH = 1,
+			WIDE_SEARCH,
 			SELECT_SITUATION,
 			EXIT
 		};
@@ -52,6 +53,7 @@ namespace chess_solver
 		
 		static const std::string MENU_TIILE;
 		static const std::string MENU_ITEM_DEEP_SEARCH;
+		static const std::string MENU_ITEM_WIDE_SEARCH;
 		static const std::string MENU_ITEM_SELECT_SITUATION;
 		static const std::string MENU_ITEM_EXIT;
 		
@@ -115,6 +117,10 @@ namespace chess_solver
 		OptionTree* copySolveTree(OptionTree* node);
 		
 		OptionTree* getSolveRoot(OptionTree* targetNode);
+		
+		void prepareToUseSolvingMethod();
+		
+		void showSolvingResult(OptionTree* target);
 		
 	};
 }
