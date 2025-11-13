@@ -237,18 +237,15 @@ namespace chess_solver
 		{
 			Situation* situation = reinterpret_cast<Situation*>(result->getSituation());	
 			
-			
+			if (situation->getTargetPlayer() != situation->getCurrentPlayer())
+			{
+				if (!areAllSiblingsTarget(result))
+				{
+					result = nullptr;
+				}
+			}
 		}
-		
-//		if (situation->getTargetPlayer() == situation->getCurrentPlayer())
-//		{
-//			result = AbstractSolver::wideSearch(treeLevel, maximalDepth, fout);
-//		}
-//		else
-//		{
-//			
-//		}
-		
+	
 		return result;
 	}
 
@@ -297,13 +294,23 @@ namespace chess_solver
 		return result;
 	}
 	
-//	bool Solver::areAllSiblingsTarget(OptionTree* node)
-//	{
-//		OptionTree* parent = node->getParent()
-//		
-//		if ()
-//		{
-//			
-//		}
-//	}
+	bool Solver::areAllSiblingsTarget(OptionTree* node)
+	{
+		OptionTree* parent = node->getParent();
+		
+		bool result = true;
+		
+		if (parent)
+		{
+			OptionTree* child = parent->getFirstChild();
+			
+			while (child && !result)
+			{
+				result = isTargetSituation(child);
+				child = parent->getNextChild();
+			}
+		}
+		
+		return result;
+	}
 }
