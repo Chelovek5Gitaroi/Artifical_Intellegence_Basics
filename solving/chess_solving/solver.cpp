@@ -229,25 +229,25 @@ namespace chess_solver
 		return result;
 	}
 
-	OptionTree* Solver::wideSearch(std::queue<OptionTree*>* treeLevel, short maximalDepth, std::ofstream& fout)
-	{
-		OptionTree* result = AbstractSolver::wideSearch(treeLevel, maximalDepth, fout);
-		
-		if (result)
-		{
-			Situation* situation = reinterpret_cast<Situation*>(result->getSituation());	
-			
-			if (situation->getTargetPlayer() != situation->getCurrentPlayer())
-			{
-				if (!areAllSiblingsTarget(result))
-				{
-					result = nullptr;
-				}
-			}
-		}
-	
-		return result;
-	}
+//	OptionTree* Solver::wideSearch(std::queue<OptionTree*>* treeLevel, short maximalDepth)
+//	{
+//		OptionTree* result = AbstractSolver::wideSearch(treeLevel, maximalDepth, fout);
+//		
+//		if (result)
+//		{
+//			Situation* situation = reinterpret_cast<Situation*>(result->getSituation());	
+//			
+//			if (situation->getTargetPlayer() != situation->getCurrentPlayer())
+//			{
+//				if (!areAllSiblingsTarget(result))
+//				{
+//					result = nullptr;
+//				}
+//			}
+//		}
+//	
+//		return result;
+//	}
 
 	OptionTree* Solver::deepSearch(OptionTree* tree, short maximalDepth)
 	{

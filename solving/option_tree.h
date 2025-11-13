@@ -78,7 +78,6 @@ namespace chess_solver
 		
 		// Метод, возвращающий строковое представление объекта
 		std::string toString();
-		
 				
 	private:
 		// Глубина узла в дереве

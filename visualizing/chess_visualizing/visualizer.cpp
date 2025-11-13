@@ -207,10 +207,9 @@ namespace chess_solver
 		this->currentCursorPosition.X = top.X;
 		this->currentCursorPosition.Y = top.Y;
 		
-		SetConsoleCursorPosition(this->consoleFile, this->currentCursorPosition);
-		
 		for (auto iter = menu.begin(); iter != menu.end(); iter++)
 		{
+			SetConsoleCursorPosition(this->consoleFile, this->currentCursorPosition);
 			std::cout << std::string(iter->first.size() + 4, ' ');
 			this->currentCursorPosition.Y++;
 		}

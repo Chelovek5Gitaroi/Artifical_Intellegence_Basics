@@ -28,7 +28,7 @@ namespace chess_solver
 		// ћетод, примен€ющий обход в ширину к инициализированному дереву
 		// short maximalDepth - максимальна€ глубина поиска
 		// ¬озвращаетс€ узел с целевой ситуацией, если такой узел существует, иначе возвращаетс€ nullptr
-		virtual OptionTree* useWideSearch(short maximalDepth, std::ofstream& fout);
+		virtual OptionTree* useWideSearch(short maximalDepth);
 		
 		// ћетод, выполн€ющий инициализацию дерева вариантов
 		// AbstractSituation* startSituation - начальна€ ситуаци€
@@ -48,12 +48,12 @@ namespace chess_solver
 
 		// ћетод, создающий все узлы дерева, наход€щиес€ на следующем уровне
 		// std::queue<OptionTree*>* treeLevel - указатель на очередь, содержащую узлы дерева, наход€щиес€ на одном уровне
-		std::queue<OptionTree*>* generateNextTreeLevel(std::queue<OptionTree*>* treeLevel, short maximalDepth, std::ofstream& fout);
+		std::queue<OptionTree*>* generateNextTreeLevel(std::queue<OptionTree*>* treeLevel, short maximalDepth);
 
 		// ћетод, реализующий поиск в ширину
 		// std::queue<OptionTree*>* treeLevel - указатель на очередь, содержащую узлы дерева, наход€щиес€ на рассматриваемом уровне
 		// short maximalDepth - максимальна€ глубина поиска
-		virtual OptionTree* wideSearch(std::queue<OptionTree*>* treeLevel, short maximalDepth, std::ofstream& fout);
+		virtual OptionTree* wideSearch(std::queue<OptionTree*>* treeLevel, short maximalDepth);
 		
 		// јбстрактна€ порождающа€ процедура
 		// AbstractSituation* abstractSituation - указатель на рассматриваемую ситуацию
@@ -82,7 +82,7 @@ namespace chess_solver
 		// ћетод, создающий дочерние узлы дл€ заданного, и помещающий их в заданную очередь
 		// OptionTree* tree - указатель на узел, потомков которого необходимо создать
 		// std::queue<OptionTree*>* children - указатель на очередь, в которую нужно помещать создаваемые узлы
-		void createTreeChildren(OptionTree* tree, std::queue<OptionTree*>* children, std::ofstream& fout);
+		void createTreeChildren(OptionTree* tree, std::queue<OptionTree*>* children);
 	};
 }
 

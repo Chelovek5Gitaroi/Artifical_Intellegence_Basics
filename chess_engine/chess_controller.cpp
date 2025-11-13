@@ -37,8 +37,6 @@ namespace chess_solver
 	
 	void ChessController::init(const std::string& figureDescriptionFileName)
 	{
-//		cfout.open("controller_log.txt", std::ios::app);
-		
 		this->reader.readFigureFile(figureDescriptionFileName);
 		
 		this->game.setCurrentPlayer(this->reader.getMovingPlayerColor());
@@ -193,18 +191,9 @@ namespace chess_solver
 	
 	void ChessController::processKeyEnter()
 	{
-//		cfout << "Enter pressed\n";
-//		c
-		
-//		Visualizer* visualizer = reinterpret_cast<Visualizer*>(this->getVisualizer());
-		
 		if (controllerState & CONTROLLER_STATE_MENU_SELECT_SOLVING_METHOD)
 		{
 			OptionTree* target = nullptr;
-
-//			cfout << "Entering menu item\n";
-			
-			std::ofstream fout("log.txt", std::ios::app);
 			
 			switch (this->selectedMenuItem)
 			{
@@ -216,7 +205,7 @@ namespace chess_solver
 			
 			case MenuItem::WIDE_SEARCH:
 				prepareToUseSolvingMethod();
-				target = this->getSolver()->useWideSearch(this->getMaximalDepth(), fout);
+				target = this->getSolver()->useWideSearch(this->getMaximalDepth());
 				showSolvingResult(target);
 				break;
 			
@@ -232,8 +221,6 @@ namespace chess_solver
 				this->controllerState &= ~CONTROLLER_STATE_RUNNING;
 				break;
 			}
-			
-			fout.close();
 		}
 		else if (this->controllerState & CONTROLLER_STATE_SELECTING_SITUATION)
 		{
@@ -326,8 +313,6 @@ namespace chess_solver
 	{
 		solvingMenu.clear();
 		
-//		this->currentTreeNode = this->getSolver()->getTree();
-		
 		for (AbstractCommand* command : *commandList)
 		{
 			bool selected = false;
@@ -396,11 +381,13 @@ namespace chess_solver
 	void ChessController::prepareToUseSolvingMethod()
 	{
 		Visualizer* visualizer = reinterpret_cast<Visualizer*>(this->getVisualizer());
-		
-		this->initSolver();
-		this->solvingMenu.clear();
 		visualizer->clearMenu(this->solvingMenu, visualizer->getCommandsTop());
-			
+		this->initSolver();
+		this->solvingMenu.clear();	
+		
+		this->solveRoot = nullptr;
+		this->solve = nullptr;
+		
 		visualizer->showMessage(std::string(MESSAGE_NO_SOLVE.size(), ' '), visualizer->getCommandsTop());
 	}
 	
