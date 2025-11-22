@@ -229,7 +229,7 @@ namespace chess_solver
 		return result;
 	}
 
-	OptionTree* Solver::wideSearch(std::queue<OptionTree*>* treeLevel, short maximalDepth, std::ofstream& fout)
+	OptionTree* Solver::wideSearch(std::list<OptionTree*>* treeLevel, short maximalDepth, std::ofstream& fout)
 	{
 		OptionTree* result = AbstractSolver::wideSearch(treeLevel, maximalDepth, fout);
 		

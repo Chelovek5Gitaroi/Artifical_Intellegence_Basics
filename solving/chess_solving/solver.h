@@ -35,7 +35,7 @@ namespace chess_solver
 		OptionTree* deepSearch(OptionTree* tree, short maximalDepth) override;
 	
 		
-		OptionTree* wideSearch(std::queue<OptionTree*>* treeLevel, short maximalDepth, std::ofstream& fout) override;
+		OptionTree* wideSearch(std::list<OptionTree*>* treeLevel, short maximalDepth, std::ofstream& fout) override;
 		
 		// Переопределение метода, создающего список ходов, возможных в данной ситуации
 		std::list<AbstractCommand*>* getAllSituationMoves(AbstractSituation* abstractSituation) override;
