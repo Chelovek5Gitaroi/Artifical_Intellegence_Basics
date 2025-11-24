@@ -313,4 +313,17 @@ namespace chess_solver
 		
 		return result;
 	}
+	
+	float Solver::evaluationFunction(OptionTree* tree)
+	{
+		if (tree)
+		{
+			return tree->getCommands()->size();
+		}
+		else
+		{
+			return 0;
+		}
+	}
+	
 }

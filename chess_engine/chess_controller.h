@@ -43,6 +43,7 @@ namespace chess_solver
 		{
 			DEEP_SEARCH = 1,
 			WIDE_SEARCH,
+			GRADIENT_SEARCH,
 			SELECT_SITUATION,
 			EXIT
 		};
@@ -54,6 +55,7 @@ namespace chess_solver
 		static const std::string MENU_TIILE;
 		static const std::string MENU_ITEM_DEEP_SEARCH;
 		static const std::string MENU_ITEM_WIDE_SEARCH;
+		static const std::string MENU_ITEM_GRADIENT_SEARCH;
 		static const std::string MENU_ITEM_SELECT_SITUATION;
 		static const std::string MENU_ITEM_EXIT;
 		
