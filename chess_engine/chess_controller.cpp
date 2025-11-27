@@ -213,7 +213,7 @@ namespace chess_solver
 			
 			case MenuItem::GRADIENT_SEARCH:
 				prepareToUseSolvingMethod();
-				target = this->getSolver()->useGradientSearch(this->getMaximalDepth(), fout);
+				target = this->getSolver()->useGradientSearch(this->getMaximalDepth());
 				showSolvingResult(target);
 				break;
 			

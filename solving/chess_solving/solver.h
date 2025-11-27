@@ -37,9 +37,11 @@ namespace chess_solver
 		// ѕереопределение метода, создающего список ходов, возможных в данной ситуации
 		std::list<AbstractCommand*>* getAllSituationMoves(AbstractSituation* abstractSituation) override;
 	
+		// ѕереопределение оценочной функции
 		float evaluationFunction(OptionTree* tree) override;
 	
 	private:
+		// ќбъект класса, выполн€ющего команды
 		ChessCommandExecutor executor;
 		
 		// ћетод, возвращающий список возможных ходов дл€ заданной фигуры
