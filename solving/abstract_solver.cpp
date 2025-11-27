@@ -77,29 +77,27 @@ namespace chess_solver
 		return result;
 	}
 	
-	OptionTree* AbstractSolver::useWideSearch(short maximalDepth, std::ofstream& fout)
+	OptionTree* AbstractSolver::useWideSearch(short maximalDepth)
 	{
 		std::list<OptionTree*>* rootList = new std::list<OptionTree*>();
 		
 		rootList->push_back(this->tree);
 		
-		OptionTree* result = wideSearch(rootList, maximalDepth, fout);
+		OptionTree* result = wideSearch(rootList, maximalDepth);
 		
 		delete rootList;
 		
 		return result;
 	}
 	
-	OptionTree* AbstractSolver::useGradientSearch(short maximalDepth, std::ofstream& fout)
+	OptionTree* AbstractSolver::useGradientSearch(short maximalDepth)
 	{
-		return gradientSearch(this->tree, maximalDepth, fout);
+		return gradientSearch(this->tree, maximalDepth);
 	}
 	
-	OptionTree* AbstractSolver::wideSearch(std::list<OptionTree*>* treeLevel, short maximalDepth, std::ofstream& fout)
+	OptionTree* AbstractSolver::wideSearch(std::list<OptionTree*>* treeLevel, short maximalDepth)
 	{
 		OptionTree* result = nullptr;
-		
-		fout << "using wide search..." << std::endl << "source level nodes numbers: " << treeLevel->size() << std::endl;
 		
 		std::list<OptionTree*>* processedNodes = new std::list<OptionTree*>();
 
@@ -119,13 +117,11 @@ namespace chess_solver
 			}
 		}
 		
-		fout << "not deadlock number: " << processedNodes->size() << std::endl;
-		
 		if (!result && !processedNodes->empty())
 		{
-			std::list<OptionTree*>* nextTreeLevel = generateNextTreeLevel(processedNodes, maximalDepth, fout);
+			std::list<OptionTree*>* nextTreeLevel = generateNextTreeLevel(processedNodes, maximalDepth);
 			
-			result = wideSearch(nextTreeLevel, maximalDepth, fout);
+			result = wideSearch(nextTreeLevel, maximalDepth);
 			delete nextTreeLevel;
 		}
 		
@@ -134,12 +130,9 @@ namespace chess_solver
 		return result;
 	}
 	
-	OptionTree* AbstractSolver::gradientSearch(OptionTree* tree, short maximalDepth, std::ofstream& fout)
+	OptionTree* AbstractSolver::gradientSearch(OptionTree* tree, short maximalDepth)
 	{
 		OptionTree* result = nullptr;
-		
-		fout << "Gradient search...\n";
-		fout.flush();
 		
 		if (isTargetSituation(tree))
 		{
@@ -149,13 +142,13 @@ namespace chess_solver
 		{
 			std::list<OptionTree*>* children = new std::list<OptionTree*>();
 			
-			createTreeChildren(tree, children, fout);
+			createTreeChildren(tree, children);
 			
-			sortNodesByTargetFunction(children, fout);
+			sortNodesByTargetFunction(children);
 			
 			while (!result && !children->empty())
 			{
-				result = gradientSearch(children->front(), maximalDepth, fout);
+				result = gradientSearch(children->front(), maximalDepth);
 				
 				if (!result)
 				{
@@ -171,11 +164,8 @@ namespace chess_solver
 		return result;
 	}
 	
-	void AbstractSolver::sortNodesByTargetFunction(std::list<OptionTree*>* nodes, std::ofstream& fout)
+	void AbstractSolver::sortNodesByTargetFunction(std::list<OptionTree*>* nodes)
 	{
-		fout << "Sorting nodes...\n";
-		fout.flush();
-		
 		std::vector<std::pair<float, OptionTree*>> sorted(nodes->size());
 		
 		sorted[0] = std::pair<float, OptionTree*>(evaluationFunction(nodes->front()), nodes->front());
@@ -205,30 +195,21 @@ namespace chess_solver
 			currentSize++;
 		}
 		
-		fout << "Calced ev funcs..." << std::endl;
-		
 		nodes->clear();
 		
 		for (std::pair<float, OptionTree*> el : sorted)
 		{
 			nodes->push_back(el.second);
 		}
-		
-		fout << "Sorted\n";
-		fout.flush();
 	}
 	
-	std::list<OptionTree*>* AbstractSolver::generateNextTreeLevel(std::list<OptionTree*>* treeLevel, short maximalDepth, std::ofstream& fout)
+	std::list<OptionTree*>* AbstractSolver::generateNextTreeLevel(std::list<OptionTree*>* treeLevel, short maximalDepth)
 	{
 		std::list<OptionTree*>* result = new std::list<OptionTree*>();
 		
-		fout << "Generating next level. tree level size: " << treeLevel->size() << std::endl;
-		
 		while (!treeLevel->empty())
 		{
-			createTreeChildren(treeLevel->front(), result, fout);
-			
-			fout << "next level size: " << result->size() << std::endl;
+			createTreeChildren(treeLevel->front(), result);
 			
 			treeLevel->pop_front();
 		}
@@ -256,10 +237,8 @@ namespace chess_solver
 		return result;
 	}
 	
-	void AbstractSolver::createTreeChildren(OptionTree* tree, std::list<OptionTree*>* children, std::ofstream& fout)
+	void AbstractSolver::createTreeChildren(OptionTree* tree, std::list<OptionTree*>* children)
 	{
-		fout << "creating tree children" << std::endl;
-		
 		while (!tree->getCommands()->empty())
 		{
 			OptionTree* child = createChild(tree);

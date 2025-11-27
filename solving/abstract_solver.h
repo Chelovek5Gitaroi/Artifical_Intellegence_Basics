@@ -29,9 +29,12 @@ namespace chess_solver
 		// Метод, применяющий обход в ширину к инициализированному дереву
 		// short maximalDepth - максимальная глубина поиска
 		// Возвращается узел с целевой ситуацией, если такой узел существует, иначе возвращается nullptr
-		virtual OptionTree* useWideSearch(short maximalDepth, std::ofstream& fout);
+		virtual OptionTree* useWideSearch(short maximalDepth);
 		
-		virtual OptionTree* useGradientSearch(short maximalDepth, std::ofstream& fout);
+		// Метод, применяющий поиск по градиенту к инициализированному дереву
+		// short maximalDepth - максимальная глубина поиска
+		// Возвращается узел с целевой ситуацией, если такой узел существует, иначе возвращается nullptr
+		virtual OptionTree* useGradientSearch(short maximalDepth);
 		
 		// Метод, выполняющий инициализацию дерева вариантов
 		// AbstractSituation* startSituation - начальная ситуация
@@ -51,14 +54,17 @@ namespace chess_solver
 
 		// Метод, создающий все узлы дерева, находящиеся на следующем уровне
 		// std::queue<OptionTree*>* treeLevel - указатель на очередь, содержащую узлы дерева, находящиеся на одном уровне
-		std::list<OptionTree*>* generateNextTreeLevel(std::list<OptionTree*>* treeLevel, short maximalDepth, std::ofstream& fout);
+		std::list<OptionTree*>* generateNextTreeLevel(std::list<OptionTree*>* treeLevel, short maximalDepth);
 
 		// Метод, реализующий поиск в ширину
 		// std::queue<OptionTree*>* treeLevel - указатель на очередь, содержащую узлы дерева, находящиеся на рассматриваемом уровне
 		// short maximalDepth - максимальная глубина поиска
-		virtual OptionTree* wideSearch(std::list<OptionTree*>* treeLevel, short maximalDepth, std::ofstream& fout);
+		virtual OptionTree* wideSearch(std::list<OptionTree*>* treeLevel, short maximalDepth);
 		
-		virtual OptionTree* gradientSearch(OptionTree* tree, short maximalDepth, std::ofstream& fout);
+		// Метод, реализующий поиск по градиенту
+		// OptionTree* - узел дерева с рассматриваемой ситуацией
+		// short maximalDepth - максимальная глубина поиска
+		virtual OptionTree* gradientSearch(OptionTree* tree, short maximalDepth);
 		
 		// Абстрактная порождающая процедура
 		// AbstractSituation* abstractSituation - указатель на рассматриваемую ситуацию
@@ -85,7 +91,9 @@ namespace chess_solver
 		// OptionTree* - узел дерева с рассматриваемой ситуацией
 		virtual float evaluationFunction(OptionTree* tree) = 0;
 		
-		void sortNodesByTargetFunction(std::list<OptionTree*>* nodes, std::ofstream& fout);
+		// Функция, сортирующая узлы дерева по возрастаниюоценочной функции
+		// std::list<OptionTree*>* nodes - список сортируемых узлов
+		void sortNodesByTargetFunction(std::list<OptionTree*>* nodes);
 	private:
 		// Указатель на корневой узел дерева вариантов
 		OptionTree* tree;
@@ -93,7 +101,7 @@ namespace chess_solver
 		// Метод, создающий дочерние узлы для заданного, и помещающий их в заданную очередь
 		// OptionTree* tree - указатель на узел, потомков которого необходимо создать
 		// std::queue<OptionTree*>* children - указатель на очередь, в которую нужно помещать создаваемые узлы
-		void createTreeChildren(OptionTree* tree, std::list<OptionTree*>* children, std::ofstream& fout);
+		void createTreeChildren(OptionTree* tree, std::list<OptionTree*>* children);
 	};
 }
 

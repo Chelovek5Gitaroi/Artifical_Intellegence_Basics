@@ -39,8 +39,6 @@ namespace chess_solver
 	
 	void ChessController::init(const std::string& figureDescriptionFileName)
 	{
-//		cfout.open("controller_log.txt", std::ios::app);
-		
 		this->reader.readFigureFile(figureDescriptionFileName);
 		
 		this->game.setCurrentPlayer(this->reader.getMovingPlayerColor());
@@ -195,17 +193,10 @@ namespace chess_solver
 	
 	void ChessController::processKeyEnter()
 	{
-//		cfout << "Enter pressed\n";
-//		c
-		
-//		Visualizer* visualizer = reinterpret_cast<Visualizer*>(this->getVisualizer());
-		
 		if (controllerState & CONTROLLER_STATE_MENU_SELECT_SOLVING_METHOD)
 		{
 			OptionTree* target = nullptr;
 
-//			cfout << "Entering menu item\n";
-			
 			std::ofstream fout("log.txt", std::ios::app);
 			
 			switch (this->selectedMenuItem)
@@ -218,13 +209,13 @@ namespace chess_solver
 			
 			case MenuItem::WIDE_SEARCH:
 				prepareToUseSolvingMethod();
-				target = this->getSolver()->useWideSearch(this->getMaximalDepth(), fout);
+				target = this->getSolver()->useWideSearch(this->getMaximalDepth());
 				showSolvingResult(target);
 				break;
 			
 			case MenuItem::GRADIENT_SEARCH:
 				prepareToUseSolvingMethod();
-				target = this->getSolver()->useGradientSearch(this->getMaximalDepth(), fout);
+				target = this->getSolver()->useGradientSearch(this->getMaximalDepth());
 				showSolvingResult(target);
 				break;
 			
