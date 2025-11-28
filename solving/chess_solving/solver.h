@@ -37,6 +37,8 @@ namespace chess_solver
 		// Переопределение метода, создающего список ходов, возможных в данной ситуации
 		std::list<AbstractCommand*>* getAllSituationMoves(AbstractSituation* abstractSituation) override;
 	
+		float evaluationFunction(OptionTree* tree) override;
+	
 	private:
 		ChessCommandExecutor executor;
 		

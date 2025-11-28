@@ -5,6 +5,7 @@
 
 #include <fstream>
 #include <list>
+#include <vector>
 
 namespace chess_solver
 {
@@ -29,6 +30,8 @@ namespace chess_solver
 		// short maximalDepth - максимальная глубина поиска
 		// Возвращается узел с целевой ситуацией, если такой узел существует, иначе возвращается nullptr
 		virtual OptionTree* useWideSearch(short maximalDepth);
+		
+		virtual OptionTree* useGradientSearch(short maximalDepth, std::ofstream& fout);
 		
 		// Метод, выполняющий инициализацию дерева вариантов
 		// AbstractSituation* startSituation - начальная ситуация
@@ -55,6 +58,8 @@ namespace chess_solver
 		// short maximalDepth - максимальная глубина поиска
 		virtual OptionTree* wideSearch(std::list<OptionTree*>* treeLevel, short maximalDepth, std::ofstream& fout);
 		
+		virtual OptionTree* gradientSearch(OptionTree* tree, short maximalDepth, std::ofstream& fout);
+		
 		// Абстрактная порождающая процедура
 		// AbstractSituation* abstractSituation - указатель на рассматриваемую ситуацию
 		// AbstractCommand* command - указатель на объект, описывающий действие, которое необходимо выполнить для создания новой ситуации
@@ -75,6 +80,12 @@ namespace chess_solver
 		// Абстрактный метод, проверяющий, является ли ситуация в рассматриваемом узле дерева тупиковой
 		// OptionTree* tree - указатель на рассматриваемый узел дерева вариантов
 		virtual bool isDeadlock(OptionTree* tree, int maximalDepth) = 0;
+		
+		// Абстрактная оценочная функция
+		// OptionTree* - узел дерева с рассматриваемой ситуацией
+		virtual float evaluationFunction(OptionTree* tree) = 0;
+		
+		void sortNodesByTargetFunction(std::list<OptionTree*>* nodes, std::ofstream& fout);
 	private:
 		// Указатель на корневой узел дерева вариантов
 		OptionTree* tree;

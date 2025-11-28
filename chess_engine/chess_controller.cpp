@@ -9,6 +9,7 @@ namespace chess_solver
 	const std::string ChessController::MENU_TIILE = "Выберите действие:";
 	const std::string ChessController::MENU_ITEM_DEEP_SEARCH = "Поиск в глубину";
 	const std::string ChessController::MENU_ITEM_WIDE_SEARCH = "Поиск в ширину";
+	const std::string ChessController::MENU_ITEM_GRADIENT_SEARCH = "Поиск по градиенту";
 	const std::string ChessController::MENU_ITEM_SELECT_SITUATION = "Просматривать ситуации";
 	const std::string ChessController::MENU_ITEM_EXIT = "Выйти";
 
@@ -17,6 +18,7 @@ namespace chess_solver
 
 	const std::map<ChessController::MenuItem, std::string> ChessController::menu = {{ MenuItem::DEEP_SEARCH, MENU_ITEM_DEEP_SEARCH },
 																					{ MenuItem::WIDE_SEARCH, MENU_ITEM_WIDE_SEARCH },
+																					{ MenuItem::GRADIENT_SEARCH, MENU_ITEM_GRADIENT_SEARCH },
 																					{ MenuItem::SELECT_SITUATION, MENU_ITEM_SELECT_SITUATION },
 																					{ MenuItem::EXIT, MENU_ITEM_EXIT }};
 	
@@ -206,6 +208,12 @@ namespace chess_solver
 			case MenuItem::WIDE_SEARCH:
 				prepareToUseSolvingMethod();
 				target = this->getSolver()->useWideSearch(this->getMaximalDepth());
+				showSolvingResult(target);
+				break;
+			
+			case MenuItem::GRADIENT_SEARCH:
+				prepareToUseSolvingMethod();
+				target = this->getSolver()->useGradientSearch(this->getMaximalDepth(), fout);
 				showSolvingResult(target);
 				break;
 			

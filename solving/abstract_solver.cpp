@@ -90,6 +90,11 @@ namespace chess_solver
 		return result;
 	}
 	
+	OptionTree* AbstractSolver::useGradientSearch(short maximalDepth, std::ofstream& fout)
+	{
+		return gradientSearch(this->tree, maximalDepth, fout);
+	}
+	
 	OptionTree* AbstractSolver::wideSearch(std::list<OptionTree*>* treeLevel, short maximalDepth, std::ofstream& fout)
 	{
 		OptionTree* result = nullptr;
@@ -126,6 +131,89 @@ namespace chess_solver
 		return result;
 	}
 	
+	OptionTree* AbstractSolver::gradientSearch(OptionTree* tree, short maximalDepth, std::ofstream& fout)
+	{
+		OptionTree* result = nullptr;
+		
+		fout << "Gradient search...\n";
+		fout.flush();
+		
+		if (isTargetSituation(tree))
+		{
+			result = tree;
+		}
+		else if (!isDeadlock(tree, maximalDepth))
+		{
+			std::list<OptionTree*>* children = new std::list<OptionTree*>();
+			
+			createTreeChildren(tree, children, fout);
+			
+			sortNodesByTargetFunction(children, fout);
+			
+			while (!result && !children->empty())
+			{
+				result = gradientSearch(children->front(), maximalDepth, fout);
+				
+				if (!result)
+				{
+					tree->removeChild(children->front());
+					delete children->front();
+					children->pop_front();
+				}
+			}
+			
+			delete children;
+		}
+		
+		return result;
+	}
+	
+	void AbstractSolver::sortNodesByTargetFunction(std::list<OptionTree*>* nodes, std::ofstream& fout)
+	{
+		fout << "Sorting nodes...\n";
+		fout.flush();
+		
+		std::vector<std::pair<float, OptionTree*>> sorted(nodes->size());
+		
+		sorted[0] = std::pair<float, OptionTree*>(evaluationFunction(nodes->front()), nodes->front());
+		
+		size_t currentSize = 1;
+		
+		auto iter = nodes->begin();
+		iter++;
+		
+		for (iter; iter != nodes->end(); iter++)
+		{
+			int ind = 0;
+			
+			float funcValue = evaluationFunction(*iter);
+			
+			while (funcValue > sorted[ind].first && ind < currentSize)
+			{
+				ind++;
+			}
+			
+			for (int i = currentSize - 1; i >= ind; i--)
+			{
+				sorted[i + 1] = sorted[i];
+			}
+			
+			sorted[ind] = std::pair<float, OptionTree*>(funcValue, *iter);
+			currentSize++;
+		}
+		
+		fout << "Calced ev funcs..." << std::endl;
+		
+		nodes->clear();
+		
+		for (std::pair<float, OptionTree*> el : sorted)
+		{
+			nodes->push_back(el.second);
+		}
+		
+		fout << "Sorted\n";
+		fout.flush();
+	}
 	
 	std::list<OptionTree*>* AbstractSolver::generateNextTreeLevel(std::list<OptionTree*>* treeLevel, short maximalDepth, std::ofstream& fout)
 	{
