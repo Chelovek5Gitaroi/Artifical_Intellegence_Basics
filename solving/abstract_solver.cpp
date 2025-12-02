@@ -98,7 +98,7 @@ namespace chess_solver
 	OptionTree* AbstractSolver::wideSearch(std::list<OptionTree*>* treeLevel, short maximalDepth)
 	{
 		OptionTree* result = nullptr;
-		
+
 		std::list<OptionTree*>* processedNodes = new std::list<OptionTree*>();
 
 		while (!result && !treeLevel->empty())
@@ -121,6 +121,7 @@ namespace chess_solver
 		{
 			std::list<OptionTree*>* nextTreeLevel = generateNextTreeLevel(processedNodes, maximalDepth);
 			result = wideSearch(nextTreeLevel, maximalDepth);
+
 			delete nextTreeLevel;
 		}
 		
@@ -209,7 +210,7 @@ namespace chess_solver
 		while (!treeLevel->empty())
 		{
 			createTreeChildren(treeLevel->front(), result);
-			
+
 			treeLevel->pop_front();
 		}
 		

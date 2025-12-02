@@ -36,6 +36,8 @@ namespace chess_solver
 		// Возвращается узел с целевой ситуацией, если такой узел существует, иначе возвращается nullptr
 		virtual OptionTree* useGradientSearch(short maximalDepth);
 		
+		virtual OptionTree* useGradientSearch(short maximalDepth, std::ofstream& fout);
+		
 		// Метод, выполняющий инициализацию дерева вариантов
 		// AbstractSituation* startSituation - начальная ситуация
 		virtual void initTree(AbstractSituation* startSituation);

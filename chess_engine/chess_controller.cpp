@@ -217,6 +217,12 @@ namespace chess_solver
 				showSolvingResult(target);
 				break;
 			
+			case MenuItem::GRADIENT_SEARCH:
+				prepareToUseSolvingMethod();
+				target = this->getSolver()->useGradientSearch(this->getMaximalDepth(), fout);
+				showSolvingResult(target);
+				break;
+			
 			case MenuItem::SELECT_SITUATION:
 				if (this->currentTreeNode)
 				{

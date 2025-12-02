@@ -63,8 +63,6 @@ namespace chess_solver
 		bool isTargetSituation(Situation* situation, std::list<AbstractCommand*>* potentialMoves);
 		
 		bool isDeadlock(Situation* situation, std::list<AbstractCommand*>* potentialMoves, short maximalDepth, short currentDepth);
-		
-		bool areAllSiblingsTarget(OptionTree* node);
 	};
 }
 
