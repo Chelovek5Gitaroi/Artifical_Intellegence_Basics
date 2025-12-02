@@ -229,7 +229,6 @@ namespace chess_solver
 		return result;
 	}
 
-
 	OptionTree* Solver::deepSearch(OptionTree* tree, short maximalDepth)
 	{
 		Situation* situation = reinterpret_cast<Situation*>(tree->getSituation());

@@ -66,10 +66,10 @@ namespace chess_solver
 		
 		// Пункт меню, вызывающий обход в ширину
 		static const std::string MENU_ITEM_WIDE_SEARCH;
-
 		
+		// Пункт меню, вызывающий поиск по градиенту
 		static const std::string MENU_ITEM_GRADIENT_SEARCH;
-
+		
 		// Пункт меню, вызывающий переход к просмотру ситуаций
 		static const std::string MENU_ITEM_SELECT_SITUATION;
 		

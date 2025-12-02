@@ -120,6 +120,7 @@ namespace chess_solver
 		if (!result && !processedNodes->empty())
 		{
 			std::list<OptionTree*>* nextTreeLevel = generateNextTreeLevel(processedNodes, maximalDepth);
+
 			result = wideSearch(nextTreeLevel, maximalDepth);
 			delete nextTreeLevel;
 		}
