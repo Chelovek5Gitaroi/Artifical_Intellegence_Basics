@@ -51,6 +51,7 @@ namespace chess_solver
 			DEEP_SEARCH = 1,
 			WIDE_SEARCH,
 			GRADIENT_SEARCH,
+			BEST_PARTICLE_WAY_SEARCH,
 			SELECT_SITUATION,
 			EXIT
 		};
@@ -69,6 +70,8 @@ namespace chess_solver
 		
 		//Пункт меню, вызывающий поиск по градиенту
 		static const std::string MENU_ITEM_GRADIENT_SEARCH;
+
+		static const std::string MENU_ITEM_BEST_PARTICLE_WAY_SEARCH;
 
 		// Пункт меню, вызывающий переход к просмотру ситуаций
 		static const std::string MENU_ITEM_SELECT_SITUATION;

@@ -36,7 +36,7 @@ namespace chess_solver
 		// Возвращается узел с целевой ситуацией, если такой узел существует, иначе возвращается nullptr
 		virtual OptionTree* useGradientSearch(short maximalDepth);
 		
-		virtual OptionTree* useGradientSearch(short maximalDepth, std::ofstream& fout);
+		virtual OptionTree* useBestParticalWaySearch(short maximalDepth, int newLevelsCount);
 		
 		// Метод, выполняющий инициализацию дерева вариантов
 		// AbstractSituation* startSituation - начальная ситуация
@@ -67,6 +67,9 @@ namespace chess_solver
 		// OptionTree* - узел дерева с рассматриваемой ситуацией
 		// short maximalDepth - максимальная глубина поиска
 		virtual OptionTree* gradientSearch(OptionTree* tree, short maximalDepth);
+				
+		
+		virtual OptionTree* bestParticleWaySearch(OptionTree* tree, int maximalDepth, int newLevelsCount);
 		
 		// Абстрактная порождающая процедура
 		// AbstractSituation* abstractSituation - указатель на рассматриваемую ситуацию
@@ -93,7 +96,7 @@ namespace chess_solver
 		// OptionTree* - узел дерева с рассматриваемой ситуацией
 		virtual float evaluationFunction(OptionTree* tree) = 0;
 		
-		// Функция, сортирующая узлы дерева по возрастаниюоценочной функции
+		// Функция, сортирующая узлы дерева по возрастанию оценочной функции
 		// std::list<OptionTree*>* nodes - список сортируемых узлов
 		void sortNodesByTargetFunction(std::list<OptionTree*>* nodes);
 	private:
