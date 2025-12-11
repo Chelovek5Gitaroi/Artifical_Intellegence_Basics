@@ -31,15 +31,11 @@ namespace chess_solver
 		// ѕереопределение функции, провер€ющей, €вл€етс€ ли рассматриваема€ ситуаци€ тупиковой
 		bool isDeadlock(OptionTree* tree, int maximalDepth) override;
 	
-		// ѕереопределение метода, реализующего поиск в глубину
-		OptionTree* deepSearch(OptionTree* tree, short maximalDepth) override;
-		
 		// ѕереопределение метода, создающего список ходов, возможных в данной ситуации
 		std::list<AbstractCommand*>* getAllSituationMoves(AbstractSituation* abstractSituation) override;
 	
 		// ѕереопределение оценочной функции
 		float evaluationFunction(OptionTree* tree) override;
-	
 	private:
 		// ќбъект класса, выполн€ющего команды
 		ChessCommandExecutor executor;

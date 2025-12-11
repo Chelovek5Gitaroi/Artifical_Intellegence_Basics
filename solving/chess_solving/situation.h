@@ -59,6 +59,8 @@ namespace chess_solver
 		// Coordinates& coordinates - координаты фигуры в шахматой нотации
 		Figure* getFigure(const Coordinates& coordinates);
 		
+		AbstractSituation* copy() override;
+		
 		// Метод, возвращающий строковое представление объекта
 		std::string toString() override;
 		

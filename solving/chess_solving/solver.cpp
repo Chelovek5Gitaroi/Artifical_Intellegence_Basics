@@ -228,51 +228,6 @@ namespace chess_solver
 		
 		return result;
 	}
-
-	OptionTree* Solver::deepSearch(OptionTree* tree, short maximalDepth)
-	{
-		Situation* situation = reinterpret_cast<Situation*>(tree->getSituation());
-		
-		OptionTree* result = nullptr;
-		
-		if (situation->getTargetPlayer() == situation->getCurrentPlayer())
-		{
-			result = AbstractSolver::deepSearch(tree, maximalDepth);
-		}
-		else
-		{
-			if (tree->getDepth() < maximalDepth)
-			{
-				result = tree;
-				
-				while (result && !tree->getCommands()->empty())
-				{
-					OptionTree* nextChild = createChild(tree);
-					
-					if (nextChild)
-					{
-						result = AbstractSolver::deepSearch(nextChild, maximalDepth);
-				
-						if (!result)
-						{
-							delete nextChild;
-							nextChild = nullptr;
-						}
-						else
-						{
-							tree->insertChild(nextChild);
-						}
-					}
-				}
-			}
-			else
-			{
-				result = AbstractSolver::deepSearch(tree, maximalDepth);
-			}
-		}
-
-		return result;
-	}
 	
 	float Solver::evaluationFunction(OptionTree* tree)
 	{

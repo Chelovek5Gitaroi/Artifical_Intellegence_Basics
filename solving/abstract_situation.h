@@ -14,6 +14,8 @@ namespace chess_solver
 		// Виртуальный деструктор
 		virtual ~AbstractSituation() = 0;
 		
+		virtual AbstractSituation* copy() = 0;
+		
 		// Абстрактный метод, возвращающий строковое представление объекта
 		virtual std::string toString() = 0;
 	};

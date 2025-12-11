@@ -6,6 +6,8 @@
 #include <fstream>
 #include <list>
 #include <vector>
+#include <chrono>
+#include <algorithm>
 
 namespace chess_solver
 {
@@ -48,7 +50,26 @@ namespace chess_solver
 		// Метод, выполняющий очистку дерева
 		void clearTree();
 		
+		virtual void evaluateAllMethods(AbstractSituation* startSituation, int maximalDepth);
 	protected:
+		const static std::string EVALUATION_FILE_NAME;
+		
+		static const std::string EVALUATION_WORKING_TIME;
+		
+		static const std::string EVALUATION_ROW_MAX_SEARCH_DEPTH;
+		static const std::string EVALUATION_SOLVE_LENGTH;
+		static const std::string EVALUATION_TOTAL_NODES_COUNT;
+		static const std::string EVALUATION_BRANCHING;
+		static const std::string EVALUATION_TIME;
+		
+		static const std::string METHOD_DEEP_SEARCH;
+		static const std::string METHOD_WIDE_SEARCH;
+		static const std::string METHOD_GRADIENT_SEARCH;
+		static const std::string METHOD_BEST_PARTICLE_WAY;
+		
+		static const int ROW_NAME_LENGTH = 40;
+		static const int CELL_WIDTH = 10;
+		
 		// Метод, реализующий поиск в глубину
 		// OptionTree* tree - рассматриваемый узел дерева
 		// short maximalDepth - максимально допустимая глубина поиска
@@ -107,6 +128,23 @@ namespace chess_solver
 		// OptionTree* tree - указатель на узел, потомков которого необходимо создать
 		// std::queue<OptionTree*>* children - указатель на очередь, в которую нужно помещать создаваемые узлы
 		void createTreeChildren(OptionTree* tree, std::list<OptionTree*>* children);
+		
+		short calcMaximalOptionTreeDepth(OptionTree* node, short currentMax);
+		
+		size_t calcOptionTreeSize(OptionTree* node);
+		
+		int getHours(int totalSeconds);
+		
+		int getMinutes(int totalSeconds);
+		
+		int getRemainingSeconds(int totalSeconds);
+		
+		std::string buildTableRow(std::string& rowName, int rowNameLength, int cellWidth, int l, int d, int n, int r, int seconds);
+		
+		std::string makeCellText(int cellWidth, int value);
+		std::string makeCellText(int cellWidth, std::string value);
+		
+		std::string makeTableSepRow(int rowNameLen, int cellsCount, int cellWidth);
 	};
 }
 

@@ -97,6 +97,11 @@ namespace chess_solver
 		return result;
 	}
 
+	AbstractSituation* Situation::copy()
+	{
+		return new Situation(*this);
+	}
+
 	std::string Situation::toString()
 	{
 		std::string result;

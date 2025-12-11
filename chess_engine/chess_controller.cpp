@@ -91,7 +91,7 @@ namespace chess_solver
 		
 		bool wasPressed = false;
 		
-		this->setMaximalDepth(5);
+		this->setMaximalDepth(4);
 		
 		while (this->controllerState & CONTROLLER_STATE_RUNNING)
 		{
